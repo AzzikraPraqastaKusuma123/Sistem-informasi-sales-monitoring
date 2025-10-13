@@ -1,0 +1,33 @@
+/* src/components/Sidebar.css */
+.sidebar {
+  width: 240px;
+  background: #2c3e50;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+  flex-shrink: 0; /* Mencegah sidebar menyusut */
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 12px 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: background-color 0.2s;
+}
+
+.sidebar li a:hover {
+  background: #34495e;
+}

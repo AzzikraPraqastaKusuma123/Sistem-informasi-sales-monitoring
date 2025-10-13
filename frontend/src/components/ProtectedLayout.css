@@ -1,0 +1,12 @@
+/* src/components/ProtectedLayout.css */
+.app-layout {
+  display: flex;
+}
+
+.content-area {
+  flex-grow: 1; /* Mengisi sisa ruang */
+  padding: 30px;
+  height: 100vh;
+  overflow-y: auto; /* Agar bisa di-scroll jika konten panjang */
+  background-color: #f4f7f6;
+}
