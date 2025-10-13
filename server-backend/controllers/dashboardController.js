@@ -1,23 +1,29 @@
-// controllers/dashboardController.js
+// server-backend/controllers/dashboardController.js
 
-// Fungsi ini akan mengembalikan data summary untuk KPI cards
-const getDashboardSummary = async (req, res) => {
+const pool = require('../config');
+
+// Fungsi untuk mengambil data summary dashboard
+const getSummary = async (req, res) => {
   try {
-    // Nanti, data ini akan diambil dari query database yang kompleks.
-    // Untuk sekarang, kita kirim data dummy.
+    // Di sini Anda akan menulis query ke database untuk mendapatkan data
+    // Contoh:
+    const [users] = await pool.query('SELECT COUNT(*) as total_sales FROM users WHERE role = "sales"');
+    const [products] = await pool.query('SELECT COUNT(*) as total_products FROM products');
+    
     const summaryData = {
-      totalPencapaian: '1,250',
-      produkTerjual: '89',
-      targetTercapai: '75%',
-      salesTerbaik: 'Andi (dari DB)', // Data dari database
+      totalSales: users[0].total_sales,
+      totalProducts: products[0].total_products,
+      // Tambahkan data lain yang Anda perlukan
     };
-    res.json(summaryData);
+
+    res.status(200).json(summaryData);
 
   } catch (error) {
-    res.status(500).json({ message: "Gagal mengambil data summary" });
+    console.error('Error fetching dashboard summary:', error);
+    res.status(500).json({ message: 'Terjadi kesalahan pada server' });
   }
 };
 
 module.exports = {
-  getDashboardSummary,
+  getSummary,
 };

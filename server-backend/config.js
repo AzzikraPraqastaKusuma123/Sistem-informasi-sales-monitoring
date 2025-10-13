@@ -1,12 +1,15 @@
-// config.js
+// server-backend/config.js
+require('dotenv').config();
 const mysql = require('mysql2/promise');
 
-// Buat koneksi pool agar lebih efisien
 const pool = mysql.createPool({
-  host: 'localhost',      // Biasanya 'localhost'
-  user: 'root',           // User database Anda (default XAMPP: 'root')
-  password: '',          // Password database Anda (default XAMPP: kosong)
-  database: 'sales_monitoring_db' // Nama database yang sudah kita buat
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'sales_monitoring_db',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 module.exports = pool;
