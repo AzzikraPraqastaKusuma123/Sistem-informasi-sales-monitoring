@@ -1,13 +1,19 @@
-// routes/authRoutes.js
+// server-backend/routes/authRoutes.js
 const express = require('express');
 const router = express.Router();
-// Impor kedua fungsi dari controller
-const { loginUser, registerUser } = require('../controllers/authController');
 
-// Definisikan route untuk POST /login
-router.post('/login', loginUser);
+// Impor seluruh objek dari controller
+const authController = require('../controllers/authController');
 
-// Definisikan route untuk POST /register
-router.post('/register', registerUser); // <-- Route baru
+// Pastikan authController dan fungsinya tidak undefined
+if (!authController || typeof authController.loginUser !== 'function' || typeof authController.registerUser !== 'function') {
+  console.error("Critical Error: authController or its methods are not defined.");
+  // Hentikan aplikasi jika controller tidak ter-load dengan benar
+  process.exit(1); 
+}
+
+// Definisikan route dengan handler dari objek controller
+router.post('/login', authController.loginUser);
+router.post('/register', authController.registerUser);
 
 module.exports = router;

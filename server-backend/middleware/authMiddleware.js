@@ -1,24 +1,30 @@
-// server-backend/middleware/authMiddleware.js
-
 const jwt = require('jsonwebtoken');
+const pool = require('../config');
 
-const protect = (req, res, next) => {
+const protect = async (req, res, next) => {
   let token;
 
-  // Cek apakah header Authorization ada dan berformat 'Bearer <token>'
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
     try {
-      // 1. Ambil token dari header
+      // Dapatkan token dari header
       token = req.headers.authorization.split(' ')[1];
 
-      // 2. Verifikasi token menggunakan secret key
+      // Verifikasi token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // 3. Simpan data pengguna dari token ke object 'req'
-      // Ini agar bisa diakses di controller selanjutnya
-      req.user = decoded; 
+      // --- PERBAIKAN DI SINI ---
+      // Ganti 'username' menjadi 'name' agar sesuai dengan kolom di database Anda
+      const [rows] = await pool.query('SELECT id, name, role FROM users WHERE id = ?', [decoded.id]);
+      
+      if (rows.length === 0) {
+        return res.status(401).json({ message: 'Not authorized, user not found' });
+      }
 
-      next(); // Lanjutkan ke controller selanjutnya
+      req.user = rows[0];
+      next();
     } catch (error) {
       console.error('Token verification failed:', error);
       res.status(401).json({ message: 'Not authorized, token failed' });

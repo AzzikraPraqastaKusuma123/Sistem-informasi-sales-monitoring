@@ -1,70 +1,64 @@
-// frontend/src/pages/LoginPage.jsx
-
-import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext'; // <-- Menggunakan hook custom kita //
-import './LoginPage.css'; //
+// ... import lainnya
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import API from '../api'; // Pastikan Anda mengimpor instance axios Anda
+import './LoginPage.css';
 
 function LoginPage() {
-  const [credentials, setCredentials] = useState({ email: '', password: '' }); //
-  const [error, setError] = useState(''); //
-  const [loading, setLoading] = useState(false); //
-  const { login } = useAuth(); // <-- Mengambil fungsi login dari context //
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  // Fungsi untuk handle perubahan di input form
-  const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value }); //
-  };
-
-  // Fungsi untuk handle submit form (DENGAN PENANGANAN ERROR LEBIH BAIK)
-  const handleSubmit = async (event) => {
-    event.preventDefault(); //
-    setLoading(true); //
-    setError(''); //
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
 
     try {
-      await login(credentials); //
-      // Navigasi ke dashboard sudah di-handle di dalam fungsi login di AuthContext
+      const response = await API.post('/auth/login', { email, password });
+
+      if (response.data && response.data.token) {
+        // --- PERBAIKAN PENTING ---
+        // Simpan token ke localStorage setelah login berhasil
+        localStorage.setItem('token', response.data.token);
+
+        // Arahkan ke dashboard
+        navigate('/');
+      }
     } catch (err) {
-      // Ambil pesan error dari backend jika ada, jika tidak, tampilkan pesan default
-      const errorMessage = err.response?.data?.message || 'Email atau password salah. Silakan coba lagi.';
-      setError(errorMessage);
-      setLoading(false); // Hentikan loading hanya jika terjadi error //
+      setError(err.response?.data?.message || 'Login gagal, silakan coba lagi.');
     }
   };
 
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h1>Login Monitoring Sales</h1>
-        {error && <p className="error-message">{error}</p>}
-        <div className="input-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email" // Atribut 'name' penting untuk handleChange //
-            value={credentials.email}
-            onChange={handleChange}
-            required
-            disabled={loading}
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password" // Atribut 'name' penting untuk handleChange //
-            value={credentials.password}
-            onChange={handleChange}
-            required
-            disabled={loading}
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Loading...' : 'Login'}
-        </button>
-      </form>
+    <div className="login-page">
+      <div className="login-container">
+        <h2>Login</h2>
+        <form onSubmit={handleLogin}>
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          <button type="submit">Login</button>
+        </form>
+      </div>
     </div>
   );
 }
