@@ -1,13 +1,14 @@
-// server-backend/routes/dashboardRoutes.js
-
 const express = require('express');
 const router = express.Router();
-const { getSummary } = require('../controllers/dashboardController'); // Impor fungsi dari controller
-const { protect } = require('../middleware/authMiddleware'); // Impor middleware proteksi
+const { getDashboardSummary } = require('../controllers/dashboardController');
 
-// Definisikan rute GET /summary
-// 1. 'protect' akan dijalankan terlebih dahulu untuk verifikasi token
-// 2. Jika token valid, 'getSummary' akan dijalankan
-router.get('/summary', protect, getSummary);
+// DIUBAH: Menggunakan { verifyToken } sesuai file middleware terbaru
+const { verifyToken } = require('../middleware/authMiddleware');
+
+// @desc    Get dashboard summary
+// @route   GET /api/dashboard/summary
+// @access  Private
+// DIUBAH: Mengganti 'protect' menjadi 'verifyToken'
+router.get('/summary', verifyToken, getDashboardSummary);
 
 module.exports = router;

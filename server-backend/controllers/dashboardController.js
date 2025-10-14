@@ -1,29 +1,28 @@
-// server-backend/controllers/dashboardController.js
+const db = require('../config');
 
-const pool = require('../config');
-
-// Fungsi untuk mengambil data summary dashboard
-const getSummary = async (req, res) => {
+// @desc    Get dashboard summary data
+// @route   GET /api/dashboard/summary
+// @access  Private
+const getDashboardSummary = async (req, res) => {
   try {
-    // Di sini Anda akan menulis query ke database untuk mendapatkan data
-    // Contoh:
-    const [users] = await pool.query('SELECT COUNT(*) as total_sales FROM users WHERE role = "sales"');
-    const [products] = await pool.query('SELECT COUNT(*) as total_products FROM products');
-    
-    const summaryData = {
-      totalSales: users[0].total_sales,
-      totalProducts: products[0].total_products,
-      // Tambahkan data lain yang Anda perlukan
-    };
+    // Placeholder logic: Count total users and products for now
+    const [users] = await db.query('SELECT COUNT(*) as totalUsers FROM users');
+    const [products] = await db.query('SELECT COUNT(*) as totalProducts FROM products');
+    const [achievements] = await db.query('SELECT COUNT(*) as totalAchievements FROM achievements');
 
-    res.status(200).json(summaryData);
-
+    res.json({
+      totalUsers: users[0].totalUsers,
+      totalProducts: products[0].totalProducts,
+      totalAchievements: achievements[0].totalAchievements,
+      monthlySales: 0, // Placeholder
+    });
   } catch (error) {
-    console.error('Error fetching dashboard summary:', error);
-    res.status(500).json({ message: 'Terjadi kesalahan pada server' });
+    console.error('Dashboard summary error:', error);
+    res.status(500).json({ message: 'Server Error' });
   }
 };
 
+// INI BAGIAN YANG HILANG DAN MENYEBABKAN ERROR
 module.exports = {
-  getSummary,
+  getDashboardSummary,
 };

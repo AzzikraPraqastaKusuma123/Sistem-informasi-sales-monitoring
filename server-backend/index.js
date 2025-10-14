@@ -1,41 +1,40 @@
-// server-backend/index.js
-
 const express = require('express');
+const dotenv = require('dotenv');
 const cors = require('cors');
+const db = require('./config');
 
 // Impor semua file routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const productRoutes = require('./routes/productRoutes'); // <-- BARU: Impor rute produk
 
-// Inisialisasi aplikasi express
+dotenv.config();
+
 const app = express();
-const PORT = 5000;
 
-// --- MIDDLEWARE ---
-
-// Konfigurasi CORS yang lebih spesifik
-const corsOptions = {
-  origin: 'http://localhost:3000', // Hanya izinkan request dari frontend Anda
-  optionsSuccessStatus: 200
-};
-
-// Mengaktifkan CORS untuk semua request dengan opsi yang telah ditentukan
-app.use(cors(corsOptions));
-
-// Mengizinkan Express untuk membaca body request dalam format JSON
+// Middleware
+app.use(cors()); // Mengizinkan request dari semua origin (bisa disesuaikan nanti)
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+// Tes Koneksi Database
+db.query('SELECT 1')
+  .then(() => console.log('MySQL connected...'))
+  .catch((err) => console.log('MySQL connection error:', err));
 
-// --- ROUTES ---
+// Routes
+app.get('/', (req, res) => {
+  res.send('API is running...');
+});
+
 // Mendaftarkan setiap modul route ke path utamanya
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/products', productRoutes); // <-- BARU: Mendaftarkan rute produk
 
+const PORT = process.env.PORT || 5000;
 
-// --- MENJALANKAN SERVER ---
-// Menjalankan server pada port yang telah ditentukan
-app.listen(PORT, () => {
-  console.log(`Server backend berjalan di http://localhost:${PORT}`);
-});
+// Menjalankan server
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

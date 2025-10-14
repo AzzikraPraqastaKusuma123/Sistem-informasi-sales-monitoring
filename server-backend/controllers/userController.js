@@ -1,24 +1,34 @@
-// controllers/userController.js
-const pool = require('../config');
+const db = require('../config');
 
-// Fungsi untuk mengambil profil pengguna yang sedang login
-const getUserProfile = async (req, res) => {
+// @desc    Get all users
+// @route   GET /api/users
+// @access  Private/Admin
+const getAllUsers = async (req, res) => {
   try {
-    // Ambil id dari token yang sudah diverifikasi oleh middleware
-    const userId = req.user.id; 
-
-    const [users] = await pool.query('SELECT id, name, email, role FROM users WHERE id = ?', [userId]);
-
-    if (users.length > 0) {
-      res.json(users[0]);
-    } else {
-      res.status(404).json({ message: 'Pengguna tidak ditemukan' });
-    }
+    // Menggunakan 'db' dari config.js yang sudah di-promise
+    const [rows] = await db.query('SELECT id, name, email, role FROM users');
+    res.json(rows);
   } catch (error) {
-    res.status(500).json({ message: 'Terjadi kesalahan pada server' });
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Get user profile
+// @route   GET /api/users/profile
+// @access  Private
+// FUNGSI INI DITAMBAHKAN UNTUK MEMPERBAIKI ERROR
+const getUserProfile = async (req, res) => {
+  // req.user didapat dari middleware verifyToken
+  // Cukup kembalikan data user yang sudah ada di req.user
+  if (req.user) {
+    res.json(req.user);
+  } else {
+    res.status(404).json({ message: 'User not found' });
   }
 };
 
 module.exports = {
-  getUserProfile,
+  getAllUsers,
+  getUserProfile, // Sekarang ekspor ini valid
 };
