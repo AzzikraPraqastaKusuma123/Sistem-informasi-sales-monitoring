@@ -5,8 +5,6 @@ const db = require('../config/db');
 // @access  Private (Admin, Supervisor)
 const getSalesRanking = async (req, res) => {
   try {
-    // Query ini menggabungkan data pencapaian dan target untuk setiap sales di bulan ini,
-    // lalu menghitung totalnya dan persentasenya.
     const query = `
       SELECT
         u.id,
@@ -32,12 +30,11 @@ const getSalesRanking = async (req, res) => {
 
     const [ranking] = await db.query(query);
     
-    // Format hasil agar lebih rapi
     const formattedRanking = ranking.map(item => ({
       ...item,
       totalAchievement: parseInt(item.totalAchievement, 10),
       totalTarget: parseInt(item.totalTarget, 10),
-      percentage: parseFloat(item.percentage).toFixed(2) // Ambil 2 angka di belakang koma
+      percentage: parseFloat(item.percentage).toFixed(2)
     }));
 
     res.status(200).json(formattedRanking);
