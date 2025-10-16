@@ -11,31 +11,23 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSummary = async () => {
-      try {
-        const { data } = await api.get('/dashboard/summary');
-        setSummary(data);
-      } catch (error) {
-        console.error('Gagal memuat ringkasan admin', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSummary();
+    api.get('/dashboard/summary')
+      .then(res => setSummary(res.data))
+      .catch(err => console.error("Gagal memuat ringkasan admin", err))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <div>Memuat Dashboard Admin...</div>;
 
   return (
     <>
-      <div className="card-container">
+      <div className="card-container admin-kpi-cards">
         <Card title="Total Pengguna" value={summary?.totalUsers} />
         <Card title="Total Produk" value={summary?.totalProducts} />
-        <Card title="Total Laporan" value={summary?.totalAchievements} />
+        <Card title="Total Laporan Masuk" value={summary?.totalAchievements} />
       </div>
 
-      <div className="chart-container">
-        {/* Mengirim data nyata ke komponen SalesChart */}
+      <div className="chart-container admin-chart">
         <SalesChart data={summary?.topSalesPerformance} />
       </div>
     </>
@@ -48,43 +40,47 @@ const SalesDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSummary = async () => {
-      try {
-        const { data } = await api.get('/dashboard/sales');
-        setSummary(data);
-      } catch (error) {
-        console.error('Gagal memuat ringkasan sales', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSummary();
+    api.get('/dashboard/sales')
+      .then(res => setSummary(res.data))
+      .catch(err => console.error("Gagal memuat ringkasan sales", err))
+      .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div>Memuat Dashboard Anda...</div>;
+  if (loading) return <div>Memuat Dashboard Kinerja Anda...</div>;
 
   return (
-    <div className="card-container">
-      <Card title="Pencapaian Saya (Bulan Ini)" value={summary?.achievement} />
-      <Card title="Target Saya (Bulan Ini)" value={summary?.target} />
-      <Card title="Persentase Target" value={summary?.percentage} unit="%" />
-    </div>
+    <>
+      {/* Kita akan membuat layout khusus untuk sales di sini */}
+      <div className="card-container">
+        <Card title="Pencapaian Saya (Bulan Ini)" value={summary?.achievement} />
+        <Card title="Target Saya (Bulan Ini)" value={summary?.target} />
+        <Card title="Persentase Target" value={summary?.percentage} unit="%" />
+      </div>
+      
+      {/* Tambahan: Nanti bisa diisi grafik personal */}
+      <div className="chart-container">
+        <p>Grafik performa pribadi Anda akan muncul di sini.</p>
+      </div>
+    </>
   );
 };
 
-// Komponen Utama yang tidak berubah
+// Komponen Utama yang memilih tampilan
 const DashboardPage = () => {
   const { user } = useAuth();
+  const isAdminOrSupervisor = user && (user.role === 'admin' || user.role === 'supervisor');
 
   return (
-    <div className="dashboard-page">
+    <div className="page-container dashboard-page">
       <h1>Dashboard</h1>
+      <p className="dashboard-welcome">
+        {isAdminOrSupervisor 
+          ? "Berikut adalah ringkasan performa tim secara keseluruhan."
+          : "Berikut adalah ringkasan performa penjualan Anda."
+        }
+      </p>
       
-      {user && (user.role === 'admin' || user.role === 'supervisor') ? (
-        <AdminDashboard />
-      ) : (
-        <SalesDashboard />
-      )}
+      {isAdminOrSupervisor ? <AdminDashboard /> : <SalesDashboard />}
     </div>
   );
 };

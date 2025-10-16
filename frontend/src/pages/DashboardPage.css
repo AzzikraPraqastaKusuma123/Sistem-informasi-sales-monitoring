@@ -1,0 +1,40 @@
+.dashboard-page {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.dashboard-page h1 {
+  margin-top: 0;
+  font-size: 2.2rem;
+  color: #2c3e50;
+}
+
+.dashboard-welcome {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.chart-container {
+  margin-top: 2.5rem;
+}
+
+/* Khusus untuk layout admin, kita bisa gunakan grid yang lebih kompleks */
+.admin-dashboard-layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr 1fr; /* Dua kolom */
+}
+
+.admin-kpi-cards {
+  grid-column: 1 / -1; /* Kartu KPI membentang di semua kolom */
+}
+
+.admin-chart {
+  grid-column: 1 / -1; /* Grafik juga membentang */
+}
