@@ -1,11 +1,12 @@
 const db = require('../config/db');
+const { Parser } = require('json2csv');
 
-// @desc    Mendapatkan laporan pencapaian dengan filter
+// @desc    Mendapatkan laporan pencapaian dengan filter (JSON atau CSV)
 // @route   GET /api/reports
 // @access  Private (Admin, Supervisor)
 const getAchievementsReport = async (req, res) => {
   try {
-    const { startDate, endDate, userId, productId } = req.query;
+    const { startDate, endDate, userId, productId, format } = req.query;
 
     let query = `
       SELECT
@@ -30,12 +31,10 @@ const getAchievementsReport = async (req, res) => {
       whereClauses.push('a.achievement_date <= ?');
       queryParams.push(endDate);
     }
-    // Cek jika userId ada dan bukan string 'all'
     if (userId && userId !== 'all') {
       whereClauses.push('a.user_id = ?');
       queryParams.push(userId);
     }
-    // Cek jika productId ada dan bukan string 'all'
     if (productId && productId !== 'all') {
       whereClauses.push('a.product_id = ?');
       queryParams.push(productId);
@@ -48,6 +47,26 @@ const getAchievementsReport = async (req, res) => {
     query += ' ORDER BY a.achievement_date DESC';
 
     const [reports] = await db.query(query, queryParams);
+
+    // --- LOGIKA BARU UNTUK EKSPOR CSV ---
+    if (format === 'csv') {
+      const fields = [
+        { label: 'Nama Sales', value: 'userName' },
+        { label: 'Produk', value: 'productName' },
+        { label: 'Jumlah', value: 'achieved_value' },
+        { label: 'Tanggal', value: 'achievement_date' },
+      ];
+      
+      const json2csvParser = new Parser({ fields });
+      const csv = json2csvParser.parse(reports);
+
+      res.header('Content-Type', 'text/csv');
+      res.attachment('laporan-penjualan.csv');
+      return res.send(csv);
+    }
+    // --- AKHIR LOGIKA BARU ---
+
+    // Jika tidak ada format 'csv', kirim JSON seperti biasa (logika lama)
     res.status(200).json(reports);
 
   } catch (error) {

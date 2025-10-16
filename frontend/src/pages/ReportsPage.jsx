@@ -15,6 +15,7 @@ const ReportsPage = () => {
   const [salesUsers, setSalesUsers] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false); // State baru untuk loading ekspor
   const { user } = useAuth();
 
   const fetchReports = useCallback(async () => {
@@ -50,19 +51,19 @@ const ReportsPage = () => {
         ]);
         setSalesUsers(usersRes.data);
         setProducts(productsRes.data);
+        fetchReports(); // Panggil laporan awal setelah data filter dimuat
       } catch (error) {
         console.error("Gagal memuat data filter", error);
+        setLoading(false);
       }
     };
     
-    // Hanya panggil jika user bukan sales
     if (user && user.role !== 'sales') {
-        fetchInitialData();
-        fetchReports();
+      fetchInitialData();
     } else {
-        setLoading(false); // Selesaikan loading jika user adalah sales
+      setLoading(false);
     }
-  }, [user, fetchReports]);
+  }, [user]); // dependensi diubah ke user saja
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -71,6 +72,36 @@ const ReportsPage = () => {
 
   const handleApplyFilter = () => {
     fetchReports();
+  };
+
+  // --- FUNGSI BARU UNTUK EKSPOR ---
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+        const activeFilters = Object.fromEntries(
+            Object.entries(filters).filter(([_, value]) => value !== '' && value !== 'all')
+        );
+
+        // Tambahkan parameter format=csv
+        const response = await api.get('/reports', { 
+            params: { ...activeFilters, format: 'csv' },
+            responseType: 'blob', // Penting untuk menerima file
+        });
+
+        // Buat URL dari data blob dan trigger download
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'laporan-penjualan.csv');
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+    } catch (error) {
+        console.error("Gagal mengekspor laporan:", error);
+        alert('Gagal mengekspor data.');
+    } finally {
+        setExporting(false);
+    }
   };
 
   const headers = [
@@ -93,6 +124,10 @@ const ReportsPage = () => {
     <div className="page-container">
       <div className="page-header">
         <h1>Laporan Penjualan</h1>
+        {/* --- TOMBOL BARU UNTUK EKSPOR --- */}
+        <button className="export-btn" onClick={handleExport} disabled={exporting}>
+          {exporting ? 'Mengekspor...' : 'Ekspor ke CSV'}
+        </button>
       </div>
 
       <div className="filters-container">
