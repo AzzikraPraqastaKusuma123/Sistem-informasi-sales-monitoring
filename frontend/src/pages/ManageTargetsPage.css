@@ -1,0 +1,36 @@
+.target-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    align-items: center;
+}
+
+.target-form h3 {
+    grid-column: 1 / -1; /* Judul membentang di semua kolom */
+    margin: 0;
+}
+
+.target-form input,
+.target-form select,
+.target-form button {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.target-form button {
+    background-color: #27ae60;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+.target-list {
+    margin-top: 2rem;
+}

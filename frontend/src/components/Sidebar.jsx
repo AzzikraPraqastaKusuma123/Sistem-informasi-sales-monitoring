@@ -1,17 +1,17 @@
+// src/components/Sidebar.jsx
+
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import './Sidebar.css'; // We will create this CSS file next
+import './Sidebar.css';
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
 
-  // Do not render anything if the user data is not yet available
   if (!user) {
     return null;
   }
 
-  // Determine user role to show/hide menus
   const isAdmin = user.role === 'admin';
   const isSupervisor = user.role === 'supervisor';
   const isSales = user.role === 'sales';
@@ -25,7 +25,6 @@ const Sidebar = () => {
       <nav className="sidebar-nav">
         <NavLink to="/" end>Dashboard</NavLink>
 
-        {/* Menu specific to Sales role */}
         {isSales && (
           <>
             <NavLink to="/input-achievement">Input Achievement</NavLink>
@@ -33,14 +32,16 @@ const Sidebar = () => {
           </>
         )}
 
-        {/* Menu for Admin and Supervisor roles */}
         {(isAdmin || isSupervisor) && (
-          <NavLink to="/products">Manage Products</NavLink>
+          <>
+            <NavLink to="/products">Manage Products</NavLink>
+            {/* --- TAMBAHKAN LINK BARU DI SINI --- */}
+            <NavLink to="/manage-targets">Manage Targets</NavLink>
+          </>
         )}
         
         <NavLink to="/reports">Reports</NavLink>
 
-        {/* Menu for Admin role only */}
         {isAdmin && (
            <NavLink to="/users">Manage Users</NavLink>
         )}
