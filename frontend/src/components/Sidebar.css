@@ -15,16 +15,28 @@
 }
 
 .sidebar-header h2 {
-  margin: 0;
+  margin: 0 0 1rem 0; /* Memberi sedikit jarak bawah */
   font-size: 1.6rem;
   color: white;
 }
 
-.sidebar-header p {
-  font-size: 0.9rem;
-  color: #95a5a6;
+/* --- PERUBAHAN DI SINI --- */
+.sidebar-username {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  color: #ecf0f1;
   word-wrap: break-word;
 }
+
+.sidebar-role {
+  font-size: 0.8rem;
+  color: #1abc9c; /* Menggunakan warna primer agar menonjol */
+  text-transform: capitalize; /* Membuat huruf pertama besar, cth: 'admin' -> 'Admin' */
+  margin: 0.25rem 0 0 0;
+  font-weight: 600;
+}
+/* --- Akhir Perubahan --- */
 
 .sidebar-nav {
   display: flex;
@@ -47,7 +59,6 @@
   color: white;
 }
 
-/* Style untuk link yang sedang aktif */
 .sidebar-nav a.active {
   background-color: #1abc9c;
   color: white;
