@@ -1,16 +1,17 @@
-// index.js
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const db = require('./config/db');
 
-// Import semua rute yang sudah ada
+// Import semua rute yang ada
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const userRoutes = require('./routes/userRoutes');
-// --- TAMBAHKAN IMPORT BARU ---
 const targetRoutes = require('./routes/targetRoutes');
+
+// --- TAMBAHKAN IMPORT BARU INI ---
+const achievementRoutes = require('./routes/achievementRoutes');
 
 dotenv.config();
 const app = express();
@@ -25,8 +26,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/users', userRoutes);
-// --- DAFTARKAN RUTE BARU ---
 app.use('/api/targets', targetRoutes);
+
+// --- DAFTARKAN RUTE BARU DI SINI ---
+app.use('/api/achievements', achievementRoutes);
+
 
 // Coba koneksi ke database
 db.query('SELECT 1')

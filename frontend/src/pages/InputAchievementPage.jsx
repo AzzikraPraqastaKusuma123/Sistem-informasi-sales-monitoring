@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import './InputAchievementPage.css'; // Kita akan buat file CSS ini
+import './InputAchievementPage.css';
 
 const InputAchievementPage = () => {
   const [products, setProducts] = useState([]);
@@ -8,10 +8,10 @@ const InputAchievementPage = () => {
   const [achievedValue, setAchievedValue] = useState('');
   const [achievementDate, setAchievementDate] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(''); // Menggunakan state tunggal untuk pesan
 
   useEffect(() => {
-    // Ambil daftar produk untuk ditampilkan di dropdown
+    // Ambil daftar produk dari backend untuk dropdown
     const fetchProducts = async () => {
       try {
         const { data } = await api.get('/products');
@@ -38,7 +38,7 @@ const InputAchievementPage = () => {
     setMessage('');
 
     try {
-      // Kirim data ke backend
+      // Kirim data ke backend dengan endpoint yang benar
       await api.post('/achievements', {
         productId: parseInt(productId),
         achievedValue: parseInt(achievedValue),
@@ -47,9 +47,10 @@ const InputAchievementPage = () => {
       setMessage('Laporan pencapaian berhasil disimpan!');
       setAchievedValue(''); // Kosongkan input jumlah setelah berhasil
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Gagal menyimpan laporan.';
-      setMessage(`Error: ${errorMessage}`);
-      console.error(error);
+      // Menampilkan pesan error dari backend jika ada
+      const errorText = error.response?.data?.message || 'Gagal menyimpan laporan.';
+      setMessage(`Error: ${errorText}`);
+      console.error(error); // Tampilkan detail error di console
     } finally {
       setLoading(false);
     }
@@ -57,18 +58,24 @@ const InputAchievementPage = () => {
 
   return (
     <div className="page-container">
-      <h1>Input Pencapaian Harian</h1>
+      <div className="page-header">
+        <h1>Input Pencapaian Harian</h1>
+      </div>
       <form onSubmit={handleSubmit} className="achievement-form">
         <div className="form-group">
           <label htmlFor="product">Produk</label>
           <select id="product" value={productId} onChange={(e) => setProductId(e.target.value)} required>
-            {products.map((p) => (
-              <option key={p.id} value={p.id}>{p.name}</option>
-            ))}
+            {products.length === 0 ? (
+                <option disabled>Memuat produk...</option>
+            ) : (
+                products.map((p) => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                ))
+            )}
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="achievedValue">Jumlah Tercapai</label>
+          <label htmlFor="achievedValue">Jumlah / Nilai Tercapai</label>
           <input
             id="achievedValue"
             type="number"
@@ -76,6 +83,7 @@ const InputAchievementPage = () => {
             onChange={(e) => setAchievedValue(e.target.value)}
             placeholder="Contoh: 10"
             required
+            min="1"
           />
         </div>
         <div className="form-group">
