@@ -1,50 +1,55 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; // DIUBAH: Impor useAuth
-import './Sidebar.css';
+import { useAuth } from '../contexts/AuthContext';
+import './Sidebar.css'; // We will create this CSS file next
 
 const Sidebar = () => {
-  // DIUBAH: Menggunakan hook useAuth untuk mendapatkan user dan fungsi logout
   const { user, logout } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-  };
-
-  // --- INI PERBAIKAN UTAMANYA ---
-  // Guard Clause: Jika user masih null (sedang loading atau belum login),
-  // jangan render komponen ini sama sekali. Ini akan mencegah error.
+  // Do not render anything if the user data is not yet available
   if (!user) {
     return null;
   }
 
-  // Kode di bawah ini hanya akan berjalan jika 'user' sudah ada datanya.
+  // Determine user role to show/hide menus
   const isAdmin = user.role === 'admin';
   const isSupervisor = user.role === 'supervisor';
+  const isSales = user.role === 'sales';
 
   return (
-    <div className="sidebar">
+    <aside className="sidebar">
       <div className="sidebar-header">
         <h2>Sales App</h2>
-        {/* Tampilkan nama pengguna yang sedang login */}
         <p>Welcome, {user.name}</p>
       </div>
       <nav className="sidebar-nav">
-        <NavLink to="/" end>
-          Dashboard
-        </NavLink>
+        <NavLink to="/" end>Dashboard</NavLink>
 
-        {/* Hanya tampilkan menu 'Products' jika rolenya admin atau supervisor */}
-        {(isAdmin || isSupervisor) && (
-          <NavLink to="/products">Products</NavLink>
+        {/* Menu specific to Sales role */}
+        {isSales && (
+          <>
+            <NavLink to="/input-achievement">Input Achievement</NavLink>
+            <NavLink to="/my-achievements">My History</NavLink>
+          </>
         )}
 
+        {/* Menu for Admin and Supervisor roles */}
+        {(isAdmin || isSupervisor) && (
+          <NavLink to="/products">Manage Products</NavLink>
+        )}
+        
         <NavLink to="/reports">Reports</NavLink>
+
+        {/* Menu for Admin role only */}
+        {isAdmin && (
+           <NavLink to="/users">Manage Users</NavLink>
+        )}
+
       </nav>
       <div className="sidebar-footer">
-        <button onClick={handleLogout}>Logout</button>
+        <button onClick={logout}>Logout</button>
       </div>
-    </div>
+    </aside>
   );
 };
 

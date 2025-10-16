@@ -1,20 +1,18 @@
-const db = require('../config');
+const db = require('../config/db');
 
-// @desc    Get dashboard summary data
-// @route   GET /api/dashboard/summary
-// @access  Private
+// FUNGSI UNTUK ADMIN / SUPERVISOR
 const getDashboardSummary = async (req, res) => {
   try {
-    // Placeholder logic: Count total users and products for now
     const [users] = await db.query('SELECT COUNT(*) as totalUsers FROM users');
     const [products] = await db.query('SELECT COUNT(*) as totalProducts FROM products');
-    const [achievements] = await db.query('SELECT COUNT(*) as totalAchievements FROM achievements');
+    const [achievements] = await db.query(
+      'SELECT COUNT(*) as totalAchievements FROM achievements'
+    );
 
     res.json({
       totalUsers: users[0].totalUsers,
       totalProducts: products[0].totalProducts,
       totalAchievements: achievements[0].totalAchievements,
-      monthlySales: 0, // Placeholder
     });
   } catch (error) {
     console.error('Dashboard summary error:', error);
@@ -22,7 +20,41 @@ const getDashboardSummary = async (req, res) => {
   }
 };
 
-// INI BAGIAN YANG HILANG DAN MENYEBABKAN ERROR
+// FUNGSI KHUSUS UNTUK SALES
+const getSalesDashboard = async (req, res) => {
+  const userId = req.user.id; // ID sales yang sedang login
+
+  try {
+    // 1. Menghitung total pencapaian (value) bulan ini
+    const [monthlyAchievements] = await db.query(
+      `SELECT SUM(achieved_value) as totalMonthlyValue FROM achievements WHERE user_id = ? AND MONTH(achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(achievement_date) = YEAR(CURRENT_DATE())`,
+      [userId]
+    );
+
+    // 2. Menghitung jumlah laporan yang dibuat bulan ini
+    const [monthlyReports] = await db.query(
+      `SELECT COUNT(id) as totalMonthlyReports FROM achievements WHERE user_id = ? AND MONTH(achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(achievement_date) = YEAR(CURRENT_DATE())`,
+      [userId]
+    );
+    
+    // 3. Menghitung total pencapaian sepanjang waktu
+    const [totalAchievements] = await db.query(
+      `SELECT SUM(achieved_value) as lifetimeValue FROM achievements WHERE user_id = ?`,
+      [userId]
+    );
+
+    res.json({
+      monthlyValue: monthlyAchievements[0].totalMonthlyValue || 0,
+      monthlyReports: monthlyReports[0].totalMonthlyReports || 0,
+      lifetimeValue: totalAchievements[0].lifetimeValue || 0,
+    });
+  } catch (error) {
+    console.error('Sales dashboard error:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 module.exports = {
   getDashboardSummary,
+  getSalesDashboard,
 };

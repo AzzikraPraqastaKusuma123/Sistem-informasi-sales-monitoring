@@ -1,19 +1,18 @@
-// src/components/ProtectedLayout.jsx
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import './ProtectedLayout.css';
+import Sidebar from './Sidebar'; // It will use the Sidebar component
+import './ProtectedLayout.css';   // We will create this CSS file next
 
-function ProtectedLayout() {
+const ProtectedLayout = () => {
   return (
     <div className="app-layout">
       <Sidebar />
-      <main className="content-area">
+      <main className="main-content">
+        {/* This Outlet is where your pages (Dashboard, Products, etc.) will be rendered */}
         <Outlet />
-        {/* Outlet akan merender halaman (misal: DashboardPage) */}
       </main>
     </div>
   );
-}
+};
 
 export default ProtectedLayout;

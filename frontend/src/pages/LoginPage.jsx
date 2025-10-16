@@ -1,66 +1,65 @@
-// ... import lainnya
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import API from '../api'; // Pastikan Anda mengimpor instance axios Anda
-import './LoginPage.css';
+import React, { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import './LoginPage.css'; // Kita akan buat file CSS ini
 
-function LoginPage() {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+    setLoading(true);
     try {
-      const response = await API.post('/auth/login', { email, password });
-
-      if (response.data && response.data.token) {
-        // --- PERBAIKAN PENTING ---
-        // Simpan token ke localStorage setelah login berhasil
-        localStorage.setItem('token', response.data.token);
-
-        // Arahkan ke dashboard
-        navigate('/');
-      }
+      // Panggil fungsi login dari AuthContext
+      await login({ email, password });
     } catch (err) {
-      setError(err.response?.data?.message || 'Login gagal, silakan coba lagi.');
+      // Jika backend mengembalikan error, tampilkan pesan
+      setError('Email atau Password salah. Silakan coba lagi.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <h2>Login</h2>
-        <form onSubmit={handleLogin}>
+    <div className="login-container">
+      <div className="login-box">
+        <h2>Sales Monitoring</h2>
+        <p>Silakan login untuk melanjutkan</p>
+        <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input
-              type="email"
               id="email"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="contoh@email.com"
               required
             />
           </div>
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
-              type="password"
               id="password"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Masukkan password"
               required
             />
           </div>
           {error && <p className="error-message">{error}</p>}
-          <button type="submit">Login</button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Memproses...' : 'Login'}
+          </button>
         </form>
       </div>
     </div>
   );
-}
+};
 
 export default LoginPage;

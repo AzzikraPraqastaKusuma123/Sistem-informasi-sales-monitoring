@@ -11,26 +11,21 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkLoggedIn = async () => {
+    const validateToken = async () => {
       const token = localStorage.getItem('token');
       if (token) {
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         try {
-          // DIUBAH: Menghapus '/api' yang berlebih dari URL
-          const { data } = await api.get('/users/profile');
+          const { data } = await api.get('/users/profile'); // Endpoint ini perlu kita buat di backend
           setUser(data);
           setIsAuthenticated(true);
         } catch (error) {
-          console.error("Session expired or token is invalid.");
           localStorage.removeItem('token');
-          setUser(null);
-          setIsAuthenticated(false);
         }
       }
       setLoading(false);
     };
-
-    checkLoggedIn();
+    validateToken();
   }, []);
 
   const login = async (credentials) => {
@@ -38,15 +33,11 @@ export const AuthProvider = ({ children }) => {
       const { data } = await api.post('/auth/login', credentials);
       localStorage.setItem('token', data.token);
       api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-      
-      // DIUBAH: Menghapus '/api' yang berlebih dari URL
       const userProfile = await api.get('/users/profile');
       setUser(userProfile.data);
       setIsAuthenticated(true);
-      
       navigate('/');
     } catch (error) {
-      console.error('Login failed:', error);
       throw error;
     }
   };
@@ -58,14 +49,10 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     navigate('/login');
   };
-
-  if (loading) {
-    return <div>Loading Application...</div>;
-  }
-
+  
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, loading, login, logout }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

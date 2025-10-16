@@ -1,54 +1,45 @@
-// src/pages/DashboardPage.jsx
 import React, { useState, useEffect } from 'react';
-import Card from '../components/Card';
-import SalesChart from '../components/SalesChart';
-import API from '../api'; // Impor API
-import './DashboardPage.css';
+import { useAuth } from '../contexts/AuthContext';
+import api from '../api';
 
-function DashboardPage() {
-  const [summary, setSummary] = useState(null);
-  const [loading, setLoading] = useState(true);
-
+// Tampilan untuk Admin
+const AdminDashboard = () => {
+  const [data, setData] = useState(null);
   useEffect(() => {
-    const fetchSummary = async () => {
-      try {
-        const response = await API.get('/dashboard/summary');
-        setSummary(response.data);
-      } catch (error) {
-        console.error("Gagal mengambil data dashboard:", error);
-        // Handle error, mungkin redirect ke login jika token tidak valid
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSummary();
-  }, []); // Array kosong berarti useEffect hanya berjalan sekali
-
-  if (loading) {
-    return <div>Loading dashboard...</div>;
-  }
-
+    api.get('/dashboard/summary').then(res => setData(res.data));
+  }, []);
   return (
-    <div className="dashboard">
-      <h1>Dashboard Kinerja Sales</h1>
-
-      <div className="summary-cards">
-        {summary && (
-          <>
-            <Card title="Total Pencapaian" value={summary.totalPencapaian} icon="🎯" />
-            <Card title="Produk Terjual" value={summary.produkTerjual} icon="📦" />
-            <Card title="Target Tercapai" value={summary.targetTercapai} icon="🏆" />
-            <Card title="Sales Terbaik" value={summary.salesTerbaik} icon="🥇" />
-          </>
-        )}
-      </div>
-
-      <div className="charts-area">
-        <SalesChart />
-      </div>
+    <div>
+      <h2>Admin Dashboard</h2>
+      <p>Total Pengguna: {data?.totalUsers}</p>
+      <p>Total Produk: {data?.totalProducts}</p>
+      <p>Total Laporan: {data?.totalAchievements}</p>
     </div>
   );
-}
+};
+
+// Tampilan untuk Sales
+const SalesDashboard = () => {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    api.get('/dashboard/sales').then(res => setData(res.data));
+  }, []);
+  return (
+    <div>
+      <h2>Dashboard Kinerja Saya</h2>
+      <p>Total Penjualan Bulan Ini: {data?.monthlyValue}</p>
+      <p>Jumlah Laporan Bulan Ini: {data?.monthlyReports}</p>
+      <p>Total Penjualan (Semua): {data?.lifetimeValue}</p>
+    </div>
+  );
+};
+
+// Komponen Utama
+const DashboardPage = () => {
+  const { user } = useAuth();
+  if (!user) return <div>Memuat...</div>;
+
+  return (user.role === 'sales') ? <SalesDashboard /> : <AdminDashboard />;
+};
 
 export default DashboardPage;

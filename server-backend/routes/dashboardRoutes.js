@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { getDashboardSummary } = require('../controllers/dashboardController');
+const { getDashboardSummary, getSalesDashboard } = require('../controllers/dashboardController');
+const { verifyToken, authorize } = require('../middleware/authMiddleware');
 
-// DIUBAH: Menggunakan { verifyToken } sesuai file middleware terbaru
-const { verifyToken } = require('../middleware/authMiddleware');
+// JIKA ROLE ADALAH 'admin' ATAU 'supervisor', HANYA BISA AKSES RUTE INI
+router.get('/summary', verifyToken, authorize(['admin', 'supervisor']), getDashboardSummary);
 
-// @desc    Get dashboard summary
-// @route   GET /api/dashboard/summary
-// @access  Private
-// DIUBAH: Mengganti 'protect' menjadi 'verifyToken'
-router.get('/summary', verifyToken, getDashboardSummary);
+// JIKA ROLE ADALAH 'sales', HANYA BISA AKSES RUTE INI
+router.get('/sales', verifyToken, authorize('sales'), getSalesDashboard);
+
 
 module.exports = router;
