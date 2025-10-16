@@ -1,0 +1,34 @@
+.evaluation-page .form-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.evaluation-page .form-container h3 {
+    margin-top: 0;
+}
+
+.evaluation-page .evaluation-list .evaluation-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.evaluation-page .evaluation-item blockquote {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+    border-left: 4px solid #1abc9c;
+    padding-left: 1rem;
+}
+
+.evaluation-page .evaluation-item .meta {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    text-align: right;
+}

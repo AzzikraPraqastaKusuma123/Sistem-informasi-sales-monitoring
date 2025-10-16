@@ -8,11 +8,11 @@ import InputAchievementPage from './pages/InputAchievementPage';
 import MyAchievementsPage from './pages/MyAchievementsPage';
 import ManageTargetsPage from './pages/ManageTargetsPage';
 import ReportsPage from './pages/ReportsPage';
+import UserManagementPage from './pages/UserManagementPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // --- TAMBAHKAN IMPORT BARU ---
-import UserManagementPage from './pages/UserManagementPage';
-
+import EvaluationsPage from './pages/EvaluationsPage';
 
 function App() {
   return (
@@ -26,8 +26,9 @@ function App() {
         <Route path="/my-achievements" element={<MyAchievementsPage />} />
         <Route path="/manage-targets" element={<ManageTargetsPage />} />
         <Route path="/reports" element={<ReportsPage />} />
-        {/* --- GUNAKAN KOMPONEN BARU DI SINI --- */}
         <Route path="/users" element={<UserManagementPage />} />
+        {/* --- DAFTARKAN RUTE BARU DI SINI --- */}
+        <Route path="/evaluations" element={<EvaluationsPage />} />
       </Route>
     </Routes>
   );

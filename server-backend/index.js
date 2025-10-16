@@ -11,9 +11,10 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 const userRoutes = require('./routes/userRoutes');
 const targetRoutes = require('./routes/targetRoutes');
 const achievementRoutes = require('./routes/achievementRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
 // --- TAMBAHKAN IMPORT BARU ---
-const reportRoutes = require('./routes/reportRoutes');
+const evaluationRoutes = require('./routes/evaluationRoutes');
 
 dotenv.config();
 const app = express();
@@ -30,17 +31,16 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/targets', targetRoutes);
 app.use('/api/achievements', achievementRoutes);
-// --- DAFTARKAN RUTE BARU ---
 app.use('/api/reports', reportRoutes);
+// --- DAFTARKAN RUTE BARU ---
+app.use('/api/evaluations', evaluationRoutes);
 
-// Coba koneksi ke database
+// ... sisa kode Anda (koneksi DB, listener port, dll.) tetap sama
 db.query('SELECT 1')
   .then(() => console.log('MySQL connected...'))
   .catch((err) => console.log('MySQL connection error:', err));
-
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

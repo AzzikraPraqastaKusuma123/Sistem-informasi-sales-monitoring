@@ -27,6 +27,8 @@ const Sidebar = () => {
           <>
             <NavLink to="/input-achievement">Input Achievement</NavLink>
             <NavLink to="/my-achievements">My History</NavLink>
+            {/* --- TAMBAHKAN LINK BARU UNTUK SALES --- */}
+            <NavLink to="/evaluations">Evaluations</NavLink>
           </>
         )}
 
@@ -34,8 +36,9 @@ const Sidebar = () => {
           <>
             <NavLink to="/products">Manage Products</NavLink>
             <NavLink to="/manage-targets">Manage Targets</NavLink>
-            {/* --- PINDAHKAN LINK REPORTS KE SINI --- */}
             <NavLink to="/reports">Reports</NavLink>
+            {/* --- TAMBAHKAN LINK BARU UNTUK SUPERVISOR --- */}
+            <NavLink to="/evaluations">Evaluations</NavLink>
           </>
         )}
         
