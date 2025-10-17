@@ -38,3 +38,20 @@
 .admin-chart {
   grid-column: 1 / -1; /* Grafik juga membentang */
 }
+
+/* ... CSS yang sudah ada ... */
+.chart-container {
+  margin-top: 2.5rem;
+}
+
+/* --- TAMBAHKAN GAYA GRID BARU --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 kolom */
+    gap: 1.5rem; /* Jarak antar grafik */
+}
+
+/* Grafik pertama (peringkat) dibuat membentang penuh */
+.top-sales-chart {
+    grid-column: 1 / -1;
+}

@@ -2,39 +2,72 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../api';
 import Card from '../components/Card';
-import SalesChart from '../components/SalesChart';
-import './DashboardPage.css';
 
-// Tampilan Dashboard untuk Admin/Supervisor
+// Grafik lama
+import SalesChart from '../components/SalesChart';
+
+// Import komponen-komponen grafik BARU
+import PerformanceTrendChart from '../components/PerformanceTrendChart';
+import TopProductsChart from '../components/TopProductsChart';
+import SalesContributionChart from '../components/SalesContributionChart';
+import ActivityChart from '../components/ActivityChart';
+
+// Import CSS
+import './DashboardPage.css';
+import '../components/Card.css'; // CSS untuk wrapper grafik
+
+// Tampilan Dashboard untuk Admin/Supervisor (YANG DIPERBARUI)
 const AdminDashboard = () => {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/dashboard/summary')
-      .then(res => setSummary(res.data))
-      .catch(err => console.error("Gagal memuat ringkasan admin", err))
-      .finally(() => setLoading(false));
+    // Menggunakan async/await untuk kejelasan
+    const fetchAdminSummary = async () => {
+        try {
+            const res = await api.get('/dashboard/summary');
+            setSummary(res.data);
+        } catch (err) {
+            console.error("Gagal memuat ringkasan admin", err);
+            // Anda bisa menambahkan state error di sini jika perlu
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    fetchAdminSummary();
   }, []);
 
   if (loading) return <div>Memuat Dashboard Admin...</div>;
 
   return (
     <>
-      <div className="card-container admin-kpi-cards">
+      {/* Bagian KPI Cards - Tidak Berubah */}
+      <div className="card-container">
         <Card title="Total Pengguna" value={summary?.totalUsers} />
         <Card title="Total Produk" value={summary?.totalProducts} />
         <Card title="Total Laporan Masuk" value={summary?.totalAchievements} />
       </div>
 
-      <div className="chart-container admin-chart">
-        <SalesChart data={summary?.topSalesPerformance} />
+      <div className="chart-container">
+        {/* Grafik 1: Peringkat Kinerja Tim (Sudah ada, dibuat full-width) */}
+        <div className="top-sales-chart">
+            <SalesChart data={summary?.topSalesPerformance} />
+        </div>
+        
+        {/* Grid untuk 4 Grafik Baru */}
+        <div className="dashboard-grid">
+            <PerformanceTrendChart data={summary?.dailyTrend || []} />
+            <TopProductsChart data={summary?.topProducts || []} />
+            <SalesContributionChart data={summary?.salesContribution || []} />
+            <ActivityChart data={summary?.dailyActivity || []} />
+        </div>
       </div>
     </>
   );
 };
 
-// Tampilan Dashboard untuk Sales
+// Tampilan Dashboard untuk Sales (TIDAK BERUBAH)
 const SalesDashboard = () => {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -50,14 +83,12 @@ const SalesDashboard = () => {
 
   return (
     <>
-      {/* Kita akan membuat layout khusus untuk sales di sini */}
       <div className="card-container">
         <Card title="Pencapaian Saya (Bulan Ini)" value={summary?.achievement} />
         <Card title="Target Saya (Bulan Ini)" value={summary?.target} />
         <Card title="Persentase Target" value={summary?.percentage} unit="%" />
       </div>
       
-      {/* Tambahan: Nanti bisa diisi grafik personal */}
       <div className="chart-container">
         <p>Grafik performa pribadi Anda akan muncul di sini.</p>
       </div>
@@ -65,7 +96,7 @@ const SalesDashboard = () => {
   );
 };
 
-// Komponen Utama yang memilih tampilan
+// Komponen Utama (TIDAK BERUBAH)
 const DashboardPage = () => {
   const { user } = useAuth();
   const isAdminOrSupervisor = user && (user.role === 'admin' || user.role === 'supervisor');
