@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 16, 2025 at 06:38 PM
+-- Generation Time: Oct 17, 2025 at 04:39 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.3.16
 
@@ -42,15 +42,8 @@ CREATE TABLE `achievements` (
 --
 
 INSERT INTO `achievements` (`id`, `user_id`, `product_id`, `achieved_value`, `achievement_date`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 12, '2025-10-16', '2025-10-16 13:52:14', '2025-10-16 13:52:14'),
-(2, 1, 1, 100, '2025-10-06', '2025-10-16 15:11:28', '2025-10-16 15:11:28'),
-(3, 1, 1, 200, '2025-09-30', '2025-10-16 15:11:45', '2025-10-16 15:11:45'),
-(4, 1, 1, 400, '2025-10-08', '2025-10-16 15:11:57', '2025-10-16 15:11:57'),
-(5, 1, 2, 10, '2025-10-01', '2025-10-16 15:13:41', '2025-10-16 15:13:41'),
 (6, 1, 3, 100, '2025-10-10', '2025-10-16 15:13:51', '2025-10-16 15:13:51'),
-(7, 1, 1, 900, '2025-10-15', '2025-10-16 15:36:10', '2025-10-16 15:36:10'),
-(8, 1, 3, 800, '2025-10-14', '2025-10-16 15:36:23', '2025-10-16 15:36:23'),
-(9, 2, 2, 15, '2025-10-15', '2025-10-16 16:49:04', '2025-10-16 16:49:04');
+(8, 1, 3, 800, '2025-10-14', '2025-10-16 15:36:23', '2025-10-16 15:36:23');
 
 -- --------------------------------------------------------
 
@@ -92,9 +85,18 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'tes', 'tes', '2025-10-16 11:47:15', '2025-10-16 11:47:15'),
-(2, 'tes2', 'tes2\n', '2025-10-16 15:12:59', '2025-10-16 15:12:59'),
-(3, 'tes3', 'tes', '2025-10-16 15:13:07', '2025-10-16 15:13:07');
+(3, 'tes3', 'tes', '2025-10-16 15:13:07', '2025-10-16 15:13:07'),
+(4, 'MTB', 'Produk Tabungan Muda atau sejenisnya', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(5, 'TAB FP', 'Tabungan Fungsional Pribadi', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(7, 'MTR', 'Mutasi Transaksi Rekening atau produk transaksi lainnya', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(8, 'MTB iB', 'Multi Tabungan iB (produk syariah)', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(9, 'TAB NOW', 'Produk tabungan online atau digital', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(10, 'TAB MULTICURRENCY', 'Tabungan dengan fitur multi mata uang', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(11, 'GIRO', 'Rekening giro untuk nasabah bisnis', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(12, 'LWM / LVM', 'Produk investasi seperti Wealth Management atau Virtual Money', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(13, 'AOB / EDC', 'Account Opening Booking atau aktivasi mesin EDC', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(14, 'CC', 'Credit Card (Kartu Kredit)', '2025-10-16 19:03:30', '2025-10-16 19:03:30'),
+(15, 'Reff AXA', 'Referral produk asuransi AXA', '2025-10-16 19:03:30', '2025-10-16 19:03:30');
 
 -- --------------------------------------------------------
 
@@ -134,8 +136,21 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'andi', 'andi@example.com', '$2b$10$r3m2V3BRMFBotSWrWmKfBuCi6D7RFasOY/SiWY6mXKqL2388tOx96', 'sales', '2025-10-13 17:10:32', '2025-10-16 18:15:25'),
-(2, 'zikra', 'zikra@gmail.com', '$2b$10$ayVx5knJfxNzk7mwgX1ZtOBwJY7g.hhiKsb3SbOB4.iT6.CZihxgK', 'admin', '2025-10-16 16:48:38', '2025-10-16 18:15:30');
+(1, 'andi', 'andi@example.com', '$2b$10$r3m2V3BRMFBotSWrWmKfBuCi6D7RFasOY/SiWY6mXKqL2388tOx96', 'admin', '2025-10-13 17:10:32', '2025-10-17 03:31:52'),
+(2, 'zikra', 'zikra@gmail.com', '$2b$10$ayVx5knJfxNzk7mwgX1ZtOBwJY7g.hhiKsb3SbOB4.iT6.CZihxgK', 'admin', '2025-10-16 16:48:38', '2025-10-16 18:15:30'),
+(3, 'PRASETYO', 'prasetyo@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(4, 'PRAYOGA', 'prayoga@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(5, 'FAJAR', 'fajar@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(6, 'INDRA', 'indra@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(7, 'REZA', 'reza@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(8, 'HENDRA', 'hendra@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(9, 'JOKO', 'joko@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(10, 'DWI', 'dwi@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(11, 'BAYU', 'bayu@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(12, 'ARIF', 'arif@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(13, 'YOGA', 'yoga@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'sales', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(15, 'Budi Admin', 'admin@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'admin', '2025-10-16 19:03:47', '2025-10-16 19:03:47'),
+(16, 'Citra Supervisor', 'supervisor@example.com', '$2b$10$fWvA3cQ3f8G8b9hG8j7kFe.o5u3U3j2u1iI0o4u2iI0o4u2iI0o4u', 'supervisor', '2025-10-16 19:03:47', '2025-10-16 19:03:47');
 
 --
 -- Indexes for dumped tables
@@ -198,19 +213,19 @@ ALTER TABLE `evaluations`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `targets`
 --
 ALTER TABLE `targets`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
