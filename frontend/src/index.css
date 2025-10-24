@@ -4,16 +4,24 @@
 }
 
 :root {
-  --color-primary: #4A90E2;
-  --color-secondary: #50E3C2;
-  --color-accent: #F5A623;
-  --color-text-primary: #333333;
-  --color-text-secondary: #666666;
-  --color-background-light: #F8F9FA;
-  --color-background-medium: #E9ECEF;
-  --color-border: #DEE2E6;
-  --color-success: #7ED321;
-  --color-error: #D0021B;
+  --color-primary: #3498db; /* Biru Cerah */
+  --color-primary-rgb: 52, 152, 219; /* RGB untuk primary */
+  --color-secondary: #2ecc71; /* Hijau Zamrud */
+  --color-accent: #f39c12; /* Oranye Cerah */
+
+  --color-success: #28a745; /* Hijau Tua */
+  --color-info: #17a2b8; /* Biru Teal */
+  --color-warning: #ffc107; /* Kuning */
+  --color-error: #dc3545; /* Merah */
+
+  --color-background-light: #ffffff; /* Putih Bersih */
+  --color-background-medium: #f8f9fa; /* Abu-abu Sangat Terang */
+  --color-background-dark: #2c3e50; /* Biru Tua Keabu-abuan (untuk sidebar) */
+  --color-border: #dee2e6; /* Abu-abu Muda */
+  --color-input-bg: #e9ecef; /* Abu-abu Sangat Terang */
+
+  --color-text-primary: #343a40; /* Abu-abu Sangat Gelap */
+  --color-text-secondary: #6c757d; /* Abu-abu Sedang */
 }
 
 body {

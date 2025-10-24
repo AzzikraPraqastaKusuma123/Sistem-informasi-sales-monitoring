@@ -1,7 +1,5 @@
 .app-layout {
-  display: grid;
-  /* Defines two columns: one 250px wide for the sidebar, and the second takes up the rest of the space */
-  grid-template-columns: 250px 1fr;
+  display: flex; /* Use flexbox for overall layout */
   height: 100vh;
   width: 100vw;
   overflow: hidden; /* Prevents the whole page from scrolling */
@@ -10,5 +8,15 @@
 .main-content {
   background-color: var(--color-background-light); /* Use global background color */
   overflow-y: auto; /* Allows only the content area to scroll if it's long */
+  flex-grow: 1; /* Allow main content to take remaining space */
+  margin-left: 250px; /* Space for the fixed sidebar */
   padding: 2rem;
+  transition: margin-left 0.3s ease; /* Smooth transition for sidebar collapse */
+}
+
+/* Responsive adjustments for main content when sidebar collapses */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 80px; /* Adjust margin for collapsed sidebar */
+  }
 }

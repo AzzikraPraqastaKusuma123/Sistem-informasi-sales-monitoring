@@ -1,46 +1,74 @@
+.datatable-container {
+  overflow-x: auto; /* Enable horizontal scroll on small screens */
+  background-color: var(--color-background-light);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
+}
+
 .datatable-container table {
   width: 100%;
-  border-collapse: collapse;
-  background-color: var(--color-background-medium);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  border-radius: 8px; /* Added for consistency with other components */
+  border-collapse: separate; /* Use separate for rounded corners on cells */
+  border-spacing: 0;
+  background-color: var(--color-background-light);
+  /* box-shadow: 0 2px 8px rgba(0,0,0,0.1); */ /* Shadow moved to container */
+  border-radius: 10px; /* Added for consistency with other components */
   overflow: hidden; /* Ensures rounded corners are applied to content */
 }
 
 .datatable-container th, .datatable-container td {
-  padding: 12px 15px;
+  padding: 15px 18px;
   text-align: left;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-text-primary);
+  font-size: 0.95rem;
 }
 
 .datatable-container th {
-  background-color: var(--color-background-light);
+  background-color: var(--color-background-medium);
   font-weight: 600;
   color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.datatable-container tr:hover {
-  background-color: rgba(74, 144, 226, 0.1); /* Subtle hover effect using primary color */
+.datatable-container tr:last-child td {
+  border-bottom: none; /* No border for the last row */
+}
+
+.datatable-container tbody tr:hover {
+  background-color: rgba(var(--color-primary-rgb), 0.05); /* Subtle hover effect using primary color */
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap; /* Allow buttons to wrap on small screens */
 }
 
 .action-buttons button {
-  padding: 8px 12px; /* Slightly larger buttons */
-  margin-right: 8px;
+  padding: 8px 14px; /* Slightly larger buttons */
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s ease;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.2s;
+  white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+.action-buttons button:hover {
+  transform: translateY(-2px);
 }
 
 .edit-btn {
-  background-color: var(--color-accent);
-  color: var(--color-text-primary);
+  background-color: var(--color-info);
+  color: white;
 }
 
 .edit-btn:hover {
-  background-color: #e0951f; /* Slightly darker accent on hover */
+  background-color: #138496; /* Darker info on hover */
 }
 
 .delete-btn {
@@ -49,5 +77,31 @@
 }
 
 .delete-btn:hover {
-  background-color: #b00017; /* Slightly darker error on hover */
+  background-color: #c82333; /* Darker error on hover */
+}
+
+.btn-detail {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-detail:hover {
+  background-color: #2980b9; /* Darker primary on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .datatable-container {
+    padding: 1rem;
+  }
+
+  .datatable-container th, .datatable-container td {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  .action-buttons button {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
 }

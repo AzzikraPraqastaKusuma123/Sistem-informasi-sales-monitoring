@@ -1,11 +1,13 @@
 .dashboard-page {
   animation: fadeIn 0.5s ease-in-out;
+  padding: 2rem;
 }
 
 .dashboard-page h1 {
   margin-top: 0;
-  font-size: 2.2rem;
-  color: var(--color-primary); /* Use primary color for main headings */
+  font-size: 2.5rem;
+  color: var(--color-text-primary); /* Use primary text color */
+  margin-bottom: 1rem;
 }
 
 .dashboard-welcome {
@@ -16,12 +18,13 @@
 
 .card-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly larger min width for cards */
   gap: 1.5rem;
+  margin-bottom: 2.5rem; /* Space below KPI cards */
 }
 
 .chart-container {
-  margin-top: 2.5rem;
+  margin-top: 0; /* Adjusted margin */
 }
 
 /* Khusus untuk layout admin, kita bisa gunakan grid yang lebih kompleks */
@@ -39,16 +42,21 @@
   grid-column: 1 / -1;
 }
 
-/* --- TAMBAHKAN GAYA GRID BARU --- */
+/* --- GAYA GRID BARU UNTUK GRAFIK --- */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 kolom */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* 2 kolom responsif */
     gap: 1.5rem; /* Jarak antar grafik */
+    margin-top: 1.5rem;
 }
 
 /* Grafik pertama (peringkat) dibuat membentang penuh */
 .top-sales-chart {
     grid-column: 1 / -1;
+    background-color: var(--color-background-light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 /* Grid untuk Dashboard Sales */
@@ -63,6 +71,10 @@
 .sales-performance-chart {
   width: 100%;
   margin-bottom: 20px; /* Jarak ke grid di bawahnya */
+  background-color: var(--color-background-light);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .export-button-container {
@@ -75,12 +87,51 @@
   color: white;
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
 }
 
 .btn-primary:hover {
-  background-color: var(--color-primary-dark);
+  background-color: #2980b9; /* Darker primary */
+  transform: translateY(-2px);
+}
+
+/* Styling for chart wrappers */
+.chart-wrapper {
+    background-color: var(--color-background-light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    height: 100%;
+}
+
+.chart-wrapper h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--color-text-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-container {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid,
+  .dashboard-grid-sales {
+    grid-template-columns: 1fr;
+  }
+
+  .top-sales-chart,
+  .sales-performance-chart {
+    padding: 1rem;
+  }
+
+  .dashboard-page h1 {
+    font-size: 2rem;
+  }
 }

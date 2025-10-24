@@ -1,58 +1,61 @@
 /* Styling for UserForm */
 .user-form {
-  padding: 20px;
+  padding: 25px;
   background-color: var(--color-background-light);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  max-width: 800px; /* Batasi lebar formulir */
-  margin: auto; /* Tengahkan formulir di dalam modal */
-  box-sizing: border-box; /* Pastikan padding dan border dihitung dalam lebar */
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  max-width: 850px; /* Sedikit lebih lebar */
+  margin: auto;
+  box-sizing: border-box;
 }
 
 .user-form h2 {
   text-align: center;
   color: var(--color-primary);
-  margin-bottom: 25px;
-  font-size: 1.8rem;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 .user-form .form-section {
   margin-bottom: 30px;
   border: 1px solid var(--color-border);
-  border-radius: 6px;
-  padding: 15px;
+  border-radius: 8px;
+  padding: 20px;
   box-sizing: border-box;
+  background-color: var(--color-background-medium); /* Latar belakang section */
 }
 
 .user-form .form-section h3 {
-  color: var(--color-text-secondary);
-  font-size: 1.2rem;
+  color: var(--color-text-primary);
+  font-size: 1.4rem;
   margin-top: 0;
   margin-bottom: 15px;
   padding-bottom: 10px;
-  border-bottom: 1px dashed var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .user-form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Min width lebih kecil */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Disesuaikan */
   gap: 20px;
 }
 
 .user-form .form-group {
-  margin-bottom: 0px; /* Hapus margin bottom default */
-  box-sizing: border-sizing;
+  margin-bottom: 0; /* Hapus margin bottom default */
+  box-sizing: border-box;
 }
 
 .user-form .form-group.full-width {
-  grid-column: 1 / -1; /* Ambil seluruh lebar grid */
+  grid-column: 1 / -1;
 }
 
 .user-form label {
   display: block;
   margin-bottom: 8px;
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   font-weight: 500;
+  font-size: 0.95rem;
 }
 
 .user-form input[type="text"],
@@ -64,60 +67,61 @@
 .user-form textarea,
 .user-form select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 15px;
   border: 1px solid var(--color-border);
-  border-radius: 4px;
-  background-color: var(--color-background-input);
+  border-radius: 8px;
+  background-color: var(--color-input-bg);
   color: var(--color-text-primary);
   font-size: 1rem;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  box-sizing: border-box; /* Penting untuk responsivitas */
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
 .user-form input:focus,
 .user-form textarea:focus,
 .user-form select:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.25);
   outline: none;
 }
 
 .user-form textarea {
-  min-height: 80px;
+  min-height: 100px;
   resize: vertical;
 }
 
 .profile-picture-preview {
-  margin-top: 15px;
+  margin-top: 20px;
   text-align: center;
 }
 
 .profile-picture-preview img {
-  max-width: 100px;
-  max-height: 100px;
+  max-width: 120px;
+  max-height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--color-primary);
+  border: 3px solid var(--color-primary);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .user-form .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 15px;
-  margin-top: 30px;
-  padding-top: 20px;
+  margin-top: 40px;
+  padding-top: 25px;
   border-top: 1px solid var(--color-border);
   box-sizing: border-box;
 }
 
 .user-form .form-actions button {
-  padding: 10px 25px;
+  padding: 12px 30px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: background-color 0.3s ease-in-out, transform 0.2s;
   box-sizing: border-box;
 }
 
@@ -127,25 +131,43 @@
 }
 
 .user-form .form-actions button[type="submit"]:hover {
-  background-color: var(--color-primary-dark);
+  background-color: #2980b9; /* Darker primary */
+  transform: translateY(-2px);
 }
 
 .user-form .form-actions button[type="button"] {
-  background-color: #6C757D; /* Abu-abu */
+  background-color: var(--color-text-secondary); /* Abu-abu */
   color: white;
 }
 
 .user-form .form-actions button[type="button"]:hover {
-  background-color: #5A6268;
+  background-color: #5a6268;
+  transform: translateY(-2px);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .user-form {
+    padding: 20px;
+  }
   .user-form-grid {
     grid-template-columns: 1fr;
   }
 
   .user-form .form-group.full-width {
-    grid-column: auto; /* Kembali ke auto */
+    grid-column: auto;
+  }
+
+  .user-form h2 {
+    font-size: 1.8rem;
+  }
+
+  .user-form .form-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .user-form .form-actions button {
+    padding: 10px 20px;
+    font-size: 1rem;
   }
 }

@@ -1,6 +1,6 @@
 .sidebar {
-  background-color: #2c3e50; /* Dark background */
-  color: #ecf0f1; /* Light text color */
+  background-color: var(--color-background-dark); /* Dark background from new palette */
+  color: var(--color-background-light); /* Light text color from new palette */
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -9,6 +9,10 @@
   transition: all 0.3s ease; /* Smooth transitions for width/other changes */
   width: 250px; /* Default width */
   flex-shrink: 0;
+  position: fixed; /* Make sidebar fixed */
+  top: 0;
+  left: 0;
+  z-index: 100; /* Ensure it's above other content */
 }
 
 .sidebar-header {
@@ -21,15 +25,16 @@
 .sidebar-header h2 {
   margin: 0 0 0.5rem 0;
   font-size: 1.8rem;
-  color: var(--color-primary); /* Highlight app name */
+  color: var(--color-primary); /* Highlight app name with primary color */
   font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .sidebar-username {
   font-size: 1rem;
   font-weight: 500;
   margin: 0;
-  color: #bdc3c7;
+  color: var(--color-text-secondary); /* Use text secondary for username */
   word-wrap: break-word;
 }
 
@@ -51,7 +56,7 @@
 }
 
 .sidebar-nav a {
-  color: #ecf0f1; /* Light text for inactive links */
+  color: var(--color-background-light); /* Light text for inactive links */
   text-decoration: none;
   padding: 0.8rem 1rem;
   border-radius: 8px;
@@ -64,7 +69,7 @@
 
 .sidebar-nav a:hover {
   background-color: rgba(var(--color-primary-rgb), 0.2); /* Subtle hover with primary color */
-  color: var(--color-primary);
+  color: var(--color-primary); /* Primary color on hover */
   transform: translateX(5px); /* Slight slide effect on hover */
 }
 
@@ -90,8 +95,8 @@
   width: 100%;
   padding: 0.8rem;
   background-color: transparent;
-  color: #e74c3c; /* Red for logout */
-  border: 1px solid #e74c3c;
+  color: var(--color-error); /* Red for logout */
+  border: 1px solid var(--color-error);
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
@@ -104,9 +109,9 @@
 }
 
 .sidebar-footer button:hover {
-  background-color: #e74c3c;
+  background-color: var(--color-error);
   color: white;
-  border-color: #e74c3c;
+  border-color: var(--color-error);
 }
 
 /* Responsive adjustments */

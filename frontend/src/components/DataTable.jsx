@@ -19,7 +19,7 @@ const DataTable = ({ headers, data, onEdit, onDelete }) => {
               <tr key={row.id}>
                 {headers.map((header) => (
                   <td key={`${row.id}-${header.key}`}>
-                    {row[header.key]}
+                    {header.customRenderer ? header.customRenderer(row) : row[header.key]}
                   </td>
                 ))}
                 {(onEdit || onDelete) && (
