@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import UserForm from '../components/UserForm';
+import './UserManagementPage.css';
 
 const UserManagementPage = () => {
   const [users, setUsers] = useState([]);
@@ -72,13 +73,13 @@ const UserManagementPage = () => {
     { key: 'role', label: 'Peran' },
   ];
 
-  if (loading) return <div>Memuat...</div>;
-  if (error) return <div style={{ color: 'red' }}>{error}</div>;
+  if (loading) return <div className="page-container user-management-page loading-message">Memuat...</div>;
+  if (error) return <div className="page-container user-management-page error-message">{error}</div>;
 
   // Proteksi tambahan di sisi client
   if (loggedInUser.role !== 'admin') {
     return (
-        <div className="page-container">
+        <div className="page-container user-management-page">
             <h1>Akses Ditolak</h1>
             <p>Hanya Admin yang dapat mengakses halaman ini.</p>
         </div>
@@ -86,7 +87,7 @@ const UserManagementPage = () => {
   }
 
   return (
-    <div className="page-container">
+    <div className="page-container user-management-page">
       <div className="page-header">
         <h1>Manajemen Pengguna</h1>
         <button className="add-btn" onClick={() => handleOpenModal()}>+ Tambah Pengguna</button>

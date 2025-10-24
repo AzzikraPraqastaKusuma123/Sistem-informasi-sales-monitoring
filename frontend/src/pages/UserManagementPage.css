@@ -1,0 +1,32 @@
+.user-management-page {
+  /* Inherits .page-container styles from index.css */
+}
+
+.user-management-page h1 {
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+}
+
+.user-management-page .add-btn {
+  /* Inherits styles from ProductsPage.css or global button styles */
+}
+
+/* Additional styles for specific elements if needed */
+.user-management-page .loading-message,
+.user-management-page .error-message {
+  text-align: center;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
+.user-management-page .loading-message {
+  background-color: var(--color-background-medium);
+  color: var(--color-text-secondary);
+}
+
+.user-management-page .error-message {
+  background-color: rgba(var(--color-error), 0.1); /* Light red background */
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+}

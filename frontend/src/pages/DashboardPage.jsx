@@ -11,6 +11,8 @@ import PerformanceTrendChart from '../components/PerformanceTrendChart';
 import TopProductsChart from '../components/TopProductsChart';
 import SalesContributionChart from '../components/SalesContributionChart';
 import ActivityChart from '../components/ActivityChart';
+import TopUsersAchievementChart from '../components/TopUsersAchievementChart';
+import SalesPerformanceChart from '../components/SalesPerformanceChart'; // Import the new chart component
 
 // Import CSS
 import './DashboardPage.css';
@@ -61,6 +63,7 @@ const AdminDashboard = () => {
             <TopProductsChart data={summary?.topProducts || []} />
             <SalesContributionChart data={summary?.salesContribution || []} />
             <ActivityChart data={summary?.dailyActivity || []} />
+            <TopUsersAchievementChart data={summary?.topUsersAchievement || []} />
         </div>
       </div>
     </>
@@ -90,7 +93,7 @@ const SalesDashboard = () => {
       </div>
       
       <div className="chart-container">
-        <p>Grafik performa pribadi Anda akan muncul di sini.</p>
+        <SalesPerformanceChart achievement={summary?.achievement} target={summary?.target} />
       </div>
     </>
   );
