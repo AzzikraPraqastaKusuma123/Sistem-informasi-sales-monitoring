@@ -9,7 +9,7 @@ const verifyToken = async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      const [rows] = await db.query('SELECT id, name, email, role FROM users WHERE id = ?', [decoded.id]);
+      const [rows] = await db.query('SELECT id, name, nik, email, phone_number, address, hire_date, profile_picture_url, region, role FROM users WHERE id = ?', [decoded.id]);
       if (rows.length === 0) {
         return res.status(401).json({ message: 'Not authorized, user not found' });
       }

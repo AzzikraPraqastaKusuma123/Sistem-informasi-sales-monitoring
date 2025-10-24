@@ -16,7 +16,7 @@ const getUserProfile = async (req, res) => {
 // @access  Private (Admin only)
 const getAllUsers = async (req, res) => {
   try {
-    const [users] = await db.query('SELECT id, name, email, role FROM users ORDER BY name ASC');
+    const [users] = await db.query('SELECT id, name, nik, email, phone_number, address, hire_date, profile_picture_url, region, role FROM users ORDER BY name ASC');
     res.status(200).json(users);
   } catch (error) {
     console.error('Error saat mengambil semua pengguna:', error);
@@ -28,27 +28,27 @@ const getAllUsers = async (req, res) => {
 // @route   POST /api/users
 // @access  Private (Admin only)
 const createUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, nik, email, password, role, phone_number, address, hire_date, profile_picture_url, region } = req.body;
 
-  if (!name || !email || !password || !role) {
-    return res.status(400).json({ message: 'Harap isi semua kolom' });
+  if (!name || !nik || !email || !password || !role) {
+    return res.status(400).json({ message: 'Harap isi semua kolom wajib (Nama, NIK, Email, Password, Peran)' });
   }
 
   try {
-    const [userExists] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
+    const [userExists] = await db.query('SELECT id FROM users WHERE email = ? OR nik = ?', [email, nik]);
     if (userExists.length > 0) {
-      return res.status(400).json({ message: 'Email sudah terdaftar' });
+      return res.status(400).json({ message: 'Email atau NIK sudah terdaftar' });
     }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const [result] = await db.query(
-      'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
-      [name, email, hashedPassword, role]
+      'INSERT INTO users (name, nik, email, password, role, phone_number, address, hire_date, profile_picture_url, region) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [name, nik, email, hashedPassword, role, phone_number, address, hire_date, profile_picture_url, region]
     );
 
-    res.status(201).json({ id: result.insertId, name, email, role });
+    res.status(201).json({ id: result.insertId, name, nik, email, role, phone_number, address, hire_date, profile_picture_url, region });
   } catch (error) {
     console.error('Error saat membuat pengguna:', error);
     res.status(500).json({ message: 'Server Error' });
@@ -60,10 +60,10 @@ const createUser = async (req, res) => {
 // @access  Private (Admin only)
 const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { name, email, role, password } = req.body;
+    const { name, nik, email, role, password, phone_number, address, hire_date, profile_picture_url, region } = req.body;
 
-    if (!name || !email || !role) {
-        return res.status(400).json({ message: 'Nama, email, dan peran harus diisi' });
+    if (!name || !nik || !email || !role) {
+        return res.status(400).json({ message: 'Nama, NIK, email, dan peran harus diisi' });
     }
 
     try {
@@ -73,8 +73,28 @@ const updateUser = async (req, res) => {
             hashedPassword = await bcrypt.hash(password, salt);
         }
 
-        const fieldsToUpdate = ['name = ?', 'email = ?', 'role = ?'];
-        const params = [name, email, role];
+        const fieldsToUpdate = [
+            'name = ?',
+            'nik = ?',
+            'email = ?',
+            'role = ?',
+            'phone_number = ?',
+            'address = ?',
+            'hire_date = ?',
+            'profile_picture_url = ?',
+            'region = ?'
+        ];
+        const params = [
+            name,
+            nik,
+            email,
+            role,
+            phone_number,
+            address,
+            hire_date,
+            profile_picture_url,
+            region
+        ];
 
         if (hashedPassword) {
             fieldsToUpdate.push('password = ?');
@@ -95,9 +115,9 @@ const updateUser = async (req, res) => {
         res.status(200).json({ message: 'Pengguna berhasil diperbarui' });
     } catch (error) {
         console.error('Error saat memperbarui pengguna:', error);
-        // Tangani error jika email duplikat
+        // Tangani error jika email atau NIK duplikat
         if (error.code === 'ER_DUP_ENTRY') {
-            return res.status(400).json({ message: 'Email sudah digunakan oleh pengguna lain.' });
+            return res.status(400).json({ message: 'Email atau NIK sudah digunakan oleh pengguna lain.' });
         }
         res.status(500).json({ message: 'Server Error' });
     }

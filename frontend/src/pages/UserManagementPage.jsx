@@ -69,7 +69,13 @@ const UserManagementPage = () => {
 
   const headers = [
     { key: 'name', label: 'Nama' },
+    { key: 'nik', label: 'NIK' },
     { key: 'email', label: 'Email' },
+    { key: 'phone_number', label: 'Telepon' },
+    { key: 'address', label: 'Alamat' },
+    { key: 'hire_date', label: 'Tgl. Gabung' },
+    { key: 'profile_picture_url', label: 'Foto Profil' },
+    { key: 'region', label: 'Wilayah' },
     { key: 'role', label: 'Peran' },
   ];
 
