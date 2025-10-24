@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import './LoginPage.css'; // Kita akan buat file CSS ini
+import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
+import './LoginPage.css';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+  const { showError } = useNotification(); // Inisialisasi useNotification
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
     try {
-      // Panggil fungsi login dari AuthContext
       await login({ email, password });
+      // Notifikasi sukses tidak diperlukan karena akan langsung redirect
     } catch (err) {
-      // Jika backend mengembalikan error, tampilkan pesan
-      setError('Email atau Password salah. Silakan coba lagi.');
+      showError('Email atau Password salah. Silakan coba lagi.');
     } finally {
       setLoading(false);
     }
@@ -52,7 +51,7 @@ const LoginPage = () => {
               required
             />
           </div>
-          {error && <p className="error-message">{error}</p>}
+          {/* Error message akan ditampilkan via toast notification */}
           <button type="submit" disabled={loading}>
             {loading ? 'Memproses...' : 'Login'}
           </button>

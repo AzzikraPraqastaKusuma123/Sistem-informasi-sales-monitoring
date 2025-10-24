@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import ProductForm from '../components/ProductForm';
@@ -9,24 +10,22 @@ import './ProductsPage.css';
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null);
   const { user } = useAuth();
+  const { showSuccess, showError } = useNotification(); // Inisialisasi useNotification
 
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await api.get('/products');
       setProducts(data);
-      setError('');
     } catch (err) {
-      setError('Gagal memuat data produk. Pastikan Anda memiliki hak akses.');
-      console.error(err);
+      showError('Gagal memuat data produk. Pastikan Anda memiliki hak akses.');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showError]);
 
   useEffect(() => {
     fetchProducts();
@@ -46,14 +45,16 @@ const ProductsPage = () => {
     try {
       if (productData.id) {
         await api.put(`/products/${productData.id}`, productData);
+        showSuccess('Produk berhasil diperbarui!');
       } else {
         await api.post('/products', productData);
+        showSuccess('Produk berhasil ditambahkan!');
       }
       fetchProducts(); // Muat ulang data setelah submit
       handleCloseModal();
     } catch (err) {
-      alert('Error: Gagal menyimpan produk.');
-      console.error(err);
+      const message = err.response?.data?.message || 'Gagal menyimpan produk.';
+      showError(`Error: ${message}`);
     }
   };
 
@@ -62,9 +63,10 @@ const ProductsPage = () => {
       try {
         await api.delete(`/products/${product.id}`);
         fetchProducts(); // Muat ulang data setelah hapus
+        showSuccess('Produk berhasil dihapus!');
       } catch (err) {
         const errorMessage = err.response?.data?.message || 'Gagal menghapus produk.';
-        alert(`Error: ${errorMessage}`);
+        showError(`Error: ${errorMessage}`);
       }
     }
   };
@@ -75,7 +77,6 @@ const ProductsPage = () => {
   ];
 
   if (loading) return <div>Memuat...</div>;
-  if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
   // Larang akses jika role adalah 'sales'
   if (user.role === 'sales') {

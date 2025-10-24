@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
+import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 import './InputAchievementPage.css';
 
 const InputAchievementPage = () => {
@@ -8,7 +9,7 @@ const InputAchievementPage = () => {
   const [achievedValue, setAchievedValue] = useState('');
   const [achievementDate, setAchievementDate] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(''); // Menggunakan state tunggal untuk pesan
+  const { showSuccess, showError } = useNotification(); // Inisialisasi useNotification
 
   useEffect(() => {
     // Ambil daftar produk dari backend untuk dropdown
@@ -20,22 +21,20 @@ const InputAchievementPage = () => {
           setProductId(data[0].id); // Set produk pertama sebagai default
         }
       } catch (error) {
-        setMessage('Error: Gagal memuat daftar produk.');
-        console.error('Failed to fetch products', error);
+        showError('Error: Gagal memuat daftar produk.');
       }
     };
     fetchProducts();
-  }, []);
+  }, [showError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!productId || !achievedValue || !achievementDate) {
-      setMessage('Semua kolom wajib diisi.');
+      showError('Semua kolom wajib diisi.');
       return;
     }
 
     setLoading(true);
-    setMessage('');
 
     try {
       // Kirim data ke backend dengan endpoint yang benar
@@ -44,13 +43,12 @@ const InputAchievementPage = () => {
         achievedValue: parseInt(achievedValue),
         achievementDate,
       });
-      setMessage('Laporan pencapaian berhasil disimpan!');
+      showSuccess('Laporan pencapaian berhasil disimpan!');
       setAchievedValue(''); // Kosongkan input jumlah setelah berhasil
     } catch (error) {
       // Menampilkan pesan error dari backend jika ada
       const errorText = error.response?.data?.message || 'Gagal menyimpan laporan.';
-      setMessage(`Error: ${errorText}`);
-      console.error(error); // Tampilkan detail error di console
+      showError(`Error: ${errorText}`);
     } finally {
       setLoading(false);
     }
@@ -99,7 +97,6 @@ const InputAchievementPage = () => {
         <button type="submit" disabled={loading}>
           {loading ? 'Menyimpan...' : 'Simpan Laporan'}
         </button>
-        {message && <p className="form-message">{message}</p>}
       </form>
     </div>
   );

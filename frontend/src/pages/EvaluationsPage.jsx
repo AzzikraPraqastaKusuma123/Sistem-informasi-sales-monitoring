@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../api';
+import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 import './EvaluationsPage.css';
 
 // Komponen untuk Supervisor
@@ -8,7 +9,7 @@ const SupervisorEvaluationView = () => {
     const [salesUsers, setSalesUsers] = useState([]);
     const [selectedSales, setSelectedSales] = useState('');
     const [comment, setComment] = useState('');
-    const [message, setMessage] = useState('');
+    const { showSuccess, showError } = useNotification(); // Inisialisasi useNotification
 
     useEffect(() => {
         const fetchSalesUsers = async () => {
@@ -19,20 +20,21 @@ const SupervisorEvaluationView = () => {
                     setSelectedSales(data[0].id);
                 }
             } catch (error) {
-                console.error("Gagal mengambil daftar sales", error);
+                showError("Gagal mengambil daftar sales.");
             }
         };
         fetchSalesUsers();
-    }, []);
+    }, [showError]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await api.post('/evaluations', { salesId: selectedSales, comment });
-            setMessage('Evaluasi berhasil dikirim!');
+            showSuccess('Evaluasi berhasil dikirim!');
             setComment('');
         } catch (error) {
-            setMessage('Gagal mengirim evaluasi.');
+            const message = error.response?.data?.message || 'Gagal mengirim evaluasi.';
+            showError(`Error: ${message}`);
         }
     };
 
@@ -51,7 +53,6 @@ const SupervisorEvaluationView = () => {
                     <textarea rows="4" value={comment} onChange={e => setComment(e.target.value)} required />
                 </div>
                 <button type="submit">Kirim Evaluasi</button>
-                {message && <p className="form-message">{message}</p>}
             </form>
         </div>
     );
@@ -61,6 +62,7 @@ const SupervisorEvaluationView = () => {
 const SalesEvaluationView = () => {
     const [evaluations, setEvaluations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { showError } = useNotification(); // Inisialisasi useNotification
 
     useEffect(() => {
         const fetchMyEvaluations = async () => {
@@ -68,13 +70,13 @@ const SalesEvaluationView = () => {
                 const { data } = await api.get('/evaluations/my');
                 setEvaluations(data);
             } catch (error) {
-                console.error("Gagal mengambil evaluasi", error);
+                showError("Gagal mengambil evaluasi.");
             } finally {
                 setLoading(false);
             }
         };
         fetchMyEvaluations();
-    }, []);
+    }, [showError]);
 
     if (loading) return <div>Memuat evaluasi...</div>;
 

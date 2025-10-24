@@ -14,6 +14,7 @@ import ActivityChart from '../components/ActivityChart';
 import TopUsersAchievementChart from '../components/TopUsersAchievementChart';
 import SalesPerformanceChart from '../components/SalesPerformanceChart'; // Import the new chart component
 import TargetProjectionCard from '../components/TargetProjectionCard'; // Import the new projection card
+import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 
 // Import CSS
 import './DashboardPage.css';
@@ -23,6 +24,7 @@ import '../components/Card.css'; // CSS untuk wrapper grafik
 const AdminDashboard = () => {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { showError } = useNotification(); // Inisialisasi useNotification
 
   useEffect(() => {
     // Menggunakan async/await untuk kejelasan
@@ -31,15 +33,14 @@ const AdminDashboard = () => {
             const res = await api.get('/dashboard/summary');
             setSummary(res.data);
         } catch (err) {
-            console.error("Gagal memuat ringkasan admin", err);
-            // Anda bisa menambahkan state error di sini jika perlu
+            showError("Gagal memuat ringkasan admin.");
         } finally {
             setLoading(false);
         }
     };
     
     fetchAdminSummary();
-  }, []);
+  }, [showError]);
 
   if (loading) return <div>Memuat Dashboard Admin...</div>;
 
@@ -75,13 +76,14 @@ const AdminDashboard = () => {
 const SalesDashboard = () => {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { showError } = useNotification(); // Inisialisasi useNotification
 
   useEffect(() => {
     api.get('/dashboard/sales')
       .then(res => setSummary(res.data))
-      .catch(err => console.error("Gagal memuat ringkasan sales", err))
+      .catch(err => showError("Gagal memuat ringkasan sales."))
       .finally(() => setLoading(false));
-  }, []);
+  }, [showError]);
 
   if (loading) return <div>Memuat Dashboard Kinerja Anda...</div>;
 
@@ -101,9 +103,9 @@ const SalesDashboard = () => {
       link.click();
       link.remove(); // Hapus link setelah diunduh
       window.URL.revokeObjectURL(url); // Bersihkan URL objek
+      showSuccess('Data berhasil diekspor ke Excel!');
     } catch (error) {
-      console.error("Gagal mengunduh data Excel", error);
-      alert("Gagal mengunduh data Excel. Silakan coba lagi.");
+      showError("Gagal mengunduh data Excel. Silakan coba lagi.");
     }
   };
 

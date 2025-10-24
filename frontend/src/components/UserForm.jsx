@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UserForm.css'; // Import CSS baru
+import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 
 const UserForm = ({ userToEdit, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const UserForm = ({ userToEdit, onSubmit, onCancel }) => {
   });
   const [profilePictureFile, setProfilePictureFile] = useState(null);
   const [profilePicturePreview, setProfilePicturePreview] = useState(null);
+  const { showError } = useNotification(); // Inisialisasi useNotification
 
   const isEditMode = Boolean(userToEdit);
 
@@ -49,6 +51,14 @@ const UserForm = ({ userToEdit, onSubmit, onCancel }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    // Basic file type validation
+    if (file && !file.type.startsWith('image/')) {
+      showError('Hanya file gambar yang diizinkan.');
+      e.target.value = null; // Clear the input
+      setProfilePictureFile(null);
+      setProfilePicturePreview(null);
+      return;
+    }
     setProfilePictureFile(file);
     if (file) {
       setProfilePicturePreview(URL.createObjectURL(file));

@@ -5,6 +5,7 @@ import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import UserForm from '../components/UserForm';
 import UserDetailModal from '../components/UserDetailModal'; // Corrected import path
+import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 import './UserManagementPage.css';
 
 const UserManagementPage = () => {
@@ -16,6 +17,7 @@ const UserManagementPage = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false); // State untuk modal detail
   const [selectedUserId, setSelectedUserId] = useState(null); // State untuk menyimpan ID user yang akan dilihat detailnya
   const { user: loggedInUser } = useAuth(); // Mengambil info user yang sedang login
+  const { showSuccess, showError } = useNotification(); // Inisialisasi useNotification
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -24,10 +26,11 @@ const UserManagementPage = () => {
       setUsers(data);
     } catch (err) {
       setError('Gagal memuat data pengguna.');
+      showError('Gagal memuat data pengguna.');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showError]);
 
   useEffect(() => {
     fetchUsers();
@@ -57,14 +60,16 @@ const UserManagementPage = () => {
     try {
       if (userToEdit) { // Mode Edit
         await api.put(`/users/${userToEdit.id}`, userData);
+        showSuccess('Pengguna berhasil diperbarui!');
       } else { // Mode Tambah
         await api.post('/users', userData);
+        showSuccess('Pengguna berhasil ditambahkan!');
       }
       fetchUsers();
       handleCloseModal();
     } catch (err) {
       const message = err.response?.data?.message || 'Terjadi kesalahan.';
-      alert(`Error: ${message}`);
+      showError(`Error: ${message}`);
     }
   };
 
@@ -73,9 +78,10 @@ const UserManagementPage = () => {
       try {
         await api.delete(`/users/${userToDelete.id}`);
         fetchUsers();
+        showSuccess('Pengguna berhasil dihapus!');
       } catch (err) {
         const message = err.response?.data?.message || 'Gagal menghapus pengguna.';
-        alert(`Error: ${message}`);
+        showError(`Error: ${message}`);
       }
     }
   };

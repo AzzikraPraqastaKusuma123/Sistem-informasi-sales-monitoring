@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 
 const ProductForm = ({ productToEdit, onSubmit, onCancel }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const { showError } = useNotification(); // Inisialisasi useNotification
 
   useEffect(() => {
     if (productToEdit) {
@@ -16,6 +18,10 @@ const ProductForm = ({ productToEdit, onSubmit, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!name.trim()) {
+      showError('Nama Produk tidak boleh kosong.');
+      return;
+    }
     onSubmit({ id: productToEdit?.id, name, description });
   };
 

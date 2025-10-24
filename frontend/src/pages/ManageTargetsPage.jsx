@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from '../api';
 import DataTable from '../components/DataTable';
+import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 import './ManageTargetsPage.css';
 
 const ManageTargetsPage = () => {
@@ -8,6 +9,7 @@ const ManageTargetsPage = () => {
   const [salesUsers, setSalesUsers] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { showSuccess, showError } = useNotification(); // Inisialisasi useNotification
   
   // State untuk form
   const [selectedUser, setSelectedUser] = useState('');
@@ -40,12 +42,11 @@ const ManageTargetsPage = () => {
       if (productsRes.data.length > 0) setSelectedProduct(productsRes.data[0].id);
 
     } catch (error) {
-      console.error("Gagal memuat data", error);
-      alert('Gagal memuat data. Pastikan Anda memiliki hak akses.');
+      showError('Gagal memuat data. Pastikan Anda memiliki hak akses.');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showError]);
 
   useEffect(() => {
     fetchData();
@@ -61,14 +62,15 @@ const ManageTargetsPage = () => {
             periodStart,
             periodEnd,
         });
-        alert('Target berhasil dibuat!');
+        showSuccess('Target berhasil dibuat!');
         fetchData(); // Muat ulang data
         // Reset form
         setTargetValue('');
         setPeriodStart('');
         setPeriodEnd('');
     } catch (error) {
-        alert('Gagal membuat target.');
+        const message = error.response?.data?.message || 'Gagal membuat target.';
+        showError(`Error: ${message}`);
     }
   };
   
@@ -76,13 +78,14 @@ const ManageTargetsPage = () => {
     if (window.confirm(`Yakin ingin menghapus target untuk ${target.userName} pada produk ${target.productName}?`)) {
         try {
             await api.delete(`/targets/${target.id}`);
-            alert('Target berhasil dihapus');
+            showSuccess('Target berhasil dihapus!');
             fetchData();
         } catch (error) {
-            alert('Gagal menghapus target.');
+            const message = error.response?.data?.message || 'Gagal menghapus target.';
+            showError(`Error: ${message}`);
         }
     }
-  }
+  };
 
   const headers = [
     { key: 'userName', label: 'Nama Sales' },
