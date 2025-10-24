@@ -29,7 +29,7 @@ const getAllUsers = async (req, res) => {
 // @access  Private (Admin only)
 const createUser = async (req, res) => {
   const { name, nik, email, password, role, phone_number, address, hire_date, region } = req.body;
-  const profile_picture_url = req.file ? req.file.path : null; // Ambil path file jika ada upload
+  const profile_picture_url = req.file ? req.file.path.replace(/\\/g, '/') : null; // Ambil path file jika ada upload dan normalisasi slash
 
   if (!name || !nik || !email || !password || !role) {
     return res.status(400).json({ message: 'Harap isi semua kolom wajib (Nama, NIK, Email, Password, Peran)' });
@@ -65,7 +65,7 @@ const updateUser = async (req, res) => {
     let profile_picture_url = req.body.profile_picture_url_existing; // Ambil URL yang sudah ada jika tidak ada upload baru
 
     if (req.file) {
-        profile_picture_url = req.file.path; // Gunakan path file baru jika ada upload
+        profile_picture_url = req.file.path.replace(/\\/g, '/'); // Gunakan path file baru jika ada upload dan normalisasi slash
     }
 
     if (!name || !nik || !email || !role) {
