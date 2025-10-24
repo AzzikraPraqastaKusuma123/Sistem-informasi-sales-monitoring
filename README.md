@@ -1,542 +1,119 @@
-# Sistem Informasi Sales Monitoring
+# 🚀 Sistem Informasi Sales Monitoring 🚀
 
-Sistem Informasi Sales Monitoring adalah aplikasi web yang dirancang untuk membantu manajemen dan tim sales dalam memantau kinerja penjualan, mengelola pengguna, produk, target, dan pencapaian. Aplikasi ini menyediakan dashboard interaktif dengan berbagai grafik untuk visualisasi data, serta fitur manajemen pengguna yang komprehensif.
+Aplikasi web modern untuk memantau dan mengelola kinerja penjualan tim Anda secara efisien. Dilengkapi dashboard interaktif, manajemen pengguna komprehensif, dan fitur ekspor data.
 
-## Fitur Utama
+## ✨ Fitur Unggulan
 
-*   **Autentikasi Pengguna:** Login dan registrasi dengan peran berbeda (Admin, Supervisor, Sales).
-*   **Dashboard Interaktif:**
-    *   **Admin/Supervisor:** Ringkasan kinerja tim secara keseluruhan, tren pencapaian harian, produk terlaris, kontribusi sales, dan aktivitas laporan harian.
-    *   **Sales:** Ringkasan kinerja pribadi (pencapaian, target, persentase), tren kinerja harian, produk terlaris, dan kontribusi penjualan per produk.
-*   **Manajemen Pengguna (Admin):**
-    *   Menambah, mengedit, dan menghapus pengguna.
-    *   Profil pengguna yang diperkaya dengan NIK, nomor telepon, alamat, tanggal bergabung, URL gambar profil, dan wilayah.
-    *   Formulir input pengguna yang responsif dan terstruktur.
-*   **Manajemen Produk:** Menambah, mengedit, dan menghapus data produk.
-*   **Manajemen Target:** Menetapkan dan memantau target penjualan untuk setiap sales.
-*   **Input Pencapaian:** Sales dapat memasukkan pencapaian penjualan mereka.
-*   **Evaluasi:** Supervisor dapat memberikan evaluasi kepada sales.
-*   **Laporan & Ekspor Data:**
-    *   Fitur ekspor data dashboard sales ke format Excel.
+*   **Dashboard Dinamis:** Visualisasi kinerja penjualan untuk Admin/Supervisor dan Sales.
+*   **Manajemen Pengguna Lengkap:** Kelola data karyawan dengan profil detail (NIK, kontak, dll.).
+*   **Manajemen Produk & Target:** Atur produk dan target penjualan dengan mudah.
+*   **Input Pencapaian:** Catat dan lacak pencapaian sales.
+*   **Ekspor Data:** Unduh laporan dashboard sales ke Excel.
+*   **UI/UX Responsif:** Tampilan adaptif di berbagai perangkat.
 
-## Teknologi yang Digunakan
+## 🛠️ Teknologi
 
 **Backend:**
-*   **Node.js:** Lingkungan runtime JavaScript.
-*   **Express.js:** Framework web untuk Node.js.
-*   **MySQL:** Sistem manajemen database relasional.
-*   **`bcrypt`:** Untuk hashing password.
-*   **`jsonwebtoken`:** Untuk autentikasi berbasis token (JWT).
-*   **`exceljs`:** Untuk menghasilkan file Excel.
+*   Node.js, Express.js
+*   MySQL
+*   `bcrypt`, `jsonwebtoken`
+*   `exceljs`
 
 **Frontend:**
-*   **React.js:** Library JavaScript untuk membangun antarmuka pengguna.
-*   **Vite:** Tooling frontend modern yang cepat.
-*   **Axios:** Klien HTTP untuk membuat permintaan ke API.
-*   **Chart.js:** Library JavaScript untuk membuat grafik interaktif.
-*   **CSS Modules / Global CSS:** Untuk styling komponen.
+*   React.js, Vite
+*   Axios
+*   Chart.js
 
-## Struktur Proyek
+## 📂 Struktur Proyek
 
 ```
 Sistem-informasi-sales-monitoring/
 ├───README.md
-├───.git/
 ├───frontend/
-│   ├───public/
 │   ├───src/
 │   │   ├───api/
-│   │   │   └───index.js             # Konfigurasi Axios untuk API
-│   │   ├───assets/
-│   │   ├───components/
-│   │   │   ├───ActivityChart.jsx
-│   │   │   ├───Card.jsx
-│   │   │   ├───DataTable.jsx
-│   │   │   ├───Modal.jsx
-│   │   │   ├───PerformanceTrendChart.jsx
-│   │   │   ├───ProductForm.jsx
-│   │   │   ├───ProtectedLayout.jsx
-│   │   │   ├───ProtectedRoute.jsx
-│   │   │   ├───SalesChart.jsx
-│   │   │   ├───SalesContributionChart.jsx
-│   │   │   ├───SalesPerformanceChart.jsx
-│   │   │   ├───Sidebar.jsx
-│   │   │   ├───TopProductsChart.jsx
-│   │   │   ├───TopUsersAchievementChart.jsx
-│   │   │   ├───UserAchievementChart.jsx
-│   │   │   └───UserForm.jsx         # Form untuk menambah/mengedit pengguna (UI diperbarui)
-│   │   │   └───UserForm.css         # Styling untuk UserForm (BARU)
+│   │   ├───components/ (UserForm.jsx, UserForm.css, Modal.css)
 │   │   ├───contexts/
-│   │   │   └───AuthContext.jsx      # Konteks autentikasi
-│   │   ├───pages/
-│   │   │   ├───DashboardPage.jsx    # Halaman Dashboard (Sales Dashboard diperbarui)
-│   │   │   ├───DashboardPage.css
-│   │   │   ├───EvaluationsPage.jsx
-│   │   │   ├───InputAchievementPage.jsx
-│   │   │   ├───LoginPage.jsx
-│   │   │   ├───ManageTargetsPage.jsx
-│   │   │   ├───MyAchievementsPage.jsx
-│   │   │   ├───ProductsPage.jsx
-│   │   │   ├───RankingPage.jsx
-│   │   │   ├───ReportsPage.jsx
-│   │   │   └───UserManagementPage.jsx # Halaman Manajemen Pengguna (menampilkan data baru)
-│   │   ├───App.jsx
-│   │   ├───index.css
-│   │   └───main.jsx
-│   ├───package.json
-│   └───vite.config.js
+│   │   ├───pages/ (DashboardPage.jsx, UserManagementPage.jsx)
+│   │   └───...
+│   └───package.json
 └───server-backend/
-    ├───.env                     # Variabel lingkungan
     ├───config/
-    │   └───db.js                # Konfigurasi database
-    ├───controllers/
-    │   ├───achievementController.js
-    │   ├───authController.js
-    │   ├───dashboardController.js # Logika dashboard (Sales Dashboard & Export diperbarui)
-    │   ├───evaluationController.js
-    │   ├───productController.js
-    │   ├───rankingController.js
-    │   ├───reportController.js
-    │   ├───targetController.js
-    │   └───userController.js    # Logika pengguna (mendukung field baru)
-    ├───database/
-    │   └───sales_monitoring_db.sql # Skema database
-    ├───middleware/
-    │   └───authMiddleware.js    # Middleware autentikasi (memuat field baru)
-    ├───node_modules/
-    ├───routes/
-    │   ├───achievementRoutes.js
-    │   ├───authRoutes.js
-    │   ├───dashboardRoutes.js   # Rute dashboard (termasuk rute export)
-    │   ├───evaluationRoutes.js
-    │   ├───productRoutes.js
-    │   ├───rankingRoutes.js
-    │   ├───reportRoutes.js
-    │   ├───targetRoutes.js
-    │   └───userRoutes.js
-    ├───index.js                 # Entry point server
+    ├───controllers/ (dashboardController.js, userController.js)
+    ├───database/ (sales_monitoring_db.sql)
+    ├───middleware/ (authMiddleware.js)
+    ├───routes/ (dashboardRoutes.js, userRoutes.js)
+    ├───.env
     └───package.json
 ```
 
-## Persyaratan Sistem
+## 🚀 Memulai Proyek
 
-*   Node.js (v14 atau lebih baru)
-*   MySQL Server (v8.0 atau lebih baru)
+### 📋 Persyaratan
 
-## Panduan Instalasi dan Setup
+*   Node.js (v14+)
+*   MySQL Server (v8.0+)
 
-Ikuti langkah-langkah di bawah ini untuk menjalankan proyek di lingkungan lokal Anda.
+### ⚙️ Instalasi & Setup
 
-### 1. Clone Repositori
-
-Buka terminal atau command prompt Anda dan jalankan perintah berikut:
-
-```bash
-git clone https://github.com/your-username/Sistem-informasi-sales-monitoring.git
-cd Sistem-informasi-sales-monitoring
-```
-
-### 2. Setup Database MySQL
-
-1.  **Buat Database:**
-    Buka klien MySQL Anda (misalnya phpMyAdmin, MySQL Workbench, atau command line) dan buat database baru.
-    ```sql
-    CREATE DATABASE sales_monitoring_db;
-    ```
-
-2.  **Import Skema dan Data Awal:**
-    Import file `sales_monitoring_db.sql` yang terletak di `server-backend/database/` ke database yang baru Anda buat. Ini akan membuat tabel-tabel yang diperlukan dan mengisi beberapa data awal.
-
+1.  **Clone Repositori:**
     ```bash
-    # Contoh menggunakan MySQL CLI
-    mysql -u your_username -p sales_monitoring_db < server-backend/database/sales_monitoring_db.sql
-    ```
-    Ganti `your_username` dengan username MySQL Anda. Anda akan diminta untuk memasukkan password.
-
-3.  **Tambahkan Kolom Profil Pengguna Baru (Penting!):**
-    Jalankan perintah SQL berikut untuk menambahkan kolom-kolom profil pengguna yang baru ke tabel `users`. Ini adalah langkah krusial untuk fitur manajemen pengguna yang diperbarui.
-
-    ```sql
-    ALTER TABLE `users`
-    ADD COLUMN `nik` VARCHAR(50) UNIQUE NOT NULL AFTER `name`,
-    ADD COLUMN `phone_number` VARCHAR(20) NULL AFTER `email`,
-    ADD COLUMN `address` TEXT NULL AFTER `phone_number`,
-    ADD COLUMN `hire_date` DATE NULL AFTER `address`,
-    ADD COLUMN `profile_picture_url` VARCHAR(255) NULL AFTER `hire_date`,
-    ADD COLUMN `region` VARCHAR(100) NULL AFTER `profile_picture_url`;
+    git clone https://github.com/your-username/Sistem-informasi-sales-monitoring.git
+    cd Sistem-informasi-sales-monitoring
     ```
 
-### 3. Setup Backend
+2.  **Setup Database MySQL:**
+    *   Buat database baru: `CREATE DATABASE sales_monitoring_db;`
+    *   Import skema dan data awal dari `server-backend/database/sales_monitoring_db.sql`.
+    *   **PENTING:** Jalankan SQL berikut untuk menambahkan kolom profil pengguna baru:
+        ```sql
+        ALTER TABLE `users`
+        ADD COLUMN `nik` VARCHAR(50) UNIQUE NOT NULL AFTER `name`,
+        ADD COLUMN `phone_number` VARCHAR(20) NULL AFTER `email`,
+        ADD COLUMN `address` TEXT NULL AFTER `phone_number`,
+        ADD COLUMN `hire_date` DATE NULL AFTER `address`,
+        ADD COLUMN `profile_picture_url` VARCHAR(255) NULL AFTER `hire_date`,
+        ADD COLUMN `region` VARCHAR(100) NULL AFTER `profile_picture_url`;
+        ```
 
-1.  **Navigasi ke Direktori Backend:**
+3.  **Backend Setup:**
     ```bash
     cd server-backend
-    ```
-
-2.  **Instal Dependensi:**
-    ```bash
     npm install
-    ```
-    Pastikan `exceljs` juga terinstal:
-    ```bash
+    # Pastikan juga exceljs terinstal jika belum
     npm install exceljs
     ```
+    *   Buat file `.env` di `server-backend/` dengan konfigurasi berikut:
+        ```
+        DB_HOST=localhost
+        DB_USER=root
+        DB_PASSWORD=your_mysql_password
+        DB_NAME=sales_monitoring_db
+        JWT_SECRET=your_jwt_secret_key
+        PORT=5000
+        ```
+    *   Jalankan server: `npm start`
 
-3.  **Konfigurasi Variabel Lingkungan:**
-    Buat file `.env` di dalam direktori `server-backend` dan tambahkan konfigurasi database serta JWT secret Anda.
-
-    ```
-    # .env file (di dalam server-backend/)
-    DB_HOST=localhost
-    DB_USER=root
-    DB_PASSWORD=your_mysql_password
-    DB_NAME=sales_monitoring_db
-    JWT_SECRET=your_jwt_secret_key # Ganti dengan string acak yang kuat
-    PORT=5000
-    ```
-    Ganti `your_mysql_password` dan `your_jwt_secret_key` dengan nilai yang sesuai.
-
-4.  **Jalankan Server Backend:**
-    ```bash
-    npm start
-    ```
-    Server akan berjalan di `http://localhost:5000`.
-
-### 4. Setup Frontend
-
-1.  **Navigasi ke Direktori Frontend:**
-    Buka terminal baru dan navigasi ke direktori `frontend`.
+4.  **Frontend Setup:**
     ```bash
     cd ../frontend
-    ```
-
-2.  **Instal Dependensi:**
-    ```bash
     npm install
     ```
+    *   Jalankan aplikasi: `npm run dev`
 
-3.  **Jalankan Aplikasi Frontend:**
-    ```bash
-    npm run dev
-    ```
-    Aplikasi frontend akan berjalan di `http://localhost:5173` (atau port lain yang tersedia).
+## 🌐 Penggunaan Aplikasi
 
-## Penggunaan Aplikasi
+*   Akses aplikasi di `http://localhost:5173`.
+*   Login dengan kredensial dari database Anda (misal: `admin@example.com` / `password`).
+*   Jelajahi dashboard, manajemen pengguna, dan fitur ekspor Excel.
 
-1.  **Akses Aplikasi:** Buka browser Anda dan navigasi ke `http://localhost:5173`.
-2.  **Login:** Gunakan kredensial pengguna yang ada di database Anda (misalnya, `admin@example.com` dengan password `password` jika Anda menggunakan data dummy dari `sales_monitoring_db.sql`).
-3.  **Eksplorasi Fitur:**
-    *   **Dashboard:** Lihat dashboard admin/supervisor atau sales dengan grafik-grafik yang diperbarui.
-    *   **Manajemen Pengguna (Admin):** Akses halaman manajemen pengguna untuk menambah, mengedit, atau menghapus pengguna dengan detail profil yang lebih lengkap.
-    *   **Ekspor ke Excel (Sales Dashboard):** Di dashboard sales, Anda akan menemukan tombol untuk mengekspor data kinerja ke file Excel.
+---
 
-## Fitur yang Baru Ditambahkan/Diperbarui
+## 🌟 Pembaruan Terkini
 
-### 1. Dashboard Sales yang Ditingkatkan
+*   **Dashboard Sales Ditingkatkan:** Lebih banyak grafik visualisasi kinerja pribadi.
+*   **Ekspor Data ke Excel:** Unduh laporan dashboard sales dengan satu klik.
+*   **Profil Pengguna Kaya Data:** Admin dapat mengelola NIK, kontak, alamat, dll.
+*   **UI/UX Responsif:** Form input pengguna yang adaptif dan terstruktur.
 
-Dashboard sales kini menampilkan lebih banyak visualisasi untuk membantu sales memantau kinerja mereka:
-
-*   **Sales Performance Chart:** Membandingkan pencapaian aktual dengan target.
-*   **Performance Trend Chart:** Menampilkan tren kinerja harian.
-*   **Top Products Chart:** Produk-produk dengan penjualan tertinggi oleh sales tersebut.
-*   **Sales Contribution Chart:** Kontribusi penjualan per produk dalam bentuk pie chart.
-
-**Contoh Kode Backend (`server-backend/controllers/dashboardController.js` - `getSalesDashboard`):**
-
-```javascript
-// @desc    Mendapatkan ringkasan data untuk Sales (DIPERBARUI)
-// @route   GET /api/dashboard/sales
-const getSalesDashboard = async (req, res) => {
-  const userId = req.user.id;
-
-  try {
-    // ... (query untuk achievement, target, percentage)
-
-    // Tren Kinerja Harian
-    const dailyTrendQuery = `
-      SELECT DATE_FORMAT(achievement_date, '%Y-%m-%d') as date, SUM(achieved_value) as total
-      FROM achievements
-      WHERE user_id = ? AND achievement_date >= CURDATE() - INTERVAL 30 DAY
-      GROUP BY date
-      ORDER BY date ASC;
-    `;
-    const [dailyTrend] = await db.query(dailyTrendQuery, [userId]);
-
-    // Produk Terlaris
-    const topProductsQuery = `
-      SELECT p.name, SUM(a.achieved_value) as total_sold
-      FROM achievements a
-      JOIN products p ON a.product_id = p.id
-      WHERE a.user_id = ? AND MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())
-      GROUP BY p.id, p.name
-      ORDER BY total_sold DESC
-      LIMIT 5;
-    `;
-    const [topProducts] = await db.query(topProductsQuery, [userId]);
-
-    // Kontribusi Penjualan per Produk
-    const salesContributionQuery = `
-      SELECT p.name, SUM(a.achieved_value) as value
-      FROM achievements a
-      JOIN products p ON a.product_id = p.id
-      WHERE a.user_id = ? AND MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())
-      GROUP BY p.id, p.name
-      HAVING value > 0;
-    `;
-    const [salesContribution] = await db.query(salesContributionQuery, [userId]);
-
-    res.json({
-      achievement,
-      target,
-      percentage,
-      dailyTrend,
-      topProducts,
-      salesContribution,
-    });
-
-  } catch (error) {
-    console.error('Sales dashboard error:', error);
-    res.status(500).json({ message: 'Server Error' });
-  }
-};
-```
-
-**Contoh Kode Frontend (`frontend/src/pages/DashboardPage.jsx` - `SalesDashboard`):**
-
-```javascript
-// ... (imports)
-import PerformanceTrendChart from '../components/PerformanceTrendChart';
-import TopProductsChart from '../components/TopProductsChart';
-import SalesContributionChart from '../components/SalesContributionChart';
-// ...
-
-const SalesDashboard = () => {
-  // ... (state dan useEffect untuk fetch data)
-
-  return (
-    <>
-      <div className="card-container">
-        {/* ... (KPI Cards) */}
-      </div>
-
-      <div className="chart-container">
-        <div className="sales-performance-chart">
-          <SalesPerformanceChart achievement={summary?.achievement} target={summary?.target} />
-        </div>
-
-        <div className="dashboard-grid-sales">
-          <PerformanceTrendChart data={summary?.dailyTrend || []} />
-          <TopProductsChart data={summary?.topProducts || []} />
-          <SalesContributionChart data={summary?.salesContribution || []} />
-        </div>
-      </div>
-    </>
-  );
-};
-```
-
-### 2. Fitur Ekspor Data ke Excel
-
-Pengguna sales kini dapat mengekspor data dashboard mereka ke file Excel.
-
-**Contoh Kode Backend (`server-backend/controllers/dashboardController.js` - `exportSalesData`):**
-
-```javascript
-const ExcelJS = require('exceljs');
-// ...
-
-const exportSalesData = async (req, res) => {
-  const userId = req.user.id;
-
-  try {
-    // ... (Ambil data yang sama dengan getSalesDashboard)
-
-    const workbook = new ExcelJS.Workbook();
-    // ... (Buat sheet dan isi data)
-
-    res.setHeader(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    );
-    res.setHeader(
-      'Content-Disposition',
-      'attachment; filename=' + 'Sales_Dashboard_Export_' + Date.now() + '.xlsx'
-    );
-
-    await workbook.xlsx.write(res);
-    res.end();
-
-  } catch (error) {
-    console.error('Export sales data error:', error);
-    res.status(500).json({ message: 'Server Error' });
-  }
-};
-```
-
-**Contoh Kode Frontend (`frontend/src/pages/DashboardPage.jsx` - `handleExport`):**
-
-```javascript
-const SalesDashboard = () => {
-  // ... (state dan useEffect)
-
-  const handleExport = async () => {
-    try {
-      const response = await api.get('/dashboard/sales/export', {
-        responseType: 'blob', // Penting: respons diharapkan dalam bentuk blob
-      });
-
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `Sales_Dashboard_Export_${Date.now()}.xlsx`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Gagal mengunduh data Excel", error);
-      alert("Gagal mengunduh data Excel. Silakan coba lagi.");
-    }
-  };
-
-  return (
-    <>
-      <div className="card-container">
-        {/* ... (KPI Cards) */}
-      </div>
-
-      <div className="export-button-container">
-        <button onClick={handleExport} className="btn btn-primary">Export ke Excel</button>
-      </div>
-
-      {/* ... (Chart Container) */}
-    </>
-  );
-};
-```
-
-### 3. Manajemen Pengguna dengan Profil yang Diperkaya
-
-Admin kini dapat mengelola pengguna dengan detail profil yang lebih lengkap, termasuk NIK, nomor telepon, alamat, tanggal bergabung, URL gambar profil, dan wilayah.
-
-**Contoh Kode Backend (`server-backend/controllers/userController.js` - `createUser`):**
-
-```javascript
-const createUser = async (req, res) => {
-  const { name, nik, email, password, role, phone_number, address, hire_date, profile_picture_url, region } = req.body;
-
-  if (!name || !nik || !email || !password || !role) {
-    return res.status(400).json({ message: 'Harap isi semua kolom wajib (Nama, NIK, Email, Password, Peran)' });
-  }
-
-  try {
-    const [userExists] = await db.query('SELECT id FROM users WHERE email = ? OR nik = ?', [email, nik]);
-    if (userExists.length > 0) {
-      return res.status(400).json({ message: 'Email atau NIK sudah terdaftar' });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const [result] = await db.query(
-      'INSERT INTO users (name, nik, email, password, role, phone_number, address, hire_date, profile_picture_url, region) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [name, nik, email, hashedPassword, role, phone_number, address, hire_date, profile_picture_url, region]
-    );
-
-    res.status(201).json({ id: result.insertId, name, nik, email, role, phone_number, address, hire_date, profile_picture_url, region });
-  } catch (error) {
-    console.error('Error saat membuat pengguna:', error);
-    res.status(500).json({ message: 'Server Error' });
-  }
-};
-```
-
-**Contoh Kode Frontend (`frontend/src/components/UserForm.jsx`):**
-
-```javascript
-// ... (imports dan state)
-
-  return (
-    <form onSubmit={handleSubmit} className="user-form">
-      <h2>{isEditMode ? 'Edit Pengguna' : 'Tambah Pengguna Baru'}</h2>
-
-      <div className="form-section">
-        <h3>Informasi Dasar</h3>
-        <div className="user-form-grid">
-          <div className="form-group">
-            <label>Nama Lengkap</label>
-            <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Nama Lengkap Pengguna" />
-          </div>
-          <div className="form-group">
-            <label>NIK</label>
-            <input type="text" name="nik" value={formData.nik} onChange={handleChange} required placeholder="Nomor Induk Karyawan" />
-          </div>
-          {/* ... input email dan role */}
-        </div>
-      </div>
-
-      <div className="form-section">
-        <h3>Detail Kontak</h3>
-        <div className="user-form-grid">
-          <div className="form-group">
-            <label>Nomor Telepon</label>
-            <input type="text" name="phone_number" value={formData.phone_number} onChange={handleChange} placeholder="Contoh: 081234567890" />
-          </div>
-          <div className="form-group full-width">
-            <label>Alamat</label>
-            <textarea name="address" value={formData.address} onChange={handleChange} placeholder="Alamat lengkap pengguna"></textarea>
-          </div>
-        </div>
-      </div>
-
-      {/* ... Bagian Informasi Pekerjaan dan Keamanan */}
-
-      <div className="form-actions">
-        <button type="submit">{isEditMode ? 'Update Pengguna' : 'Tambah Pengguna'}</button>
-        <button type="button" onClick={onCancel}>Batal</button>
-      </div>
-    </form>
-  );
-};
-```
-
-### 4. UI/UX Pop-up Form Pengguna yang Responsif
-
-Formulir tambah/edit pengguna kini lebih responsif dan terstruktur, terutama pada monitor desktop.
-
-**Contoh Kode CSS (`frontend/src/components/Modal.css`):**
-
-```css
-.modal-content {
-  /* ... */
-  width: 90vw; /* Menggunakan lebar viewport */
-  min-width: 300px; /* Lebar minimum */
-  max-width: 1200px; /* Lebar maksimum untuk desktop */
-  overflow-y: auto; /* Scroll vertikal jika konten melebihi tinggi */
-  max-height: 90vh; /* Tinggi maksimum */
-  /* ... */
-}
-```
-
-**Contoh Kode CSS (`frontend/src/components/UserForm.css`):**
-
-```css
-.user-form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Min width kolom lebih kecil */
-  gap: 20px;
-}
-
-/* ... (box-sizing: border-box diterapkan ke banyak elemen) */
-
-@media (max-width: 768px) {
-  .user-form-grid {
-    grid-template-columns: 1fr; /* Satu kolom di layar kecil */
-  }
-  /* ... */
-}
-```
-
---- 
-
-Silakan salin konten di atas ke file `README.md` di root proyek Anda.
+---
