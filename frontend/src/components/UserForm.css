@@ -41,7 +41,7 @@
 
 .user-form .form-group {
   margin-bottom: 0px; /* Hapus margin bottom default */
-  box-sizing: border-box;
+  box-sizing: border-sizing;
 }
 
 .user-form .form-group.full-width {
@@ -60,6 +60,7 @@
 .user-form input[type="password"],
 .user-form input[type="date"],
 .user-form input[type="url"],
+.user-form input[type="file"],
 .user-form textarea,
 .user-form select {
   width: 100%;
@@ -84,6 +85,19 @@
 .user-form textarea {
   min-height: 80px;
   resize: vertical;
+}
+
+.profile-picture-preview {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.profile-picture-preview img {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-primary);
 }
 
 .user-form .form-actions {

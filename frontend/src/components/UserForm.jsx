@@ -11,9 +11,10 @@ const UserForm = ({ userToEdit, onSubmit, onCancel }) => {
     phone_number: '',
     address: '',
     hire_date: '',
-    profile_picture_url: '',
     region: '',
   });
+  const [profilePictureFile, setProfilePictureFile] = useState(null);
+  const [profilePicturePreview, setProfilePicturePreview] = useState(null);
 
   const isEditMode = Boolean(userToEdit);
 
@@ -27,10 +28,18 @@ const UserForm = ({ userToEdit, onSubmit, onCancel }) => {
         role: userToEdit.role || 'sales',
         phone_number: userToEdit.phone_number || '',
         address: userToEdit.address || '',
-        hire_date: userToEdit.hire_date ? userToEdit.hire_date.split('T')[0] : '', // Format tanggal untuk input type="date"
-        profile_picture_url: userToEdit.profile_picture_url || '',
+        hire_date: userToEdit.hire_date ? userToEdit.hire_date.split('T')[0] : '',
         region: userToEdit.region || '',
       });
+      // Set preview untuk gambar profil yang sudah ada
+      if (userToEdit.profile_picture_url) {
+        setProfilePicturePreview(`${import.meta.env.VITE_API_BASE_URL}/${userToEdit.profile_picture_url}`);
+      } else {
+        setProfilePicturePreview(null);
+      }
+    } else {
+      // Reset preview saat menambah pengguna baru
+      setProfilePicturePreview(null);
     }
   }, [userToEdit, isEditMode]);
 
@@ -38,18 +47,46 @@ const UserForm = ({ userToEdit, onSubmit, onCancel }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePictureFile(file);
+    if (file) {
+      setProfilePicturePreview(URL.createObjectURL(file));
+    } else {
+      setProfilePicturePreview(null);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Kirim hanya data yang diisi
-    const dataToSend = { ...formData };
-    if (isEditMode && !dataToSend.password) {
-        delete dataToSend.password; // Jangan kirim password kosong saat edit
+    
+    const dataToSend = new FormData();
+    for (const key in formData) {
+      if (formData[key] !== '' && formData[key] !== null) { // Hanya kirim data yang tidak kosong
+        dataToSend.append(key, formData[key]);
+      }
     }
+
+    if (profilePictureFile) {
+      dataToSend.append('profile_picture', profilePictureFile); // Nama field harus sesuai dengan Multer di backend
+    } else if (isEditMode && userToEdit.profile_picture_url) {
+      // Jika tidak ada file baru diupload tapi ada gambar lama, kirim URL lama
+      dataToSend.append('profile_picture_url_existing', userToEdit.profile_picture_url);
+    } else if (isEditMode && !userToEdit.profile_picture_url && !profilePictureFile) {
+      // Jika di edit mode, tidak ada gambar lama, dan tidak ada upload baru, kirim null untuk menghapus
+      dataToSend.append('profile_picture_url_existing', '');
+    }
+
+    // Jika password kosong di edit mode, jangan kirim password
+    if (isEditMode && !formData.password) {
+      dataToSend.delete('password');
+    }
+
     onSubmit(dataToSend);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="user-form">
+    <form onSubmit={handleSubmit} className="user-form" encType="multipart/form-data">
       <h2>{isEditMode ? 'Edit Pengguna' : 'Tambah Pengguna Baru'}</h2>
 
       {/* Bagian Informasi Dasar */}
@@ -107,8 +144,13 @@ const UserForm = ({ userToEdit, onSubmit, onCancel }) => {
             <input type="text" name="region" value={formData.region} onChange={handleChange} placeholder="Contoh: Jakarta, Jawa Barat" />
           </div>
           <div className="form-group full-width">
-            <label>URL Gambar Profil</label>
-            <input type="url" name="profile_picture_url" value={formData.profile_picture_url} onChange={handleChange} placeholder="https://example.com/profile.jpg" />
+            <label>Gambar Profil</label>
+            <input type="file" name="profile_picture" accept="image/*" onChange={handleFileChange} />
+            {profilePicturePreview && (
+              <div className="profile-picture-preview">
+                <img src={profilePicturePreview} alt="Profile Preview" />
+              </div>
+            )}
           </div>
         </div>
       </div>

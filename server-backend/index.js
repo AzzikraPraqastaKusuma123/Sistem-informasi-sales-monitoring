@@ -21,6 +21,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads')); // Serve static files from the uploads directory
 
 // 3. Pendaftaran semua rute ke aplikasi Express
 app.use('/api/auth', authRoutes);

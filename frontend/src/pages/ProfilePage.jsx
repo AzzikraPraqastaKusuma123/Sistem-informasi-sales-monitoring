@@ -45,7 +45,7 @@ const ProfilePage = () => {
       <div className="profile-card">
         <div className="profile-header">
           {profile.profile_picture_url ? (
-            <img src={profile.profile_picture_url} alt={profile.name} className="profile-picture" />
+            <img src={`${import.meta.env.VITE_API_BASE_URL}/${profile.profile_picture_url}`} alt={profile.name} className="profile-picture" />
           ) : (
             <div className="profile-picture-placeholder">{profile.name.charAt(0)}</div>
           )}
