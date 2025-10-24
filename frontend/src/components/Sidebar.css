@@ -1,6 +1,6 @@
 .sidebar {
-  background-color: #2c3e50;
-  color: #ecf0f1;
+  background-color: #2c3e50; /* Keeping the existing dark background */
+  color: var(--color-background-light);
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -15,28 +15,26 @@
 }
 
 .sidebar-header h2 {
-  margin: 0 0 1rem 0; /* Memberi sedikit jarak bawah */
+  margin: 0 0 1rem 0;
   font-size: 1.6rem;
-  color: white;
+  color: var(--color-background-light);
 }
 
-/* --- PERUBAHAN DI SINI --- */
 .sidebar-username {
   font-size: 1rem;
   font-weight: 500;
   margin: 0;
-  color: #ecf0f1;
+  color: var(--color-background-light);
   word-wrap: break-word;
 }
 
 .sidebar-role {
   font-size: 0.8rem;
-  color: #1abc9c; /* Menggunakan warna primer agar menonjol */
-  text-transform: capitalize; /* Membuat huruf pertama besar, cth: 'admin' -> 'Admin' */
+  color: var(--color-secondary); /* Using secondary color for role */
+  text-transform: capitalize;
   margin: 0.25rem 0 0 0;
   font-weight: 600;
 }
-/* --- Akhir Perubahan --- */
 
 .sidebar-nav {
   display: flex;
@@ -46,7 +44,7 @@
 }
 
 .sidebar-nav a {
-  color: #bdc3c7;
+  color: var(--color-border); /* Light grey for inactive links */
   text-decoration: none;
   padding: 0.9rem 1.2rem;
   border-radius: 8px;
@@ -55,12 +53,12 @@
 }
 
 .sidebar-nav a:hover {
-  background-color: #34495e;
-  color: white;
+  background-color: rgba(74, 144, 226, 0.2); /* Subtle hover with primary color */
+  color: var(--color-background-light);
 }
 
 .sidebar-nav a.active {
-  background-color: #1abc9c;
+  background-color: var(--color-primary); /* Primary color for active link */
   color: white;
   font-weight: 600;
 }
@@ -73,8 +71,8 @@
   width: 100%;
   padding: 0.9rem;
   background-color: transparent;
-  color: #e74c3c;
-  border: 1px solid #e74c3c;
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
@@ -82,6 +80,6 @@
 }
 
 .sidebar-footer button:hover {
-  background-color: #e74c3c;
+  background-color: var(--color-error);
   color: white;
 }

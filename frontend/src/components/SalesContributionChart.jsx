@@ -1,12 +1,12 @@
 import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF'];
+const COLORS = ['#4A90E2', '#50E3C2', '#F5A623', '#367BBF', '#D0021B'];
 
 const SalesContributionChart = ({ data }) => {
   return (
     <div className="chart-wrapper">
-        <h3>Kontribusi Sales (Bulan Ini)</h3>
+        <h3 style={{ color: 'var(--color-text-primary)' }}>Kontribusi Sales (Bulan Ini)</h3>
         <ResponsiveContainer width="100%" height={300}>
             <PieChart>
                 <Pie

@@ -8,7 +8,7 @@
   grid-template-columns: 50px 1fr 1fr;
   gap: 1rem;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--color-background-medium);
   padding: 1rem 1.5rem;
   border-radius: 8px;
   margin-bottom: 1rem;
@@ -24,29 +24,29 @@
 .rank-number {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #34495e;
+  color: var(--color-primary); /* Use primary color for rank number */
   text-align: center;
 }
 
 .rank-details h3 {
   margin: 0 0 0.25rem 0;
-  color: #2c3e50;
+  color: var(--color-text-primary);
 }
 
 .rank-details p {
   margin: 0;
   font-size: 0.9rem;
-  color: #7f8c8d;
+  color: var(--color-text-secondary);
 }
 
 .rank-percentage {
   font-size: 2rem;
   font-weight: bold;
-  color: #1abc9c;
+  color: var(--color-secondary); /* Use secondary color for percentage */
   text-align: right;
 }
 
 /* Style khusus untuk 3 peringkat teratas */
-.ranking-item.rank-1 { border-left: 5px solid #f1c40f; } /* Emas */
-.ranking-item.rank-2 { border-left: 5px solid #bdc3c7; } /* Perak */
-.ranking-item.rank-3 { border-left: 5px solid #cd7f32; } /* Perunggu */
+.ranking-item.rank-1 { border-left: 5px solid var(--color-accent); } /* Emas */
+.ranking-item.rank-2 { border-left: 5px solid var(--color-border); } /* Perak */
+.ranking-item.rank-3 { border-left: 5px solid #CD7F32; } /* Perunggu */

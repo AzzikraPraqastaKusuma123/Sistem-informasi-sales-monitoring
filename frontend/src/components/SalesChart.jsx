@@ -20,12 +20,12 @@ const SalesChart = ({ data }) => {
           layout="vertical" // Membuat grafik menjadi horizontal agar mudah dibaca
           margin={{ top: 5, right: 30, left: 30, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" />
-          <YAxis dataKey="name" type="category" width={100} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#DEE2E6" />
+          <XAxis type="number" stroke="var(--color-text-secondary)" />
+          <YAxis dataKey="name" type="category" width={100} stroke="var(--color-text-secondary)" />
           <Tooltip />
           <Legend />
-          <Bar dataKey="total_achievement" fill="#8884d8" name="Total Pencapaian" />
+          <Bar dataKey="total_achievement" fill="#4A90E2" name="Total Pencapaian" />
         </BarChart>
       </ResponsiveContainer>
     </div>

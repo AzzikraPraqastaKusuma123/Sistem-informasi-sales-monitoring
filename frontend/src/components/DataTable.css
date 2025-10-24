@@ -1,38 +1,53 @@
 .datatable-container table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  background-color: var(--color-background-medium);
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px; /* Added for consistency with other components */
+  overflow: hidden; /* Ensures rounded corners are applied to content */
 }
 
 .datatable-container th, .datatable-container td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
 }
 
 .datatable-container th {
-  background-color: #f4f4f4;
+  background-color: var(--color-background-light);
+  font-weight: 600;
+  color: var(--color-text-secondary);
 }
 
 .datatable-container tr:hover {
-  background-color: #f1f1f1;
+  background-color: rgba(74, 144, 226, 0.1); /* Subtle hover effect using primary color */
 }
 
 .action-buttons button {
-  padding: 5px 10px;
-  margin-right: 5px;
+  padding: 8px 12px; /* Slightly larger buttons */
+  margin-right: 8px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
 }
 
 .edit-btn {
-  background-color: #ffc107;
-  color: black;
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+}
+
+.edit-btn:hover {
+  background-color: #e0951f; /* Slightly darker accent on hover */
 }
 
 .delete-btn {
-  background-color: #dc3545;
+  background-color: var(--color-error);
   color: white;
+}
+
+.delete-btn:hover {
+  background-color: #b00017; /* Slightly darker error on hover */
 }

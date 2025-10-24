@@ -1,28 +1,14 @@
-/* Styling umum untuk container halaman */
-.page-container {
-  padding: 2rem;
-  width: 100%;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.page-header h1 {
-  margin: 0;
-}
-
 .add-btn {
-  background-color: #007bff;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   padding: 0.7rem 1.2rem;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.add-btn:hover {
+  background-color: #367BBF; /* Slightly darker primary on hover */
 }

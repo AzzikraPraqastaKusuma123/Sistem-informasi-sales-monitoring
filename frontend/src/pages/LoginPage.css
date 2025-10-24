@@ -3,12 +3,12 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f4f7f6;
+  background-color: var(--color-background-light);
 }
 
 .login-box {
   padding: 3rem;
-  background: white;
+  background: var(--color-background-medium);
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -19,13 +19,13 @@
 .login-box h2 {
   margin-top: 0;
   margin-bottom: 0.5rem;
-  color: #2c3e50;
+  color: var(--color-primary);
   font-size: 2rem;
 }
 
 .login-box p {
   margin-bottom: 2.5rem;
-  color: #7f8c8d;
+  color: var(--color-text-secondary);
 }
 
 .input-group {
@@ -37,27 +37,29 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: #555;
+  color: var(--color-text-secondary);
 }
 
 .input-group input {
   box-sizing: border-box;
   width: 100%;
   padding: 0.9rem 1rem;
-  border: 1px solid #bdc3c7;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: var(--color-background-light);
+  color: var(--color-text-primary);
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: #1abc9c;
-  box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.2);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
 }
 
 .error-message {
-  color: #e74c3c;
+  color: var(--color-error);
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
 }
@@ -67,7 +69,7 @@
   padding: 1rem;
   border: none;
   border-radius: 8px;
-  background-color: #1abc9c;
+  background-color: var(--color-primary);
   color: white;
   font-size: 1.1rem;
   font-weight: bold;
@@ -76,10 +78,11 @@
 }
 
 .login-box button:hover {
-  background-color: #16a085;
+  background-color: #367BBF; /* Slightly darker primary on hover */
 }
 
 .login-box button:disabled {
-  background-color: #bdc3c7;
+  background-color: var(--color-border);
   cursor: not-allowed;
+  color: var(--color-text-secondary);
 }

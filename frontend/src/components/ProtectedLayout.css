@@ -8,7 +8,7 @@
 }
 
 .main-content {
-  background-color: #f4f7f6;
+  background-color: var(--color-background-light); /* Use global background color */
   overflow-y: auto; /* Allows only the content area to scroll if it's long */
   padding: 2rem;
 }

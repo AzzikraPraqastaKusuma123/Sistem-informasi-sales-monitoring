@@ -5,11 +5,11 @@
 .dashboard-page h1 {
   margin-top: 0;
   font-size: 2.2rem;
-  color: #2c3e50;
+  color: var(--color-primary); /* Use primary color for main headings */
 }
 
 .dashboard-welcome {
-  color: #7f8c8d;
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
   margin-bottom: 2.5rem;
 }
@@ -36,12 +36,7 @@
 }
 
 .admin-chart {
-  grid-column: 1 / -1; /* Grafik juga membentang */
-}
-
-/* ... CSS yang sudah ada ... */
-.chart-container {
-  margin-top: 2.5rem;
+  grid-column: 1 / -1;
 }
 
 /* --- TAMBAHKAN GAYA GRID BARU --- */
