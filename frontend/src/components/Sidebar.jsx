@@ -3,6 +3,19 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './Sidebar.css';
+import {
+  FaTachometerAlt,
+  FaUserCircle,
+  FaPlusSquare,
+  FaHistory,
+  FaClipboardList,
+  FaBoxOpen,
+  FaBullseye,
+  FaChartLine,
+  FaUsers,
+  FaAward,
+  FaSignOutAlt,
+} from 'react-icons/fa'; // Import icons
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
@@ -21,35 +34,34 @@ const Sidebar = () => {
       </div>
 
       <nav className="sidebar-nav">
-        <NavLink to="/" end>Dashboard</NavLink>
-        <NavLink to="/profile">Profil Saya</NavLink> {/* Link baru untuk halaman profil */}
+        <NavLink to="/" end><FaTachometerAlt className="nav-icon" /> Dashboard</NavLink>
+        <NavLink to="/profile"><FaUserCircle className="nav-icon" /> Profil</NavLink>
 
         {isSales && (
           <>
-            <NavLink to="/input-achievement">Input Achievement</NavLink>
-            <NavLink to="/my-achievements">My History</NavLink>
-            <NavLink to="/evaluations">Evaluations</NavLink>
+            <NavLink to="/input-achievement"><FaPlusSquare className="nav-icon" /> Input Achievement</NavLink>
+            <NavLink to="/my-achievements"><FaHistory className="nav-icon" /> My History</NavLink>
+            <NavLink to="/evaluations"><FaClipboardList className="nav-icon" /> Evaluations</NavLink>
           </>
         )}
 
         {(isAdmin || isSupervisor) && (
           <>
-            <NavLink to="/products">Manage Products</NavLink>
-            <NavLink to="/manage-targets">Manage Targets</NavLink>
-            <NavLink to="/reports">Reports</NavLink>
-            <NavLink to="/evaluations">Evaluations</NavLink>
-            {/* --- TAMBAHKAN LINK BARU DI SINI --- */}
-            <NavLink to="/ranking">Ranking</NavLink>
+            <NavLink to="/products"><FaBoxOpen className="nav-icon" /> Manage Products</NavLink>
+            <NavLink to="/manage-targets"><FaBullseye className="nav-icon" /> Manage Targets</NavLink>
+            <NavLink to="/reports"><FaChartLine className="nav-icon" /> Reports</NavLink>
+            <NavLink to="/evaluations"><FaClipboardList className="nav-icon" /> Evaluations</NavLink>
+            <NavLink to="/ranking"><FaAward className="nav-icon" /> Ranking</NavLink>
           </>
         )}
         
         {isAdmin && (
-           <NavLink to="/users">Manage Users</NavLink>
+           <NavLink to="/users"><FaUsers className="nav-icon" /> Manage Users</NavLink>
         )}
 
       </nav>
       <div className="sidebar-footer">
-        <button onClick={logout}>Logout</button>
+        <button onClick={logout}><FaSignOutAlt className="nav-icon" /> Logout</button>
       </div>
     </aside>
   );
