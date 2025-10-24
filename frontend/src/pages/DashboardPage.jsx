@@ -13,6 +13,7 @@ import SalesContributionChart from '../components/SalesContributionChart';
 import ActivityChart from '../components/ActivityChart';
 import TopUsersAchievementChart from '../components/TopUsersAchievementChart';
 import SalesPerformanceChart from '../components/SalesPerformanceChart'; // Import the new chart component
+import TargetProjectionCard from '../components/TargetProjectionCard'; // Import the new projection card
 
 // Import CSS
 import './DashboardPage.css';
@@ -113,11 +114,19 @@ const SalesDashboard = () => {
         <Card title="Pencapaian Saya (Bulan Ini)" value={summary?.achievement} />
         <Card title="Target Saya (Bulan Ini)" value={summary?.target} />
         <Card title="Persentase Target" value={summary?.percentage} unit="%" />
+        <Card title="Proyeksi Akhir Bulan" value={summary?.projectedAchievement} />
       </div>
       
       <div className="export-button-container">
         <button onClick={handleExport} className="btn btn-primary">Export ke Excel</button>
       </div>
+
+      {/* Kartu Proyeksi Target Baru */}
+      <TargetProjectionCard 
+        achievement={summary?.achievement || 0}
+        target={summary?.target || 0}
+        projectedAchievement={summary?.projectedAchievement || 0}
+      />
 
       {/* Wadah untuk semua grafik */}
       <div className="chart-container">

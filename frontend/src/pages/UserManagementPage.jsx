@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import UserForm from '../components/UserForm';
+import UserDetailModal from '../components/UserDetailModal'; // Corrected import path
 import './UserManagementPage.css';
 
 const UserManagementPage = () => {
@@ -12,6 +13,8 @@ const UserManagementPage = () => {
   const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false); // State untuk modal detail
+  const [selectedUserId, setSelectedUserId] = useState(null); // State untuk menyimpan ID user yang akan dilihat detailnya
   const { user: loggedInUser } = useAuth(); // Mengambil info user yang sedang login
 
   const fetchUsers = useCallback(async () => {
@@ -38,6 +41,16 @@ const UserManagementPage = () => {
   const handleCloseModal = () => {
     setUserToEdit(null);
     setIsModalOpen(false);
+  };
+
+  const handleOpenDetailModal = (userId) => {
+    setSelectedUserId(userId);
+    setIsDetailModalOpen(true);
+  };
+
+  const handleCloseDetailModal = () => {
+    setSelectedUserId(null);
+    setIsDetailModalOpen(false);
   };
 
   const handleSubmit = async (userData) => {
@@ -71,12 +84,10 @@ const UserManagementPage = () => {
     { key: 'name', label: 'Nama' },
     { key: 'nik', label: 'NIK' },
     { key: 'email', label: 'Email' },
-    { key: 'phone_number', label: 'Telepon' },
-    { key: 'address', label: 'Alamat' },
-    { key: 'hire_date', label: 'Tgl. Gabung' },
-    { key: 'profile_picture_url', label: 'Foto Profil' },
-    { key: 'region', label: 'Wilayah' },
     { key: 'role', label: 'Peran' },
+    { key: 'detail', label: 'Detail', customRenderer: (item) => (
+        <button className="btn-detail" onClick={() => handleOpenDetailModal(item.id)}>Lihat Detail</button>
+    ) },
   ];
 
   if (loading) return <div className="page-container user-management-page loading-message">Memuat...</div>;
@@ -112,6 +123,12 @@ const UserManagementPage = () => {
             onCancel={handleCloseModal}
           />
         </Modal>
+      )}
+      {isDetailModalOpen && (
+        <UserDetailModal
+          userId={selectedUserId}
+          onClose={handleCloseDetailModal}
+        />
       )}
     </div>
   );

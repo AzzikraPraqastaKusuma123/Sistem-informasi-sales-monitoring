@@ -1,0 +1,142 @@
+.profile-page {
+  /* Inherits .page-container styles */
+}
+
+.profile-page h1 {
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.profile-card {
+  background-color: var(--color-background-medium);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 800px;
+  margin: 30px auto;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--color-primary);
+  margin-bottom: 15px;
+}
+
+.profile-picture-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.user-basic-info h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 2rem;
+}
+
+.user-basic-info .user-role {
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+  margin-top: 5px;
+  text-transform: capitalize;
+}
+
+.profile-section {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.profile-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.profile-section h3 {
+  color: var(--color-primary);
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.detail-item .label {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 5px;
+}
+
+.detail-item .value {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  word-break: break-all;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-card {
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  .profile-header {
+    margin-bottom: 20px;
+  }
+
+  .profile-picture,
+  .profile-picture-placeholder {
+    width: 100px;
+    height: 100px;
+    font-size: 3.5rem;
+  }
+
+  .user-basic-info h2 {
+    font-size: 1.8rem;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-item.full-width {
+    grid-column: auto;
+  }
+}

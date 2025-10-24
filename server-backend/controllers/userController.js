@@ -147,10 +147,28 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// @desc    Get single user by ID
+// @route   GET /api/users/:id
+// @access  Private (Admin only)
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [user] = await db.query('SELECT id, name, nik, email, phone_number, address, hire_date, profile_picture_url, region, role, created_at, updated_at FROM users WHERE id = ?', [id]);
+    if (user.length === 0) {
+      return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
+    }
+    res.status(200).json(user[0]);
+  } catch (error) {
+    console.error('Error saat mengambil pengguna berdasarkan ID:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 module.exports = {
   getUserProfile, // Fungsi lama tetap ada
   getAllUsers,
   createUser,
   updateUser,
   deleteUser,
+  getUserById,
 };

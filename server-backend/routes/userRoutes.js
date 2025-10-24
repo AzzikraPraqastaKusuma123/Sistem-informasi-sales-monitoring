@@ -6,6 +6,7 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  getUserById,
 } = require('../controllers/userController');
 const { verifyToken, authorize } = require('../middleware/authMiddleware');
 
@@ -21,6 +22,7 @@ router.route('/')
 
 // Mengubah & menghapus user berdasarkan ID
 router.route('/:id')
+  .get(verifyToken, authorize('admin'), getUserById)
   .put(verifyToken, authorize('admin'), updateUser)
   .delete(verifyToken, authorize('admin'), deleteUser);
 

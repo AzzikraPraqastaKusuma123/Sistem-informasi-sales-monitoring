@@ -94,6 +94,11 @@ const getSalesDashboard = async (req, res) => {
   const userId = req.user.id; // ID sales yang sedang login
 
   try {
+    // Dapatkan tanggal saat ini dan informasi bulan
+    const today = new Date();
+    const currentDayOfMonth = today.getDate();
+    const totalDaysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+
     // 1. Data KPI Utama (Pencapaian, Target, Persentase) - Logika tidak berubah
     const performanceQuery = `
       SELECT
@@ -106,7 +111,14 @@ const getSalesDashboard = async (req, res) => {
     const target = performance[0].currentTarget || 0;
     const percentage = target > 0 ? Math.round((achievement / target) * 100) : 0;
 
-    // --- KUMPULKAN DATA UNTUK GRAFIK-GRAFIK BARU ---
+    // --- LOGIKA BARU UNTUK PROYEKSI PENCAPAIAN ---
+    let projectedAchievement = 0;
+    if (currentDayOfMonth > 0 && achievement > 0) {
+      const dailyAverageAchievement = achievement / currentDayOfMonth;
+      projectedAchievement = Math.round(dailyAverageAchievement * totalDaysInMonth);
+    }
+
+    // --- KUMPULKAN DATA UNTUK GRAFIK-GRAFIK LAINNYA ---
 
     // 2. Tren Kinerja Harian (Grafik Garis)
     const dailyTrendQuery = `
@@ -146,6 +158,7 @@ const getSalesDashboard = async (req, res) => {
       achievement,
       target,
       percentage,
+      projectedAchievement, // Data baru
       dailyTrend,
       topProducts,
       salesContribution,
@@ -156,7 +169,6 @@ const getSalesDashboard = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
-
 // @desc    Export data sales ke Excel
 // @route   GET /api/dashboard/sales/export
 const exportSalesData = async (req, res) => {

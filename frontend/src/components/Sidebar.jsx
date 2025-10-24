@@ -22,6 +22,7 @@ const Sidebar = () => {
 
       <nav className="sidebar-nav">
         <NavLink to="/" end>Dashboard</NavLink>
+        <NavLink to="/profile">Profil Saya</NavLink> {/* Link baru untuk halaman profil */}
 
         {isSales && (
           <>

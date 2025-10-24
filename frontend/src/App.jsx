@@ -14,6 +14,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // --- TAMBAHKAN IMPORT BARU ---
 import RankingPage from './pages/RankingPage';
+import ProfilePage from './pages/ProfilePage'; // Import ProfilePage
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/evaluations" element={<EvaluationsPage />} />
         {/* --- DAFTARKAN RUTE BARU DI SINI --- */}
         <Route path="/ranking" element={<RankingPage />} />
+        <Route path="/profile" element={<ProfilePage />} /> {/* Rute untuk halaman profil */}
       </Route>
     </Routes>
   );
