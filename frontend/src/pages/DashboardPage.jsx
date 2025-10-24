@@ -70,7 +70,7 @@ const AdminDashboard = () => {
   );
 };
 
-// Tampilan Dashboard untuk Sales (TIDAK BERUBAH)
+// Tampilan Dashboard untuk Sales (DIPERBARUI)
 const SalesDashboard = () => {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -84,16 +84,54 @@ const SalesDashboard = () => {
 
   if (loading) return <div>Memuat Dashboard Kinerja Anda...</div>;
 
+  const handleExport = async () => {
+    try {
+      const response = await api.get('/dashboard/sales/export', {
+        responseType: 'blob', // Penting: respons diharapkan dalam bentuk blob
+      });
+
+      // Buat URL objek dari blob
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      // Buat link sementara dan klik untuk mengunduh
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `Sales_Dashboard_Export_${Date.now()}.xlsx`); // Nama file
+      document.body.appendChild(link);
+      link.click();
+      link.remove(); // Hapus link setelah diunduh
+      window.URL.revokeObjectURL(url); // Bersihkan URL objek
+    } catch (error) {
+      console.error("Gagal mengunduh data Excel", error);
+      alert("Gagal mengunduh data Excel. Silakan coba lagi.");
+    }
+  };
+
   return (
     <>
+      {/* Kartu KPI - Tidak Berubah */}
       <div className="card-container">
         <Card title="Pencapaian Saya (Bulan Ini)" value={summary?.achievement} />
         <Card title="Target Saya (Bulan Ini)" value={summary?.target} />
         <Card title="Persentase Target" value={summary?.percentage} unit="%" />
       </div>
       
+      <div className="export-button-container">
+        <button onClick={handleExport} className="btn btn-primary">Export ke Excel</button>
+      </div>
+
+      {/* Wadah untuk semua grafik */}
       <div className="chart-container">
-        <SalesPerformanceChart achievement={summary?.achievement} target={summary?.target} />
+        {/* Grafik Performa vs Target (utama, lebar penuh) */}
+        <div className="sales-performance-chart">
+          <SalesPerformanceChart achievement={summary?.achievement} target={summary?.target} />
+        </div>
+
+        {/* Grid untuk grafik-grafik lainnya */}
+        <div className="dashboard-grid-sales">
+          <PerformanceTrendChart data={summary?.dailyTrend || []} />
+          <TopProductsChart data={summary?.topProducts || []} />
+          <SalesContributionChart data={summary?.salesContribution || []} />
+        </div>
       </div>
     </>
   );
