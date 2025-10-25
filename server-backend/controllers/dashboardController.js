@@ -285,9 +285,51 @@ const exportSalesData = async (req, res) => {
 };
 
 
+const getProductSalesData = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const dailyQuery = `
+      SELECT p.name, SUM(a.achieved_value) as total_sold
+      FROM achievements a
+      JOIN products p ON a.product_id = p.id
+      WHERE a.user_id = ? AND DATE(a.achievement_date) = CURDATE()
+      GROUP BY p.id, p.name
+      ORDER BY total_sold DESC;
+    `;
+    const [daily] = await db.query(dailyQuery, [userId]);
+
+    const weeklyQuery = `
+      SELECT p.name, SUM(a.achieved_value) as total_sold
+      FROM achievements a
+      JOIN products p ON a.product_id = p.id
+      WHERE a.user_id = ? AND YEARWEEK(a.achievement_date, 1) = YEARWEEK(CURDATE(), 1)
+      GROUP BY p.id, p.name
+      ORDER BY total_sold DESC;
+    `;
+    const [weekly] = await db.query(weeklyQuery, [userId]);
+
+    const monthlyQuery = `
+      SELECT p.name, SUM(a.achieved_value) as total_sold
+      FROM achievements a
+      JOIN products p ON a.product_id = p.id
+      WHERE a.user_id = ? AND MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())
+      GROUP BY p.id, p.name
+      ORDER BY total_sold DESC;
+    `;
+    const [monthly] = await db.query(monthlyQuery, [userId]);
+
+    res.json({ daily, weekly, monthly });
+  } catch (error) {
+    console.error('Get product sales data error:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 module.exports = {
   getDashboardSummary,
   getSalesDashboard,
   exportSalesData,
+  getProductSalesData,
 };
 

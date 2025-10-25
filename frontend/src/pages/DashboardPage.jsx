@@ -18,6 +18,7 @@ import { useNotification } from '../contexts/NotificationContext'; // Import use
 
 // Import CSS
 import './DashboardPage.css';
+import '../components/Chart.css';
 import '../components/Card.css'; // CSS untuk wrapper grafik
 
 // Tampilan Dashboard untuk Admin/Supervisor (YANG DIPERBARUI)
@@ -55,28 +56,31 @@ const AdminDashboard = () => {
 
       <div className="chart-container">
         {/* Grafik 1: Peringkat Kinerja Tim (Sudah ada, dibuat full-width) */}
-        <div className="top-sales-chart">
+        <div className="top-sales-chart chart-wrapper">
             <SalesChart data={summary?.topSalesPerformance} />
         </div>
         
         {/* Grid untuk 4 Grafik Baru */}
         <div className="dashboard-grid">
-            <PerformanceTrendChart data={summary?.dailyTrend || []} />
-            <TopProductsChart data={summary?.topProducts || []} />
-            <SalesContributionChart data={summary?.salesContribution || []} />
-            <ActivityChart data={summary?.dailyActivity || []} />
-            <TopUsersAchievementChart data={summary?.topUsersAchievement || []} />
+            <div className="chart-wrapper"><PerformanceTrendChart data={summary?.dailyTrend || []} /></div>
+            <div className="chart-wrapper"><TopProductsChart data={summary?.topProducts || []} /></div>
+            <div className="chart-wrapper"><SalesContributionChart data={summary?.salesContribution || []} /></div>
+            <div className="chart-wrapper"><ActivityChart data={summary?.dailyActivity || []} /></div>
+            <div className="chart-wrapper"><TopUsersAchievementChart data={summary?.topUsersAchievement || []} /></div>
         </div>
       </div>
     </>
   );
 };
 
+import ProductDataTable from '../components/ProductDataTable';
+import '../components/ProductDataTable.css';
+
 // Tampilan Dashboard untuk Sales (DIPERBARUI)
 const SalesDashboard = () => {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { showError } = useNotification(); // Inisialisasi useNotification
+  const { showError, showSuccess } = useNotification(); // Inisialisasi useNotification
 
   useEffect(() => {
     api.get('/dashboard/sales')
@@ -133,17 +137,19 @@ const SalesDashboard = () => {
       {/* Wadah untuk semua grafik */}
       <div className="chart-container">
         {/* Grafik Performa vs Target (utama, lebar penuh) */}
-        <div className="sales-performance-chart">
+        <div className="sales-performance-chart chart-wrapper">
           <SalesPerformanceChart achievement={summary?.achievement} target={summary?.target} />
         </div>
 
         {/* Grid untuk grafik-grafik lainnya */}
         <div className="dashboard-grid-sales">
-          <PerformanceTrendChart data={summary?.dailyTrend || []} />
-          <TopProductsChart data={summary?.topProducts || []} />
-          <SalesContributionChart data={summary?.salesContribution || []} />
+          <div className="chart-wrapper"><PerformanceTrendChart data={summary?.dailyTrend || []} /></div>
+          <div className="chart-wrapper"><TopProductsChart data={summary?.topProducts || []} /></div>
+          <div className="chart-wrapper"><SalesContributionChart data={summary?.salesContribution || []} /></div>
         </div>
       </div>
+
+      <ProductDataTable />
     </>
   );
 };

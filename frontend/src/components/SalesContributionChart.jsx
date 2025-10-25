@@ -4,14 +4,8 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recha
 const COLORS = ['#4A90E2', '#50E3C2', '#F5A623', '#367BBF', '#D0021B'];
 
 const SalesContributionChart = ({ data }) => {
-  // Jika tidak ada data atau data kosong, tampilkan pesan
-  if (!data || data.length === 0) {
-    return (
-        <div className="chart-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <p>Belum ada data kontribusi sales untuk bulan ini.</p>
-        </div>
-    );
-  }
+  const chartData = Array.isArray(data) && data.length > 0 ? data : [{ name: 'No Data', value: 1 }];
+  const noData = chartData[0].name === 'No Data';
 
   return (
     <div className="chart-wrapper">
@@ -19,21 +13,26 @@ const SalesContributionChart = ({ data }) => {
         <ResponsiveContainer width="100%" height={300}>
             <PieChart>
                 <Pie
-                    data={data}
+                    data={chartData}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
                     outerRadius={80}
                     dataKey="value"
                     nameKey="name"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={noData ? false : ({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 >
-                    {data.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={noData ? '#E0E0E0' : COLORS[index % COLORS.length]} />
                     ))}
                 </Pie>
-                <Tooltip />
-                <Legend />
+                {!noData && <Tooltip />}
+                {!noData && <Legend />}
+                {noData && (
+                    <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontSize="16" fill="#888">
+                        Data Belum Tersedia
+                    </text>
+                )}
             </PieChart>
         </ResponsiveContainer>
     </div>
