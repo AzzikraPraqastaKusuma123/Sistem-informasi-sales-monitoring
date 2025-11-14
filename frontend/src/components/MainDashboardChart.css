@@ -1,0 +1,45 @@
+.main-chart-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-chart-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background-color: var(--color-background);
+  padding: 0.5rem;
+  border-radius: 25px;
+  max-width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid var(--color-border);
+}
+
+.main-chart-toggle button {
+  background-color: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.main-chart-toggle button.active {
+  background-color: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+}
+
+.main-chart-content {
+  flex-grow: 1;
+}
+
+/* Override default h3 margin from .chart-wrapper */
+.main-chart-content .chart-wrapper h3 {
+  margin-top: 0;
+}

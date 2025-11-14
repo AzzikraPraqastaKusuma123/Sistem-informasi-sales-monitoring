@@ -3,9 +3,6 @@ import { useAuth } from '../contexts/AuthContext';
 import api from '../api';
 import Card from '../components/Card';
 
-// Grafik lama
-import SalesChart from '../components/SalesChart';
-
 // Import komponen-komponen grafik BARU
 import PerformanceTrendChart from '../components/PerformanceTrendChart';
 import ActivityChart from '../components/ActivityChart';
@@ -13,12 +10,14 @@ import SalesPerformanceChart from '../components/SalesPerformanceChart'; // Impo
 import TargetProjectionCard from '../components/TargetProjectionCard'; // Import the new projection card
 import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 import TopSalesDataTable from '../components/TopSalesDataTable'; // Import komponen tabel baru
+import MainDashboardChart from '../components/MainDashboardChart'; // Import komponen grafik utama yang baru
 
 // Import CSS
 import './DashboardPage.css';
 import '../components/Chart.css';
 import '../components/Card.css'; // CSS untuk wrapper grafik
 import '../components/TopSalesDataTable.css'; // Import CSS untuk tabel baru
+import '../components/MainDashboardChart.css'; // Import CSS untuk grafik utama baru
 
 // Tampilan Dashboard untuk Admin/Supervisor (YANG DIPERBARUI)
 const AdminDashboard = () => {
@@ -54,16 +53,12 @@ const AdminDashboard = () => {
       </div>
 
       <div className="chart-container">
-        {/* Grafik 1: Peringkat Kinerja Tim (Sudah ada, dibuat full-width) */}
-        <div className="top-sales-chart chart-wrapper">
-            <SalesChart data={summary?.topSalesPerformance} />
-        </div>
-        
-        {/* Grid untuk 4 Grafik Baru */}
-        <div className="dashboard-grid">
-            <div className="chart-wrapper"><PerformanceTrendChart data={summary?.dailyTrend || []} /></div>
-            <div className="chart-wrapper"><ActivityChart data={summary?.dailyActivity || []} /></div>
-        </div>
+        {/* Grafik utama yang baru dan interaktif */}
+        <MainDashboardChart 
+          performanceData={summary?.topSalesPerformance || []}
+          trendData={summary?.dailyTrend || []}
+          activityData={summary?.dailyActivity || []}
+        />
       </div>
 
       {/* Tabel Data Peringkat Sales Baru (sudah termasuk grafik peringkat) */}
