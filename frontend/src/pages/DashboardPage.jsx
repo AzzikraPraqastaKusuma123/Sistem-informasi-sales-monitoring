@@ -9,9 +9,7 @@ import SalesChart from '../components/SalesChart';
 // Import komponen-komponen grafik BARU
 import PerformanceTrendChart from '../components/PerformanceTrendChart';
 import TopProductsChart from '../components/TopProductsChart';
-import SalesContributionChart from '../components/SalesContributionChart';
 import ActivityChart from '../components/ActivityChart';
-import TopUsersAchievementChart from '../components/TopUsersAchievementChart';
 import SalesPerformanceChart from '../components/SalesPerformanceChart'; // Import the new chart component
 import TargetProjectionCard from '../components/TargetProjectionCard'; // Import the new projection card
 import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
@@ -66,13 +64,11 @@ const AdminDashboard = () => {
         <div className="dashboard-grid">
             <div className="chart-wrapper"><PerformanceTrendChart data={summary?.dailyTrend || []} /></div>
             <div className="chart-wrapper"><TopProductsChart data={summary?.topProducts || []} /></div>
-            <div className="chart-wrapper"><SalesContributionChart data={summary?.salesContribution || []} /></div>
             <div className="chart-wrapper"><ActivityChart data={summary?.dailyActivity || []} /></div>
-            <div className="chart-wrapper"><TopUsersAchievementChart data={summary?.topUsersAchievement || summary?.topSalesPerformance || []} /></div>
         </div>
       </div>
 
-      {/* Tabel Data Peringkat Sales Baru */}
+      {/* Tabel Data Peringkat Sales Baru (sudah termasuk grafik peringkat) */}
       <TopSalesDataTable />
     </>
   );
