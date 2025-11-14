@@ -66,7 +66,7 @@ const AdminDashboard = () => {
             <div className="chart-wrapper"><TopProductsChart data={summary?.topProducts || []} /></div>
             <div className="chart-wrapper"><SalesContributionChart data={summary?.salesContribution || []} /></div>
             <div className="chart-wrapper"><ActivityChart data={summary?.dailyActivity || []} /></div>
-            <div className="chart-wrapper"><TopUsersAchievementChart data={summary?.topUsersAchievement || []} /></div>
+            <div className="chart-wrapper"><TopUsersAchievementChart data={summary?.topUsersAchievement || summary?.topSalesPerformance || []} /></div>
         </div>
       </div>
     </>

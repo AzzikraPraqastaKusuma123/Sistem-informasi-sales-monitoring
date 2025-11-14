@@ -81,6 +81,7 @@ const getDashboardSummary = async (req, res) => {
       topProducts,
       salesContribution,
       dailyActivity,
+      topUsersAchievement: topSales, // PERBAIKAN: Tambahkan kunci ini untuk grafik baru
     });
   } catch (error) {
     console.error('Dashboard summary error:', error);
