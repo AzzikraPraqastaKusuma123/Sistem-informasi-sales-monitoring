@@ -334,29 +334,53 @@ const getTopSalesTable = async (req, res) => {
     const { period = 'monthly' } = req.query; // Default 'monthly'
 
     let dateFilter = '';
+    let whereClause = '';
     switch (period) {
       case 'daily':
+        whereClause = 'WHERE DATE(a.achievement_date) = CURDATE()';
         dateFilter = 'AND DATE(a.achievement_date) = CURDATE()';
         break;
       case 'weekly':
+        whereClause = 'WHERE YEARWEEK(a.achievement_date, 1) = YEARWEEK(CURDATE(), 1)';
         dateFilter = 'AND YEARWEEK(a.achievement_date, 1) = YEARWEEK(CURDATE(), 1)';
         break;
       default:
+        whereClause = 'WHERE MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())';
         dateFilter = 'AND MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())';
         break;
     }
 
     const query = `
+      WITH RankedSales AS (
+        SELECT
+          u.id,
+          u.name,
+          u.email,
+          COALESCE(SUM(a.achieved_value), 0) as total_achievement
+        FROM users u
+        LEFT JOIN achievements a ON u.id = a.user_id ${dateFilter}
+        WHERE u.role = 'sales'
+        GROUP BY u.id, u.name, u.email
+      ),
+      TopProducts AS (
+        SELECT
+          a.user_id,
+          p.name as top_product_name,
+          ROW_NUMBER() OVER(PARTITION BY a.user_id ORDER BY SUM(a.achieved_value) DESC) as rn
+        FROM achievements a
+        JOIN products p ON a.product_id = p.id
+        ${whereClause}
+        GROUP BY a.user_id, p.name
+      )
       SELECT
-        u.id,
-        u.name,
-        u.email,
-        COALESCE(SUM(a.achieved_value), 0) as total_achievement
-      FROM users u
-      LEFT JOIN achievements a ON u.id = a.user_id ${dateFilter}
-      WHERE u.role = 'sales'
-      GROUP BY u.id, u.name, u.email
-      ORDER BY total_achievement DESC;
+        rs.id,
+        rs.name,
+        rs.email,
+        rs.total_achievement,
+        tp.top_product_name
+      FROM RankedSales rs
+      LEFT JOIN TopProducts tp ON rs.id = tp.user_id AND tp.rn = 1
+      ORDER BY rs.total_achievement DESC;
     `;
 
     const [users] = await db.query(query);

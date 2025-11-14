@@ -94,6 +94,7 @@ const TopSalesDataTable = () => {
                   <th>Peringkat</th>
                   <th>Nama Sales</th>
                   <th>Email</th>
+                  <th>Produk Terlaris</th>
                   <th>Total Pencapaian</th>
                 </tr>
               </thead>
@@ -104,6 +105,7 @@ const TopSalesDataTable = () => {
                       <td data-label="Peringkat">{index + 1}</td>
                       <td data-label="Nama Sales">{user.name}</td>
                       <td data-label="Email">{user.email}</td>
+                      <td data-label="Produk Terlaris">{user.top_product_name || '-'}</td>
                       <td data-label="Total Pencapaian" className="achievement-value">
                         {formatCurrency(user.total_achievement)}
                       </td>
@@ -111,7 +113,7 @@ const TopSalesDataTable = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="no-data">Tidak ada data untuk ditampilkan.</td>
+                    <td colSpan="5" className="no-data">Tidak ada data untuk ditampilkan.</td>
                   </tr>
                 )}
               </tbody>
