@@ -8,7 +8,6 @@ import SalesChart from '../components/SalesChart';
 
 // Import komponen-komponen grafik BARU
 import PerformanceTrendChart from '../components/PerformanceTrendChart';
-import TopProductsChart from '../components/TopProductsChart';
 import ActivityChart from '../components/ActivityChart';
 import SalesPerformanceChart from '../components/SalesPerformanceChart'; // Import the new chart component
 import TargetProjectionCard from '../components/TargetProjectionCard'; // Import the new projection card
@@ -63,7 +62,6 @@ const AdminDashboard = () => {
         {/* Grid untuk 4 Grafik Baru */}
         <div className="dashboard-grid">
             <div className="chart-wrapper"><PerformanceTrendChart data={summary?.dailyTrend || []} /></div>
-            <div className="chart-wrapper"><TopProductsChart data={summary?.topProducts || []} /></div>
             <div className="chart-wrapper"><ActivityChart data={summary?.dailyActivity || []} /></div>
         </div>
       </div>

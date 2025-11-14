@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import api from '../api';
 import { useNotification } from '../contexts/NotificationContext';
-import TopUsersAchievementChart from './TopUsersAchievementChart'; // Impor grafik
+import TopUsersAchievementChart from './TopUsersAchievementChart'; // Impor grafik user
+import TopProductsChart from './TopProductsChart'; // Impor grafik produk
 import './TopSalesDataTable.css';
 
 const TopSalesDataTable = () => {
   const [data, setData] = useState([]);
   const [recap, setRecap] = useState(null);
+  const [topProducts, setTopProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState('monthly');
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeChart, setActiveChart] = useState('users'); // 'users' atau 'products'
   const { showError } = useNotification();
 
   useEffect(() => {
@@ -19,6 +22,7 @@ const TopSalesDataTable = () => {
         const res = await api.get(`/dashboard/top-sales-table?period=${period}`);
         setData(res.data.data);
         setRecap(res.data.recap);
+        setTopProducts(res.data.topProducts); // Simpan data produk terlaris
       } catch (err) {
         showError('Gagal memuat data tabel peringkat sales.');
         console.error(err);
@@ -44,21 +48,30 @@ const TopSalesDataTable = () => {
     }).format(value);
   };
 
-  // Ambil 5 data teratas untuk grafik
-  const chartData = useMemo(() => filteredData.slice(0, 5), [filteredData]);
+  // Ambil 5 data teratas untuk grafik peringkat user
+  const userChartData = useMemo(() => filteredData.slice(0, 5), [filteredData]);
 
   return (
     <div className="top-sales-data-table-wrapper">
-      <h3 className="table-title">Peringkat Pencapaian Sales</h3>
+      <h3 className="table-title">Analisis Kinerja Tim Sales</h3>
       
       {loading ? (
         <div className="loading-state">Memuat data...</div>
       ) : (
         <>
-          {/* Bagian baru untuk ringkasan visual */}
           <div className="summary-container">
             <div className="summary-chart">
-              <TopUsersAchievementChart data={chartData} />
+              {/* Tombol untuk mengganti grafik */}
+              <div className="chart-toggle-buttons">
+                <button onClick={() => setActiveChart('users')} className={activeChart === 'users' ? 'active' : ''}>Peringkat Sales</button>
+                <button onClick={() => setActiveChart('products')} className={activeChart === 'products' ? 'active' : ''}>Produk Terlaris</button>
+              </div>
+              {/* Render grafik secara kondisional */}
+              {activeChart === 'users' ? (
+                <TopUsersAchievementChart data={userChartData} />
+              ) : (
+                <TopProductsChart data={topProducts} />
+              )}
             </div>
             <div className="summary-recap">
               <div className="recap-item">

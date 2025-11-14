@@ -350,7 +350,8 @@ const getTopSalesTable = async (req, res) => {
         break;
     }
 
-    const query = `
+    // Query 1: Mendapatkan peringkat sales dengan produk terlarisnya
+    const usersQuery = `
       WITH RankedSales AS (
         SELECT
           u.id,
@@ -362,7 +363,7 @@ const getTopSalesTable = async (req, res) => {
         WHERE u.role = 'sales'
         GROUP BY u.id, u.name, u.email
       ),
-      TopProducts AS (
+      TopProductsPerUser AS (
         SELECT
           a.user_id,
           p.name as top_product_name,
@@ -377,14 +378,26 @@ const getTopSalesTable = async (req, res) => {
         rs.name,
         rs.email,
         rs.total_achievement,
-        tp.top_product_name
+        tppu.top_product_name
       FROM RankedSales rs
-      LEFT JOIN TopProducts tp ON rs.id = tp.user_id AND tp.rn = 1
+      LEFT JOIN TopProductsPerUser tppu ON rs.id = tppu.user_id AND tppu.rn = 1
       ORDER BY rs.total_achievement DESC;
     `;
+    const [users] = await db.query(usersQuery);
 
-    const [users] = await db.query(query);
+    // Query 2: Mendapatkan produk terlaris secara keseluruhan untuk periode yang sama
+    const topProductsQuery = `
+      SELECT p.name, COUNT(a.id) as total_sold
+      FROM achievements a
+      JOIN products p ON a.product_id = p.id
+      ${whereClause}
+      GROUP BY p.id, p.name
+      ORDER BY total_sold DESC
+      LIMIT 5;
+    `;
+    const [topProducts] = await db.query(topProductsQuery);
 
+    // Kalkulasi rekap
     const totalRecap = users.reduce((acc, user) => acc + Number(user.total_achievement), 0);
 
     res.json({
@@ -393,6 +406,7 @@ const getTopSalesTable = async (req, res) => {
         total: totalRecap,
         count: users.length,
       },
+      topProducts: topProducts, // Tambahkan data produk terlaris ke respons
     });
   } catch (error) {
     console.error('Get top sales table error:', error);
