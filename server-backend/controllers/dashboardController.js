@@ -327,10 +327,61 @@ const getProductSalesData = async (req, res) => {
   }
 };
 
+// @desc    Mendapatkan data peringkat sales untuk tabel
+// @route   GET /api/dashboard/top-sales-table
+const getTopSalesTable = async (req, res) => {
+  try {
+    const { period = 'monthly' } = req.query; // Default 'monthly'
+
+    let dateFilter = '';
+    switch (period) {
+      case 'daily':
+        dateFilter = 'AND DATE(a.achievement_date) = CURDATE()';
+        break;
+      case 'weekly':
+        dateFilter = 'AND YEARWEEK(a.achievement_date, 1) = YEARWEEK(CURDATE(), 1)';
+        break;
+      default:
+        dateFilter = 'AND MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())';
+        break;
+    }
+
+    const query = `
+      SELECT
+        u.id,
+        u.name,
+        u.email,
+        COALESCE(SUM(a.achieved_value), 0) as total_achievement
+      FROM users u
+      LEFT JOIN achievements a ON u.id = a.user_id ${dateFilter}
+      WHERE u.role = 'sales'
+      GROUP BY u.id, u.name, u.email
+      ORDER BY total_achievement DESC;
+    `;
+
+    const [users] = await db.query(query);
+
+    const totalRecap = users.reduce((acc, user) => acc + Number(user.total_achievement), 0);
+
+    res.json({
+      data: users,
+      recap: {
+        total: totalRecap,
+        count: users.length,
+      },
+    });
+  } catch (error) {
+    console.error('Get top sales table error:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+
 module.exports = {
   getDashboardSummary,
   getSalesDashboard,
   exportSalesData,
   getProductSalesData,
+  getTopSalesTable, // Ekspor fungsi baru
 };
 

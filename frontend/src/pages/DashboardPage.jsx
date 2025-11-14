@@ -15,11 +15,13 @@ import TopUsersAchievementChart from '../components/TopUsersAchievementChart';
 import SalesPerformanceChart from '../components/SalesPerformanceChart'; // Import the new chart component
 import TargetProjectionCard from '../components/TargetProjectionCard'; // Import the new projection card
 import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
+import TopSalesDataTable from '../components/TopSalesDataTable'; // Import komponen tabel baru
 
 // Import CSS
 import './DashboardPage.css';
 import '../components/Chart.css';
 import '../components/Card.css'; // CSS untuk wrapper grafik
+import '../components/TopSalesDataTable.css'; // Import CSS untuk tabel baru
 
 // Tampilan Dashboard untuk Admin/Supervisor (YANG DIPERBARUI)
 const AdminDashboard = () => {
@@ -69,6 +71,9 @@ const AdminDashboard = () => {
             <div className="chart-wrapper"><TopUsersAchievementChart data={summary?.topUsersAchievement || summary?.topSalesPerformance || []} /></div>
         </div>
       </div>
+
+      {/* Tabel Data Peringkat Sales Baru */}
+      <TopSalesDataTable />
     </>
   );
 };

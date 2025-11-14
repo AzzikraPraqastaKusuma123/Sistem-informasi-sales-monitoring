@@ -3,13 +3,23 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recha
 
 const COLORS = ['#4A90E2', '#50E3C2', '#F5A623', '#367BBF', '#D0021B'];
 
+// Data contoh untuk ditampilkan jika data asli kosong
+const mockData = [
+  { name: 'Sales A', value: 4500000 },
+  { name: 'Sales B', value: 3200000 },
+  { name: 'Sales C', value: 2800000 },
+  { name: 'Sales D', value: 1500000 },
+];
+
 const SalesContributionChart = ({ data }) => {
-  const chartData = Array.isArray(data) && data.length > 0 ? data : [{ name: 'No Data', value: 1 }];
-  const noData = chartData[0].name === 'No Data';
+  // Gunakan data contoh hanya jika data asli kosong atau tidak ada
+  const chartData = (Array.isArray(data) && data.length > 0) ? data : mockData;
+  const isMockData = !data || data.length === 0;
 
   return (
     <div className="chart-wrapper">
         <h3 style={{ color: 'var(--color-text-primary)' }}>Kontribusi Sales (Bulan Ini)</h3>
+        {isMockData && <p style={{ textAlign: 'center', color: '#888', fontSize: '12px', marginTop: '-10px' }}>(Contoh data ditampilkan)</p>}
         <ResponsiveContainer width="100%" height={300}>
             <PieChart>
                 <Pie
@@ -20,19 +30,14 @@ const SalesContributionChart = ({ data }) => {
                     outerRadius={80}
                     dataKey="value"
                     nameKey="name"
-                    label={noData ? false : ({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
                 >
                     {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={noData ? '#E0E0E0' : COLORS[index % COLORS.length]} />
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                 </Pie>
-                {!noData && <Tooltip />}
-                {!noData && <Legend />}
-                {noData && (
-                    <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontSize="16" fill="#888">
-                        Data Belum Tersedia
-                    </text>
-                )}
+                <Tooltip formatter={(value) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value)} />
+                <Legend />
             </PieChart>
         </ResponsiveContainer>
     </div>
