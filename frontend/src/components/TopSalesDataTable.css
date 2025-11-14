@@ -1,19 +1,27 @@
 /* TopSalesDataTable.css */
 
 .top-sales-data-table-wrapper {
-  background-color: var(--color-background-light);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+  padding: 2rem; /* Padding lebih besar */
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e9ecef;
   margin-top: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.top-sales-data-table-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .table-title {
   color: var(--color-text-primary);
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
-  border-bottom: 2px solid var(--color-primary);
+  border-bottom: 2px solid var(--color-primary-light);
   padding-bottom: 0.5rem;
+  font-weight: 600;
 }
 
 .table-controls {
@@ -182,3 +190,4 @@ tbody tr:hover {
     color: var(--color-text-primary);
   }
 }
+

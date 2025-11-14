@@ -1,14 +1,6 @@
-.chart-container {
-  background-color: #fff;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 1.5rem;
-}
+/* 
+  Semua gaya dari file ini telah dipindahkan ke DashboardPage.css 
+  di bawah kelas .chart-wrapper untuk konsistensi global.
+  File ini dapat dihapus di masa mendatang jika tidak lagi digunakan.
+*/
 
-.chart-title {
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  color: #333;
-  text-align: center;
-}
