@@ -1,7 +1,28 @@
 import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const COLORS = ['#4A90E2', '#50E3C2', '#F5A623', '#367BBF', '#D0021B'];
+// Skydash Theme Colors for Pie Chart (Max 4 main colors)
+const PIE_COLORS = ['#4B49AC', '#7DA0FA', '#98BDFF', '#F3797E']; // Pink Coral for the most important section
+
+// Custom Tooltip Component
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div style={{
+                backgroundColor: '#7DA0FA', // Soft blue
+                color: '#333', // Dark text
+                borderRadius: '5px',
+                padding: '10px',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                border: 'none'
+            }}>
+                <p className="label">{`${payload[0].name}`}</p>
+                <p className="intro">{`Kontribusi: ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(payload[0].value)}`}</p>
+            </div>
+        );
+    }
+    return null;
+};
 
 // Data contoh untuk ditampilkan jika data asli kosong
 const mockData = [
@@ -16,9 +37,22 @@ const SalesContributionChart = ({ data }) => {
   const chartData = (Array.isArray(data) && data.length > 0) ? data : mockData;
   const isMockData = !data || data.length === 0;
 
+  // Custom label for Pie Chart
+  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
+    const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
+
+    return (
+      <text x={x} y={y} fill="#333" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" style={{ fontSize: '12px' }}>
+        {`${name} ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
   return (
     <div className="chart-wrapper">
-        <h3 style={{ color: 'var(--color-text-primary)' }}>Kontribusi Sales (Bulan Ini)</h3>
+        <h3>Kontribusi Sales (Bulan Ini)</h3>
         {isMockData && <p style={{ textAlign: 'center', color: '#888', fontSize: '12px', marginTop: '-10px' }}>(Contoh data ditampilkan)</p>}
         <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -27,16 +61,18 @@ const SalesContributionChart = ({ data }) => {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    outerRadius={80}
+                    label={renderCustomizedLabel} // Use custom label renderer
+                    outerRadius={100} // Slightly larger
                     dataKey="value"
                     nameKey="name"
-                    label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                    isAnimationActive={true} // Smooth animation
+                    animationDuration={800}
                 >
                     {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
                     ))}
                 </Pie>
-                <Tooltip formatter={(value) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value)} />
+                <Tooltip content={<CustomTooltip />} />
                 <Legend />
             </PieChart>
         </ResponsiveContainer>

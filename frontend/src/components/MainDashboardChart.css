@@ -3,14 +3,19 @@
   flex-direction: column;
 }
 
+.main-chart-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .main-chart-toggle {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  background-color: var(--color-background);
-  padding: 0.5rem;
-  border-radius: 25px;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  background-color: var(--color-background-medium);
+  padding: var(--spacing-xs);
+  border-radius: 20px; /* Pill shape */
   max-width: max-content;
   margin-left: auto;
   margin-right: auto;
@@ -21,18 +26,27 @@
   background-color: transparent;
   border: none;
   color: var(--color-text-secondary);
-  padding: 0.6rem 1.2rem;
-  border-radius: 20px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: 16px; /* Slightly smaller pill for inner buttons */
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .main-chart-toggle button.active {
-  background-color: var(--color-primary);
-  color: #fff;
-  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+  background-color: var(--color-background-light);
+  color: var(--color-primary);
+  box-shadow: var(--box-shadow-soft);
+}
+
+.main-chart-content {
+  flex-grow: 1;
+}
+
+/* Override default h3 margin from .chart-wrapper */
+.main-chart-content .chart-wrapper h3 {
+  margin-top: 0;
 }
 
 .main-chart-content {
