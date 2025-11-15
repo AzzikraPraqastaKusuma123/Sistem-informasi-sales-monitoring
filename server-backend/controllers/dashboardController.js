@@ -414,12 +414,50 @@ const getTopSalesTable = async (req, res) => {
   }
 };
 
+// @desc    Mendapatkan data untuk Pie Chart Produk
+// @route   GET /api/dashboard/product-pie-chart
+const getProductPieChart = async (req, res) => {
+  try {
+    const { period = 'monthly', sort = 'desc' } = req.query;
+
+    let whereClause = '';
+    switch (period) {
+      case 'weekly':
+        whereClause = 'WHERE YEARWEEK(a.achievement_date, 1) = YEARWEEK(CURDATE(), 1)';
+        break;
+      default: // Default to monthly if period is not weekly or daily (which is now removed)
+        whereClause = 'WHERE MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())';
+        break;
+    }
+
+    const sortOrder = sort === 'asc' ? 'ASC' : 'DESC';
+
+    const query = `
+      SELECT p.name, COUNT(a.id) as value
+      FROM achievements a
+      JOIN products p ON a.product_id = p.id
+      ${whereClause}
+      GROUP BY p.id, p.name
+      ORDER BY value ${sortOrder}
+      LIMIT 5;
+    `;
+    
+    const [data] = await db.query(query);
+    res.json(data);
+
+  } catch (error) {
+    console.error('Get product pie chart error:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 
 module.exports = {
   getDashboardSummary,
   getSalesDashboard,
   exportSalesData,
   getProductSalesData,
-  getTopSalesTable, // Ekspor fungsi baru
+  getTopSalesTable,
+  getProductPieChart, // Ekspor fungsi baru
 };
 

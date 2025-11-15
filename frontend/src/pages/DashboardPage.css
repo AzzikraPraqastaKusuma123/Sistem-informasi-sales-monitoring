@@ -3,17 +3,24 @@
   background-color: #f4f7fa; /* Latar belakang abu-abu muda untuk kontras */
 }
 
+.dashboard-page h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
 .dashboard-welcome {
-  margin-bottom: 2rem;
-  font-size: 1.2rem;
-  color: #555;
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 2.5rem; /* Beri jarak lebih ke konten di bawahnya */
 }
 
 .card-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem; /* Jarak lebih besar */
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Sedikit lebih lebar */
+  gap: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 /* Hapus background dari container utama, karena wrapper individual akan punya style sendiri */

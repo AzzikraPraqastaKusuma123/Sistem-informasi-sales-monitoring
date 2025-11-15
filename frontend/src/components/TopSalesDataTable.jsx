@@ -3,6 +3,7 @@ import api from '../api';
 import { useNotification } from '../contexts/NotificationContext';
 import TopUsersAchievementChart from './TopUsersAchievementChart'; // Impor grafik user
 import TopProductsChart from './TopProductsChart'; // Impor grafik produk
+import ProductPieChart from './ProductPieChart'; // Impor grafik pie produk baru
 import './TopSalesDataTable.css';
 
 const TopSalesDataTable = () => {
@@ -50,6 +51,11 @@ const TopSalesDataTable = () => {
 
   // Ambil 5 data teratas untuk grafik peringkat user
   const userChartData = useMemo(() => filteredData.slice(0, 5), [filteredData]);
+  // Data untuk grafik kontribusi sales (tidak lagi digunakan di sini, tapi tetap ada untuk referensi jika diperlukan)
+  // const salesContributionData = useMemo(() => 
+  //   filteredData.map(user => ({ name: user.name, value: user.total_achievement }))
+  //   .filter(user => user.value > 0)
+  // , [filteredData]);
 
   return (
     <div className="top-sales-data-table-wrapper">
@@ -73,15 +79,9 @@ const TopSalesDataTable = () => {
                 <TopProductsChart data={topProducts} />
               )}
             </div>
-            <div className="summary-recap">
-              <div className="recap-item">
-                <span className="recap-label">Total Sales Aktif:</span>
-                <span className="recap-value">{recap?.count || 0}</span>
-              </div>
-              <div className="recap-item">
-                <span className="recap-label">Total Pencapaian ({period}):</span>
-                <span className="recap-value">{formatCurrency(recap?.total || 0)}</span>
-              </div>
+            {/* Pie Chart Produk Terlaris yang baru */}
+            <div className="summary-pie-chart">
+              <ProductPieChart />
             </div>
           </div>
 

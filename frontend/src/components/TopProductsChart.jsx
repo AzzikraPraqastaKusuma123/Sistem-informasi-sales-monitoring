@@ -16,13 +16,13 @@ const TopProductsChart = ({ data }) => {
 
     return (
         <div className="chart-wrapper">
-            <h3>Produk Terlaris (Bulan Ini)</h3>
+            <h3>Produk Terlaris</h3>
             {isMockData && <p style={{ textAlign: 'center', color: '#888', fontSize: '12px', marginTop: '-10px' }}>(Contoh data ditampilkan)</p>}
             <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData}>
+                <BarChart data={chartData} layout="vertical" margin={{ top: 5, right: 30, left: 30, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#DEE2E6" />
-                    <XAxis dataKey="name" stroke="var(--color-text-secondary)" />
-                    <YAxis stroke="var(--color-text-secondary)" />
+                    <XAxis type="number" stroke="var(--color-text-secondary)" />
+                    <YAxis type="category" dataKey="name" stroke="var(--color-text-secondary)" width={80} />
                     <Tooltip formatter={(value) => `${value} unit`} />
                     <Legend />
                     <Bar dataKey="total_sold" name="Total Terjual" fill="#50E3C2" />
