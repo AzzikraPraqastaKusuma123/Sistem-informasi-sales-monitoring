@@ -1,48 +1,49 @@
 .sidebar {
-  background-color: var(--color-background-dark); /* Dark background from new palette */
-  color: var(--color-background-light); /* Light text color from new palette */
+  background-color: var(--color-background-light); /* Clean white background */
+  color: var(--color-text-primary);
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 1.5rem 1rem;
-  box-shadow: 2px 0 15px rgba(0,0,0,0.2);
-  transition: all 0.3s ease; /* Smooth transitions for width/other changes */
-  width: 250px; /* Default width */
+  padding: var(--spacing-xl) var(--spacing-lg); /* Increased padding */
+  box-shadow: var(--box-shadow-soft); /* Soft shadow for depth */
+  transition: all 0.3s ease;
+  width: 250px;
   flex-shrink: 0;
-  position: fixed; /* Make sidebar fixed */
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 100; /* Ensure it's above other content */
+  z-index: 100;
+  border-right: 1px solid var(--color-border); /* Subtle border */
 }
 
 .sidebar-header {
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-xxl); /* More spacing */
   text-align: center;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border); /* Lighter border */
 }
 
 .sidebar-header h2 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.8rem;
-  color: var(--color-primary); /* Highlight app name with primary color */
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--font-size-h4);
+  color: var(--color-primary); /* Primary color for app name */
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .sidebar-username {
-  font-size: 1rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   margin: 0;
-  color: var(--color-text-secondary); /* Use text secondary for username */
+  color: var(--color-text-secondary);
   word-wrap: break-word;
 }
 
 .sidebar-role {
-  font-size: 0.85rem;
-  color: var(--color-secondary); /* Using secondary color for role */
+  font-size: 0.75rem; /* Slightly smaller */
+  color: var(--color-soft-blue); /* Soft blue for role */
   text-transform: uppercase;
-  margin: 0.25rem 0 0 0;
+  margin: var(--spacing-xs) 0 0 0;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -50,97 +51,98 @@
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem; /* Reduced gap for a tighter look */
+  gap: var(--spacing-sm); /* Consistent gap */
   flex-grow: 1;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--spacing-xl);
 }
 
 .sidebar-nav a {
-  color: var(--color-background-light); /* Light text for inactive links */
+  color: var(--color-text-secondary); /* Secondary text for inactive links */
   text-decoration: none;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  transition: background-color 0.2s, color 0.2s, transform 0.2s;
-  display: flex; /* Use flexbox for icon and text alignment */
+  padding: var(--spacing-sm) var(--spacing-md); /* Consistent padding */
+  border-radius: var(--border-radius-sm); /* Smooth rounded corners */
+  transition: background-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: 500;
 }
 
 .sidebar-nav a:hover {
-  background-color: rgba(var(--color-primary-rgb), 0.2); /* Subtle hover with primary color */
-  color: var(--color-primary); /* Primary color on hover */
-  transform: translateX(5px); /* Slight slide effect on hover */
+  background-color: var(--color-light-blue); /* Light blue on hover */
+  color: var(--color-primary); /* Primary color text on hover */
+  transform: translateX(3px); /* Subtle slide effect */
+  box-shadow: 0 2px 6px rgba(var(--color-primary-rgb), 0.1); /* Soft shadow on hover */
 }
 
 .sidebar-nav a.active {
   background-color: var(--color-primary); /* Primary color for active link */
-  color: white;
+  color: var(--color-background-light); /* White text for active link */
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.3);
+  box-shadow: var(--box-shadow-soft); /* Soft shadow for active link */
 }
 
 .nav-icon {
-  margin-right: 10px; /* Space between icon and text */
-  font-size: 1.1rem;
+  margin-right: var(--spacing-sm); /* Consistent space */
+  font-size: var(--font-size-lg); /* Slightly larger icons */
 }
 
 .sidebar-footer {
   margin-top: auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
 }
 
 .sidebar-footer button {
   width: 100%;
-  padding: 0.8rem;
-  background-color: transparent;
-  color: var(--color-error); /* Red for logout */
-  border: 1px solid var(--color-error);
-  border-radius: 8px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-pink-coral); /* Accent pink for logout */
+  color: var(--color-background-light);
+  border: none; /* No border */
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  font-weight: 600;
+  transition: background-color 0.2s, box-shadow 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 1rem;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  box-shadow: var(--box-shadow-soft);
 }
 
 .sidebar-footer button:hover {
-  background-color: var(--color-error);
-  color: white;
-  border-color: var(--color-error);
+  background-color: #e06a6f; /* Slightly darker pink on hover */
+  box-shadow: var(--box-shadow-md);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .sidebar {
-    width: 80px; /* Collapsed width on small screens */
-    padding: 1rem 0.5rem;
+    width: 70px; /* Collapsed width on small screens */
+    padding: var(--spacing-md) var(--spacing-xs);
   }
 
   .sidebar-header h2,
   .sidebar-username,
   .sidebar-role {
-    display: none; /* Hide text on collapse */
+    display: none;
   }
 
   .sidebar-nav a {
-    justify-content: center; /* Center icons */
-    padding: 0.8rem 0.5rem;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-xs);
   }
 
   .sidebar-nav a span {
-    display: none; /* Hide text */
+    display: none;
   }
 
   .nav-icon {
-    margin-right: 0; /* No margin on collapse */
+    margin-right: 0;
   }
 
   .sidebar-footer button span {
-    display: none; /* Hide logout text */
+    display: none;
   }
 }

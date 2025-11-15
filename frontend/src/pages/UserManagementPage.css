@@ -3,35 +3,38 @@
 }
 
 .user-management-page h1 {
-  color: var(--color-text-primary); /* Use primary text color */
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-h2);
+  margin-bottom: var(--spacing-xl);
 }
 
 .user-management-page .add-btn {
-  padding: 10px 20px;
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-sm);
   background-color: var(--color-primary);
-  color: white;
-  font-size: 1rem;
+  color: var(--color-background-light);
+  font-size: var(--font-size-base);
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
+  box-shadow: var(--box-shadow-soft);
 }
 
 .user-management-page .add-btn:hover {
-  background-color: #2980b9; /* Darker primary */
+  background-color: #367BBF; /* Darker primary */
   transform: translateY(-2px);
+  box-shadow: var(--box-shadow-md);
 }
 
 /* Additional styles for specific elements if needed */
 .user-management-page .loading-message,
 .user-management-page .error-message {
   text-align: center;
-  padding: 1rem;
-  margin-top: 1rem;
-  border-radius: 8px;
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-base);
 }
 
 .user-management-page .loading-message {
@@ -40,23 +43,25 @@
 }
 
 .user-management-page .error-message {
-  background-color: rgba(var(--color-error-rgb), 0.1); /* Light red background */
+  background-color: rgba(var(--color-error), 0.1); /* Light red background */
   color: var(--color-error);
   border: 1px solid var(--color-error);
 }
 
 .btn-detail {
   background-color: var(--color-primary); /* Use primary color for detail button */
-  color: white;
-  padding: 8px 12px;
+  color: var(--color-background-light);
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease, transform 0.2s;
+  font-size: var(--font-size-sm);
+  transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
+  box-shadow: var(--box-shadow-soft);
 }
 
 .btn-detail:hover {
-  background-color: #2980b9; /* Darker primary */
+  background-color: #367BBF; /* Darker primary */
   transform: translateY(-2px);
+  box-shadow: var(--box-shadow-md);
 }

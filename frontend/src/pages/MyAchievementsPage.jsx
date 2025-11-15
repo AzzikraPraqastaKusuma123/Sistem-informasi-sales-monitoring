@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import api from '../api';
 import DataTable from '../components/DataTable';
 import UserAchievementChart from '../components/UserAchievementChart'; // Import the new chart component
+import './MyAchievementsPage.css'; // Import the new CSS file
 
 const MyAchievementsPage = () => {
   const [achievements, setAchievements] = useState([]);
@@ -38,16 +39,18 @@ const MyAchievementsPage = () => {
     { key: 'achievement_date', label: 'Tanggal' },
   ];
 
-  if (loading) return <div className="page-container">Memuat riwayat...</div>;
-  if (error) return <div className="page-container" style={{ color: 'red' }}>{error}</div>;
+  if (loading) return <div className="page-container my-achievements-page">Memuat riwayat...</div>;
+  if (error) return <div className="page-container my-achievements-page" style={{ color: 'red' }}>{error}</div>;
 
   return (
-    <div className="page-container">
+    <div className="page-container my-achievements-page">
       <div className="page-header">
         <h1>Riwayat Pencapaian Saya</h1>
       </div>
-      <UserAchievementChart data={achievements} />
-      <div style={{ marginTop: '2rem' }}>
+      <div className="chart-container">
+        <UserAchievementChart data={achievements} />
+      </div>
+      <div className="data-table-wrapper">
         <DataTable headers={headers} data={achievements} />
       </div>
     </div>

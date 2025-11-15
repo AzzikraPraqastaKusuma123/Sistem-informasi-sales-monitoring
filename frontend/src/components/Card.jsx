@@ -6,11 +6,11 @@ const Card = ({ title, value, unit = '' }) => {
   const getCardColor = (cardTitle) => {
     switch (cardTitle) {
       case 'Total Pengguna':
-        return { background: 'rgba(0, 123, 255, 0.1)', color: 'var(--color-primary)' };
+        return { background: 'rgba(75, 73, 172, 0.1)', color: 'var(--color-primary)' }; // Using primary color with opacity
       case 'Total Produk':
-        return { background: 'rgba(40, 167, 69, 0.1)', color: 'var(--color-success)' };
+        return { background: 'rgba(40, 167, 69, 0.1)', color: 'var(--color-success)' }; // Using success color with opacity
       case 'Total Laporan Masuk':
-        return { background: 'rgba(255, 193, 7, 0.1)', color: '#ffc107' };
+        return { background: 'rgba(255, 193, 7, 0.1)', color: 'var(--color-warning)' }; // Using warning color with opacity
       default:
         return {};
     }

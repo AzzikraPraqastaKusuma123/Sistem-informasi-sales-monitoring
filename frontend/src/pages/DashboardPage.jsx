@@ -11,11 +11,13 @@ import TargetProjectionCard from '../components/TargetProjectionCard'; // Import
 import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 import TopSalesDataTable from '../components/TopSalesDataTable'; // Import komponen tabel baru
 import MainDashboardChart from '../components/MainDashboardChart'; // Import komponen grafik utama yang baru
+import TopProductsChart from '../components/TopProductsChart'; // Import TopProductsChart
+import SalesContributionChart from '../components/SalesContributionChart'; // Import SalesContributionChart
 
 // Import CSS
 import './DashboardPage.css';
-import '../components/Chart.css';
-import '../components/Card.css'; // CSS untuk wrapper grafik
+// import '../components/Chart.css'; // Removed, styles handled globally or in component
+// import '../components/Card.css'; // Removed, styles handled globally or in component
 import '../components/TopSalesDataTable.css'; // Import CSS untuk tabel baru
 import '../components/MainDashboardChart.css'; // Import CSS untuk grafik utama baru
 

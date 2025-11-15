@@ -1,28 +1,27 @@
 .datatable-container {
-  overflow-x: auto; /* Enable horizontal scroll on small screens */
+  overflow-x: auto;
   background-color: var(--color-background-light);
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  border: 1px solid var(--color-border);
-  padding: 1.5rem;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--box-shadow-soft);
+  /* border: 1px solid var(--color-border); */ /* Rely on shadow for separation */
+  padding: var(--spacing-xl);
 }
 
 .datatable-container table {
   width: 100%;
-  border-collapse: separate; /* Use separate for rounded corners on cells */
+  border-collapse: separate;
   border-spacing: 0;
   background-color: var(--color-background-light);
-  /* box-shadow: 0 2px 8px rgba(0,0,0,0.1); */ /* Shadow moved to container */
-  border-radius: 10px; /* Added for consistency with other components */
-  overflow: hidden; /* Ensures rounded corners are applied to content */
+  border-radius: var(--border-radius-md); /* Consistent rounded corners */
+  overflow: hidden;
 }
 
 .datatable-container th, .datatable-container td {
-  padding: 15px 18px;
+  padding: var(--spacing-md) var(--spacing-lg);
   text-align: left;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-text-primary);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
 }
 
 .datatable-container th {
@@ -34,32 +33,34 @@
 }
 
 .datatable-container tr:last-child td {
-  border-bottom: none; /* No border for the last row */
+  border-bottom: none;
 }
 
 .datatable-container tbody tr:hover {
-  background-color: rgba(var(--color-primary-rgb), 0.05); /* Subtle hover effect using primary color */
+  background-color: rgba(var(--color-light-blue), 0.1); /* Softer hover effect */
 }
 
 .action-buttons {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
 }
 
 .action-buttons button {
-  padding: 8px 14px; /* Slightly larger buttons */
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
-  transition: background-color 0.2s ease, transform 0.2s;
-  white-space: nowrap; /* Prevent button text from wrapping */
+  transition: background-color 0.2s ease, transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  box-shadow: var(--box-shadow-soft); /* Add shadow to buttons */
 }
 
 .action-buttons button:hover {
   transform: translateY(-2px);
+  box-shadow: var(--box-shadow-md);
 }
 
 .edit-btn {
@@ -86,22 +87,22 @@
 }
 
 .btn-detail:hover {
-  background-color: #2980b9; /* Darker primary on hover */
+  background-color: #367BBF; /* Darker primary on hover */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .datatable-container {
-    padding: 1rem;
+    padding: var(--spacing-md);
   }
 
   .datatable-container th, .datatable-container td {
-    padding: 10px 12px;
-    font-size: 0.85rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
   }
 
   .action-buttons button {
-    padding: 6px 10px;
+    padding: var(--spacing-xs) var(--spacing-sm);
     font-size: 0.75rem;
   }
 }

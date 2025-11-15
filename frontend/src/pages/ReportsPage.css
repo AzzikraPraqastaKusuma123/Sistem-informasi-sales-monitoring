@@ -1,12 +1,12 @@
 .filters-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-    padding: 1.5rem;
-    background-color: var(--color-background-medium);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Added shadow */
-    margin-bottom: 2rem;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    background-color: var(--color-background-light);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-soft);
+    margin-bottom: var(--spacing-xxl);
     align-items: end;
 }
 
@@ -16,54 +16,68 @@
 }
 
 .filter-group label {
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
     font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-text-primary);
 }
 
 .filter-group input,
 .filter-group select {
-    padding: 0.8rem;
+    padding: var(--spacing-md) var(--spacing-lg);
     border: 1px solid var(--color-border);
-    border-radius: 4px;
-    font-size: 1rem;
-    background-color: var(--color-background-light);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    background-color: var(--color-input-bg);
     color: var(--color-text-primary);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(75, 73, 172, 0.2);
 }
 
 .filter-group button {
-    padding: 0.8rem;
+    padding: var(--spacing-md) var(--spacing-lg);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
     background-color: var(--color-primary);
-    color: white;
-    font-weight: bold;
+    color: var(--color-background-light);
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--box-shadow-soft);
 }
 
 .filter-group button:hover {
-    background-color: #367BBF; /* Slightly darker primary on hover */
+    background-color: #367BBF; /* Darker primary on hover */
+    box-shadow: var(--box-shadow-md);
 }
 
 .export-btn {
     background-color: var(--color-success);
-    color: white;
+    color: var(--color-background-light);
     border: none;
-    padding: 0.7rem 1.2rem;
-    border-radius: 5px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
+    font-weight: 600;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--box-shadow-soft);
+    font-size: var(--font-size-base);
 }
 
 .export-btn:hover {
-    background-color: #6BBF2B;
+    background-color: #218838; /* Darker success on hover */
+    box-shadow: var(--box-shadow-md);
 }
 
 .export-btn:disabled {
-    background-color: var(--color-border);
+    background-color: var(--color-background-medium);
     cursor: not-allowed;
     color: var(--color-text-secondary);
+    box-shadow: none;
 }

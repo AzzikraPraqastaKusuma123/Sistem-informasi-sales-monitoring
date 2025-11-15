@@ -1,30 +1,28 @@
 .card {
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
-  border: 1px solid #e9ecef;
+  background-color: var(--color-background-light);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--box-shadow-soft);
+  /* border: 1px solid var(--color-border); */ /* Removed explicit border, relying on shadow */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   align-items: center;
-  padding: 1.5rem;
-  overflow: hidden; /* Penting untuk menjaga border-radius ikon */
+  padding: var(--spacing-xl);
+  overflow: hidden;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px); /* Subtle lift */
+  box-shadow: var(--box-shadow-md);
 }
 
-/* Area untuk Ikon (jika ditambahkan nanti) atau hanya sebagai aksen */
 .card-icon-area {
-  padding: 1rem;
-  margin-right: 1.5rem;
-  border-radius: 8px;
+  padding: var(--spacing-md);
+  margin-right: var(--spacing-lg);
+  border-radius: var(--border-radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
+  /* Background and color set dynamically in Card.jsx */
 }
 
 .card-content {
@@ -32,22 +30,22 @@
 }
 
 .card-title {
-  font-size: 1rem;
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--spacing-xs);
   font-weight: 500;
 }
 
 .card-value {
-  font-size: 2.2rem;
+  font-size: var(--font-size-h3);
   font-weight: 700;
   color: var(--color-text-primary);
   line-height: 1.2;
 }
 
 .card-unit {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-secondary);
-  margin-left: 0.25rem;
+  margin-left: var(--spacing-xs);
   font-weight: 500;
 }

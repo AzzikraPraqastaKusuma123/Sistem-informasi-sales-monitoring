@@ -1,14 +1,28 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar'; // It will use the Sidebar component
-import './ProtectedLayout.css';   // We will create this CSS file next
+import Sidebar from './Sidebar';
+import { useAuth } from '../contexts/AuthContext'; // Import useAuth
+import './ProtectedLayout.css';
+import { FaUserCircle } from 'react-icons/fa'; // Import an icon for the avatar
 
 const ProtectedLayout = () => {
+  const { user } = useAuth(); // Get user from context
+
   return (
     <div className="app-layout">
       <Sidebar />
       <main className="main-content">
-        {/* This Outlet is where your pages (Dashboard, Products, etc.) will be rendered */}
+        <header className="main-header">
+          <div className="welcome-message">
+            Welcome back, {user?.name}!
+          </div>
+          <div className="user-info">
+            <span>{user?.name} ({user?.role})</span>
+            <div className="user-avatar">
+              <FaUserCircle />
+            </div>
+          </div>
+        </header>
         <Outlet />
       </main>
     </div>

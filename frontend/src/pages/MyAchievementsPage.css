@@ -1,0 +1,13 @@
+.my-achievements-page .page-header h1 {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-h2);
+  margin-bottom: var(--spacing-xl);
+}
+
+.my-achievements-page .chart-container {
+  margin-bottom: var(--spacing-xxl);
+}
+
+.my-achievements-page .data-table-wrapper {
+  margin-top: var(--spacing-xxl);
+}

@@ -34,34 +34,34 @@ const Sidebar = () => {
       </div>
 
       <nav className="sidebar-nav">
-        <NavLink to="/" end><FaTachometerAlt className="nav-icon" /> Dashboard</NavLink>
-        <NavLink to="/profile"><FaUserCircle className="nav-icon" /> Profil</NavLink>
+        <NavLink to="/" end><FaTachometerAlt className="nav-icon" /> <span>Dashboard</span></NavLink>
+        <NavLink to="/profile"><FaUserCircle className="nav-icon" /> <span>Profil</span></NavLink>
 
         {isSales && (
           <>
-            <NavLink to="/input-achievement"><FaPlusSquare className="nav-icon" /> Input Achievement</NavLink>
-            <NavLink to="/my-achievements"><FaHistory className="nav-icon" /> My History</NavLink>
-            <NavLink to="/evaluations"><FaClipboardList className="nav-icon" /> Evaluations</NavLink>
+            <NavLink to="/input-achievement"><FaPlusSquare className="nav-icon" /> <span>Input Achievement</span></NavLink>
+            <NavLink to="/my-achievements"><FaHistory className="nav-icon" /> <span>My History</span></NavLink>
+            <NavLink to="/evaluations"><FaClipboardList className="nav-icon" /> <span>Evaluations</span></NavLink>
           </>
         )}
 
         {(isAdmin || isSupervisor) && (
           <>
-            <NavLink to="/products"><FaBoxOpen className="nav-icon" /> Manage Products</NavLink>
-            <NavLink to="/manage-targets"><FaBullseye className="nav-icon" /> Manage Targets</NavLink>
-            <NavLink to="/reports"><FaChartLine className="nav-icon" /> Reports</NavLink>
-            <NavLink to="/evaluations"><FaClipboardList className="nav-icon" /> Evaluations</NavLink>
-            <NavLink to="/ranking"><FaAward className="nav-icon" /> Ranking</NavLink>
+            <NavLink to="/products"><FaBoxOpen className="nav-icon" /> <span>Manage Products</span></NavLink>
+            <NavLink to="/manage-targets"><FaBullseye className="nav-icon" /> <span>Manage Targets</span></NavLink>
+            <NavLink to="/reports"><FaChartLine className="nav-icon" /> <span>Reports</span></NavLink>
+            <NavLink to="/evaluations"><FaClipboardList className="nav-icon" /> <span>Evaluations</span></NavLink>
+            <NavLink to="/ranking"><FaAward className="nav-icon" /> <span>Ranking</span></NavLink>
           </>
         )}
         
         {isAdmin && (
-           <NavLink to="/users"><FaUsers className="nav-icon" /> Manage Users</NavLink>
+           <NavLink to="/users"><FaUsers className="nav-icon" /> <span>Manage Users</span></NavLink>
         )}
 
       </nav>
       <div className="sidebar-footer">
-        <button onClick={logout}><FaSignOutAlt className="nav-icon" /> Logout</button>
+        <button onClick={logout}><FaSignOutAlt className="nav-icon" /> <span>Logout</span></button>
       </div>
     </aside>
   );

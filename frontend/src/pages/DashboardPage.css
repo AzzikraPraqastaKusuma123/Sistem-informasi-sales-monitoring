@@ -1,96 +1,117 @@
 .dashboard-page {
-  padding: 2rem;
-  background-color: #f4f7fa; /* Latar belakang abu-abu muda untuk kontras */
+  padding: var(--spacing-xl);
+  background-color: var(--color-background-medium); /* Latar belakang abu-abu muda untuk kontras */
 }
 
 .dashboard-page h1 {
-  font-size: 2.5rem;
+  font-size: var(--font-size-h1);
   font-weight: 700;
   color: var(--color-text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .dashboard-welcome {
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg);
   color: var(--color-text-secondary);
-  margin-bottom: 2.5rem; /* Beri jarak lebih ke konten di bawahnya */
+  margin-bottom: var(--spacing-xxl); /* Beri jarak lebih ke konten di bawahnya */
 }
 
 .card-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Sedikit lebih lebar */
-  gap: 2rem;
-  margin-bottom: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xxl);
 }
 
-/* Hapus background dari container utama, karena wrapper individual akan punya style sendiri */
 .chart-container {
   display: grid;
-  gap: 2rem; /* Jarak lebih besar */
+  gap: var(--spacing-xxl);
 }
 
-/* Admin Dashboard Grid */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 2rem; /* Jarak lebih besar */
+  gap: var(--spacing-xxl);
 }
 
 .top-sales-chart {
-  grid-column: 1 / -1; /* Full width */
+  grid-column: 1 / -1;
 }
 
-/* Sales Dashboard Grid */
 .dashboard-grid-sales {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem; /* Jarak lebih besar */
+  gap: var(--spacing-xxl);
 }
 
 .sales-performance-chart {
-  grid-column: 1 / -1; /* Full width */
+  grid-column: 1 / -1;
 }
 
 .export-button-container {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--spacing-xl);
   text-align: right;
 }
 
 .btn-primary {
-  background-color: #007bff;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-background-light);
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--box-shadow-soft);
+  font-weight: 600;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
+  background-color: #367BBF; /* Darker primary on hover */
+  box-shadow: var(--box-shadow-md);
 }
 
-/* Style dasar untuk semua "panel" di dashboard */
-.chart-wrapper {
-    background-color: #ffffff;
-    padding: 1.5rem;
-    border-radius: 12px; /* Sudut lebih bulat */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07); /* Bayangan lebih halus */
-    border: 1px solid #e9ecef; /* Border yang sangat tipis */
-    width: 100%;
-    height: 100%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Remove redundant chart-wrapper styles, rely on global index.css and component-specific CSS */
+/* .chart-wrapper styles are now handled globally in index.css */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: var(--spacing-lg);
+  }
+
+  .dashboard-page h1 {
+    font-size: var(--font-size-h2);
+  }
+
+  .dashboard-welcome {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .card-container {
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .chart-container,
+  .dashboard-grid,
+  .dashboard-grid-sales {
+    gap: var(--spacing-lg);
+  }
+
+  .export-button-container {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .btn-primary {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+  }
 }
 
-.chart-wrapper:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.chart-wrapper h3 {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: #343a40;
-    font-weight: 600;
+@media (max-width: 992px) {
+  .dashboard-grid,
+  .dashboard-grid-sales {
+    grid-template-columns: 1fr; /* Stack charts on smaller screens */
+  }
 }

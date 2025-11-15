@@ -3,14 +3,14 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--color-primary), #6dd5ed); /* Modern gradient background */
-  padding: 20px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-light-blue)); /* Modern gradient background */
+  padding: var(--spacing-xl);
 }
 
 .login-box {
-  padding: 3.5rem;
+  padding: var(--spacing-xxl);
   background: var(--color-background-light);
-  border-radius: 15px;
+  border-radius: var(--border-radius-lg);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* More pronounced shadow */
   width: 100%;
   max-width: 450px;
@@ -20,38 +20,38 @@
 
 .login-box h2 {
   margin-top: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--spacing-sm);
   color: var(--color-primary);
-  font-size: 2.2rem;
+  font-size: var(--font-size-h2);
   font-weight: 700;
 }
 
 .login-box p {
-  margin-bottom: 2.5rem;
+  margin-bottom: var(--spacing-xxl);
   color: var(--color-text-secondary);
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg);
 }
 
 .input-group {
   text-align: left;
-  margin-bottom: 1.75rem;
+  margin-bottom: var(--spacing-xl);
 }
 
 .input-group label {
   display: block;
-  margin-bottom: 0.6rem;
+  margin-bottom: var(--spacing-xs);
   font-weight: 600;
   color: var(--color-text-primary);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
 }
 
 .input-group input {
   box-sizing: border-box;
   width: 100%;
-  padding: 1rem 1.2rem;
+  padding: var(--spacing-md) var(--spacing-lg);
   border: 1px solid var(--color-border);
-  border-radius: 10px;
-  font-size: 1rem;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-base);
   transition: border-color 0.3s, box-shadow 0.3s;
   background-color: var(--color-input-bg);
   color: var(--color-text-primary);
@@ -60,43 +60,46 @@
 .input-group input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.25);
+  box-shadow: 0 0 0 3px rgba(75, 73, 172, 0.25);
 }
 
 .error-message {
   color: var(--color-error);
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-  background-color: rgba(var(--color-error-rgb), 0.1);
-  padding: 10px;
-  border-radius: 8px;
+  margin-bottom: var(--spacing-xl);
+  font-size: var(--font-size-base);
+  background-color: rgba(var(--color-error), 0.1); /* Use var for color */
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
   border: 1px solid var(--color-error);
 }
 
 .login-box button {
   width: 100%;
-  padding: 1.1rem;
+  padding: var(--spacing-lg) var(--spacing-xl);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--border-radius-sm);
   background-color: var(--color-primary);
-  color: white;
-  font-size: 1.15rem;
-  font-weight: bold;
+  color: var(--color-background-light);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
   letter-spacing: 0.5px;
+  box-shadow: var(--box-shadow-soft);
 }
 
 .login-box button:hover {
-  background-color: #2980b9; /* Slightly darker primary on hover */
+  background-color: #367BBF; /* Slightly darker primary on hover */
   transform: translateY(-2px);
+  box-shadow: var(--box-shadow-md);
 }
 
 .login-box button:disabled {
-  background-color: var(--color-border);
+  background-color: var(--color-background-medium);
   cursor: not-allowed;
   color: var(--color-text-secondary);
   transform: none;
+  box-shadow: none;
 }
 
 /* Animasi untuk login box */
@@ -114,25 +117,25 @@
 /* Responsive adjustments */
 @media (max-width: 500px) {
   .login-box {
-    padding: 2.5rem 1.5rem;
-    border-radius: 10px;
+    padding: var(--spacing-xl) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
   }
 
   .login-box h2 {
-    font-size: 1.8rem;
+    font-size: var(--font-size-h3);
   }
 
   .login-box p {
-    font-size: 1rem;
-    margin-bottom: 2rem;
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-xl);
   }
 
   .input-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: var(--spacing-lg);
   }
 
   .login-box button {
-    padding: 1rem;
-    font-size: 1.05rem;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-base);
   }
 }

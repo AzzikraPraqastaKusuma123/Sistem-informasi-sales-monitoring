@@ -4,52 +4,52 @@
 
 .input-achievement-page .page-header h1 {
   color: var(--color-text-primary);
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
+  font-size: var(--font-size-h2);
+  margin-bottom: var(--spacing-xl);
 }
 
 .achievement-content-wrapper {
   display: grid;
-  grid-template-columns: 1fr 2fr; /* Riwayat di kiri (1fr), form di kanan (2fr) */
-  gap: 30px;
-  margin-top: 2rem;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--spacing-xxl);
+  margin-top: var(--spacing-xxl);
 }
 
 .achievement-history-section {
   background-color: var(--color-background-light);
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--color-border);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--box-shadow-soft);
+  /* border: 1px solid var(--color-border); */ /* Rely on shadow */
   display: flex;
   flex-direction: column;
 }
 
 .achievement-history-section h3 {
   color: var(--color-primary);
-  font-size: 1.6rem;
+  font-size: var(--font-size-h4);
   margin-top: 0;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-sm);
   border-bottom: 1px solid var(--color-border);
 }
 
 .history-filters {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
   flex-wrap: wrap;
   align-items: center;
 }
 
 .history-filters select,
 .history-filters input[type="date"] {
-  padding: 10px 12px;
+  padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-sm);
   background-color: var(--color-input-bg);
   color: var(--color-text-primary);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -57,22 +57,24 @@
 .history-filters input[type="date"]:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.25);
+  box-shadow: 0 0 0 2px rgba(75, 73, 172, 0.2);
 }
 
 .custom-date-range {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--spacing-xs);
 }
 
 .history-table-container {
   flex-grow: 1;
-  overflow-x: auto; /* Horizontal scroll for table on small screens */
-  overflow-y: auto; /* Vertical scroll for history list */
-  max-height: 600px; /* Batasi tinggi tabel */
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 600px;
+  /* border: 1px solid var(--color-border); */ /* Rely on shadow */
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--box-shadow-soft); /* Add shadow to table container */
+  overflow: hidden; /* Ensure rounded corners */
 }
 
 .history-table {
@@ -80,17 +82,17 @@
   border-collapse: separate;
   border-spacing: 0;
   background-color: var(--color-background-light);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   overflow: hidden;
 }
 
 .history-table th,
 .history-table td {
-  padding: 12px 15px;
+  padding: var(--spacing-sm) var(--spacing-md);
   text-align: left;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-text-primary);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .history-table th {
@@ -102,7 +104,7 @@
 }
 
 .history-table tbody tr:hover {
-  background-color: rgba(var(--color-primary-rgb), 0.05);
+  background-color: rgba(var(--color-light-blue), 0.05);
 }
 
 .history-table tbody tr:last-child td {
@@ -110,24 +112,26 @@
 }
 
 .achievement-form {
-  max-width: none; /* Hapus max-width agar menyesuaikan grid */
-  margin-top: 0; /* Hapus margin-top agar menyesuaikan grid */
+  max-width: none;
+  margin-top: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 25px;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
   background-color: var(--color-background-light);
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--box-shadow-soft);
+  /* border: 1px solid var(--color-border); */ /* Rely on shadow */
 }
 
 .achievement-form h3 {
   color: var(--color-primary);
-  font-size: 1.8rem;
+  font-size: var(--font-size-h4);
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-lg);
   text-align: center;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .form-group {
@@ -136,18 +140,18 @@
 }
 
 .form-group label {
-  margin-bottom: 0.6rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  font-size: 0.95rem;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
 }
 
 .form-group input,
 .form-group select {
-  padding: 12px 15px;
+  padding: var(--spacing-md) var(--spacing-lg);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-base);
   color: var(--color-text-primary);
   background-color: var(--color-input-bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -157,69 +161,73 @@
 .form-group select:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.25);
+  box-shadow: 0 0 0 2px rgba(75, 73, 172, 0.2);
 }
 
 .achievement-form button {
-  padding: 12px 25px;
+  padding: var(--spacing-md) var(--spacing-xl);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-size: 1.05rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s ease;
   background-color: var(--color-primary);
-  color: white;
-  margin-top: 1rem;
+  color: var(--color-background-light);
+  margin-top: var(--spacing-md);
+  box-shadow: var(--box-shadow-soft);
 }
 
 .achievement-form button:hover {
-  background-color: #2980b9; /* Darker primary */
+  background-color: #367BBF; /* Darker primary */
   transform: translateY(-2px);
+  box-shadow: var(--box-shadow-md);
 }
 
 .achievement-form button:disabled {
-  background-color: var(--color-border);
+  background-color: var(--color-background-medium);
   cursor: not-allowed;
   color: var(--color-text-secondary);
   transform: none;
+  box-shadow: none;
 }
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
   .achievement-content-wrapper {
-    grid-template-columns: 1fr; /* Satu kolom di layar tablet/mobile */
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
   }
 
   .achievement-history-section {
-    margin-bottom: 30px;
+    margin-bottom: 0;
   }
 }
 
 @media (max-width: 576px) {
   .achievement-history-section,
   .achievement-form {
-    padding: 20px;
+    padding: var(--spacing-lg);
   }
 
   .achievement-history-section h3,
   .achievement-form h3 {
-    font-size: 1.4rem;
+    font-size: var(--font-size-h4);
   }
 
   .history-filters {
     flex-direction: column;
-    gap: 15px;
+    gap: var(--spacing-md);
   }
 
   .custom-date-range {
     flex-direction: column;
-    gap: 10px;
+    gap: var(--spacing-sm);
   }
 
   .history-table th,
   .history-table td {
-    padding: 8px 10px;
-    font-size: 0.8rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
   }
 }

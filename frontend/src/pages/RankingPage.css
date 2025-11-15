@@ -1,52 +1,53 @@
 .ranking-list {
   max-width: 800px;
-  margin: 2rem auto;
+  margin: var(--spacing-xxl) auto;
 }
 
 .ranking-item {
   display: grid;
   grid-template-columns: 50px 1fr 1fr;
-  gap: 1rem;
+  gap: var(--spacing-lg);
   align-items: center;
-  background-color: var(--color-background-medium);
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  background-color: var(--color-background-light);
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--box-shadow-soft);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .ranking-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-md);
 }
 
 .rank-number {
-  font-size: 1.5rem;
+  font-size: var(--font-size-h3);
   font-weight: bold;
-  color: var(--color-primary); /* Use primary color for rank number */
+  color: var(--color-primary);
   text-align: center;
 }
 
 .rank-details h3 {
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 var(--spacing-xs) 0;
   color: var(--color-text-primary);
+  font-size: var(--font-size-lg);
 }
 
 .rank-details p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
 
 .rank-percentage {
-  font-size: 2rem;
+  font-size: var(--font-size-h2);
   font-weight: bold;
-  color: var(--color-secondary); /* Use secondary color for percentage */
+  color: var(--color-soft-purple); /* Using soft purple for percentage */
   text-align: right;
 }
 
 /* Style khusus untuk 3 peringkat teratas */
-.ranking-item.rank-1 { border-left: 5px solid var(--color-accent); } /* Emas */
-.ranking-item.rank-2 { border-left: 5px solid var(--color-border); } /* Perak */
-.ranking-item.rank-3 { border-left: 5px solid #CD7F32; } /* Perunggu */
+.ranking-item.rank-1 { border-left: 5px solid var(--color-pink-coral); } /* Accent pink for 1st */
+.ranking-item.rank-2 { border-left: 5px solid var(--color-soft-blue); } /* Soft blue for 2nd */
+.ranking-item.rank-3 { border-left: 5px solid var(--color-soft-purple); } /* Soft purple for 3rd */

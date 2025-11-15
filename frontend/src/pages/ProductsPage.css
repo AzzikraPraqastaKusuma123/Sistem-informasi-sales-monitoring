@@ -1,14 +1,23 @@
+.products-page .page-header h1 {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-h2);
+  margin-bottom: var(--spacing-xl);
+}
+
 .add-btn {
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-background-light);
   border: none;
-  padding: 0.7rem 1.2rem;
-  border-radius: 5px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
+  font-weight: 600;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--box-shadow-soft);
+  font-size: var(--font-size-base);
 }
 
 .add-btn:hover {
   background-color: #367BBF; /* Slightly darker primary on hover */
+  box-shadow: var(--box-shadow-md);
 }

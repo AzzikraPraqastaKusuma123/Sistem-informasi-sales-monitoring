@@ -1,22 +1,75 @@
 .app-layout {
-  display: flex; /* Use flexbox for overall layout */
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden; /* Prevents the whole page from scrolling */
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-background-medium); /* Slightly off-white background for the main area */
 }
 
 .main-content {
-  background-color: var(--color-background-light); /* Use global background color */
-  overflow-y: auto; /* Allows only the content area to scroll if it's long */
-  flex-grow: 1; /* Allow main content to take remaining space */
-  margin-left: 250px; /* Space for the fixed sidebar */
-  padding: 2rem;
-  transition: margin-left 0.3s ease; /* Smooth transition for sidebar collapse */
+  flex-grow: 1;
+  margin-left: 250px; /* Adjust for sidebar width */
+  padding: 0; /* Pages will handle their own padding */
+  display: flex;
+  flex-direction: column;
 }
 
-/* Responsive adjustments for main content when sidebar collapses */
+.main-header {
+  background-color: var(--color-background-light);
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--box-shadow-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky; /* Make header sticky */
+  top: 0;
+  z-index: 50; /* Ensure it's above page content */
+}
+
+.main-header .welcome-message {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.main-header .user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.main-header .user-info span {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+.main-header .user-info .user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--color-soft-blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-background-light);
+  font-weight: 600;
+  font-size: var(--font-size-lg);
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .main-content {
-    margin-left: 80px; /* Adjust margin for collapsed sidebar */
+    margin-left: 70px; /* Adjust for collapsed sidebar width */
+  }
+
+  .main-header {
+    padding: var(--spacing-sm) var(--spacing-lg);
+  }
+
+  .main-header .welcome-message {
+    font-size: var(--font-size-base);
+  }
+
+  .main-header .user-info span {
+    display: none; /* Hide username on small screens */
   }
 }
