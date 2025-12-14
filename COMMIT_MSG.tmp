@@ -1,0 +1,8 @@
+feat(Sales): Rombak Dasbor Sales & Tambah Notifikasi Evaluasi
+
+- Membuat Dasbor Sales sepenuhnya dinamis, mengambil semua data dari database.
+- Menambahkan tabel "Produk Terlaris" dengan filter harian, mingguan, dan bulanan.
+- Memperbaiki pie chart "Kontribusi Produk" menjadi dinamis dengan filter dan dibatasi untuk 4 produk teratas.
+- Menerapkan sistem notifikasi baru untuk evaluasi sales, termasuk badge di sidebar dan notifikasi pop-up setelah login.
+- Memperbaiki berbagai masalah UI/UX pada grafik dan tabel, termasuk format angka, format tanggal, dan penyesuaian tata letak.
+- Mengatasi crash pada aplikasi dengan memperbaiki hierarki React Context Provider.
