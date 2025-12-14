@@ -91,6 +91,8 @@ const getAchievementHistory = async (req, res) => {
     query += ` ORDER BY a.achievement_date DESC, a.created_at DESC`;
 
     const [rows] = await db.query(query, params);
+    console.log('--- Debug: Achievement History Rows ---');
+    console.log(rows);
     res.status(200).json(rows);
   } catch (error) {
     console.error('Error saat mengambil riwayat pencapaian:', error);

@@ -1,44 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import api from '../api';
+import React from 'react';
 import DataTable from './DataTable';
-import { useNotification } from '../contexts/NotificationContext';
+import './ProductDataTable.css';
 
-const ProductDataTable = () => {
-  const [data, setData] = useState({ daily: [], weekly: [], monthly: [] });
-  const [loading, setLoading] = useState(true);
-  const { showError } = useNotification();
-
-  useEffect(() => {
-    api.get('/dashboard/sales/product-sales')
-      .then(res => setData(res.data))
-      .catch(() => showError('Gagal memuat data penjualan produk.'))
-      .finally(() => setLoading(false));
-  }, [showError]);
+const ProductDataTable = ({ data, loading, period }) => {
+  const formatNumber = (num) => {
+    if (num === null || num === undefined) return '0';
+    return new Intl.NumberFormat('id-ID').format(num);
+  };
 
   const headers = [
     { label: 'Nama Produk', key: 'name' },
-    { label: 'Total Terjual', key: 'total_sold' },
+    {
+      label: 'Total Nilai Penjualan',
+      key: 'total_value',
+      customRenderer: (row) => `${formatNumber(row.total_value)}`,
+    },
+    {
+      label: 'Aktivitas Terakhir',
+      key: 'lastActivityTime',
+      customRenderer: (row) => {
+        if (!row.lastActivityTime) return '-';
+        const date = new Date(row.lastActivityTime);
+        return new Intl.DateTimeFormat('id-ID', {
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        }).format(date);
+      },
+    },
   ];
 
-  if (loading) return <div>Memuat data produk...</div>;
+  const periodTitle = {
+    daily: 'Harian',
+    weekly: 'Mingguan',
+    monthly: 'Bulanan',
+  };
+
+  if (loading) {
+    return (
+      <div className="product-data-table-container">
+        <h3>Produk Terlaris</h3>
+        <p>Memuat data produk...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="product-data-table-container">
-      <h3>Produk Terlaris</h3>
-      <div className="product-data-tables">
-        <div className="product-data-table">
-          <h4>Harian</h4>
-          <DataTable headers={headers} data={data.daily} />
-        </div>
-        <div className="product-data-table">
-          <h4>Mingguan</h4>
-          <DataTable headers={headers} data={data.weekly} />
-        </div>
-        <div className="product-data-table">
-          <h4>Bulanan</h4>
-          <DataTable headers={headers} data={data.monthly} />
-        </div>
-      </div>
+      <h3>Produk Terlaris ({periodTitle[period]})</h3>
+      {data && data.length > 0 ? (
+        <DataTable headers={headers} data={data} />
+      ) : (
+        <p>Tidak ada data penjualan produk untuk periode ini.</p>
+      )}
     </div>
   );
 };

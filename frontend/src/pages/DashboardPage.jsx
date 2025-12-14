@@ -6,13 +6,13 @@ import Card from '../components/Card';
 // Import komponen-komponen grafik BARU
 import PerformanceTrendChart from '../components/PerformanceTrendChart';
 import ActivityChart from '../components/ActivityChart';
-import SalesPerformanceChart from '../components/SalesPerformanceChart'; // Import the new chart component
 import TargetProjectionCard from '../components/TargetProjectionCard'; // Import the new projection card
 import { useNotification } from '../contexts/NotificationContext'; // Import useNotification
 import TopSalesDataTable from '../components/TopSalesDataTable'; // Import komponen tabel baru
 import MainDashboardChart from '../components/MainDashboardChart'; // Import komponen grafik utama yang baru
 import TopProductsChart from '../components/TopProductsChart'; // Import TopProductsChart
 import SalesContributionChart from '../components/SalesContributionChart'; // Import SalesContributionChart
+import ProductDataTable from '../components/ProductDataTable'; // Re-add the missing import
 
 // Import CSS
 import './DashboardPage.css';
@@ -69,15 +69,24 @@ const AdminDashboard = () => {
   );
 };
 
-import ProductDataTable from '../components/ProductDataTable';
-import '../components/ProductDataTable.css';
-
 // Tampilan Dashboard untuk Sales (DIPERBARUI)
 const SalesDashboard = () => {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { showError, showSuccess } = useNotification(); // Inisialisasi useNotification
+  
+  // State untuk tabel produk terlaris
+  const [topProductsData, setTopProductsData] = useState([]);
+  const [topProductsPeriod, setTopProductsPeriod] = useState('monthly');
+  const [tableLoading, setTableLoading] = useState(true);
 
+  // State untuk pie chart kontribusi
+  const [contributionData, setContributionData] = useState([]);
+  const [contributionPeriod, setContributionPeriod] = useState('monthly');
+  const [contributionLoading, setContributionLoading] = useState(true);
+
+  const { showError, showSuccess } = useNotification();
+
+  // Effect untuk data summary utama
   useEffect(() => {
     api.get('/dashboard/sales')
       .then(res => setSummary(res.data))
@@ -85,24 +94,57 @@ const SalesDashboard = () => {
       .finally(() => setLoading(false));
   }, [showError]);
 
+  // Effect untuk data tabel produk terlaris
+  useEffect(() => {
+    const fetchTopProducts = async () => {
+      setTableLoading(true);
+      try {
+        const res = await api.get(`/dashboard/sales/top-products?period=${topProductsPeriod}`);
+        setTopProductsData(res.data);
+      } catch (err) {
+        showError('Gagal memuat data produk terlaris.');
+        setTopProductsData([]);
+      } finally {
+        setTableLoading(false);
+      }
+    };
+    fetchTopProducts();
+  }, [topProductsPeriod, showError]);
+
+  // Effect untuk pie chart kontribusi
+  useEffect(() => {
+    const fetchContributionData = async () => {
+      setContributionLoading(true);
+      try {
+        const res = await api.get(`/dashboard/sales/contribution?period=${contributionPeriod}`);
+        console.log('--- Contribution API Response ---', res.data); // Debugging line
+        setContributionData(res.data);
+      } catch (err) {
+        showError('Gagal memuat data kontribusi produk.');
+        setContributionData([]);
+      } finally {
+        setContributionLoading(false);
+      }
+    };
+    fetchContributionData();
+  }, [contributionPeriod, showError]);
+
+
   if (loading) return <div>Memuat Dashboard Kinerja Anda...</div>;
 
   const handleExport = async () => {
     try {
       const response = await api.get('/dashboard/sales/export', {
-        responseType: 'blob', // Penting: respons diharapkan dalam bentuk blob
+        responseType: 'blob',
       });
-
-      // Buat URL objek dari blob
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      // Buat link sementara dan klik untuk mengunduh
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `Sales_Dashboard_Export_${Date.now()}.xlsx`); // Nama file
+      link.setAttribute('download', `Sales_Dashboard_Export_${Date.now()}.xlsx`);
       document.body.appendChild(link);
       link.click();
-      link.remove(); // Hapus link setelah diunduh
-      window.URL.revokeObjectURL(url); // Bersihkan URL objek
+      link.remove();
+      window.URL.revokeObjectURL(url);
       showSuccess('Data berhasil diekspor ke Excel!');
     } catch (error) {
       showError("Gagal mengunduh data Excel. Silakan coba lagi.");
@@ -113,10 +155,10 @@ const SalesDashboard = () => {
     <>
       {/* Kartu KPI - Tidak Berubah */}
       <div className="card-container">
-        <Card title="Pencapaian Saya (Bulan Ini)" value={summary?.achievement} />
-        <Card title="Target Saya (Bulan Ini)" value={summary?.target} />
+        <Card title="Pencapaian Saya (Bulan Ini)" value={summary?.achievement} isCurrency={true} />
+        <Card title="Target Saya (Bulan Ini)" value={summary?.target} isCurrency={true} />
         <Card title="Persentase Target" value={summary?.percentage} unit="%" />
-        <Card title="Proyeksi Akhir Bulan" value={summary?.projectedAchievement} />
+        <Card title="Proyeksi Akhir Bulan" value={summary?.projectedAchievement} isCurrency={true} />
       </div>
       
       <div className="export-button-container">
@@ -132,20 +174,70 @@ const SalesDashboard = () => {
 
       {/* Wadah untuk semua grafik */}
       <div className="chart-container">
-        {/* Grafik Performa vs Target (utama, lebar penuh) */}
-        <div className="sales-performance-chart chart-wrapper">
-          <SalesPerformanceChart achievement={summary?.achievement} target={summary?.target} />
-        </div>
-
         {/* Grid untuk grafik-grafik lainnya */}
         <div className="dashboard-grid-sales">
           <div className="chart-wrapper"><PerformanceTrendChart data={summary?.dailyTrend || []} /></div>
           <div className="chart-wrapper"><TopProductsChart data={summary?.topProducts || []} /></div>
-          <div className="chart-wrapper"><SalesContributionChart data={summary?.salesContribution || []} /></div>
+          
+          {/* Sales Contribution Chart Section with Filters */}
+          <div className="chart-wrapper">
+            <div className="filter-buttons chart-filters">
+              <button 
+                onClick={() => setContributionPeriod('daily')} 
+                className={contributionPeriod === 'daily' ? 'active' : ''}
+              >
+                Harian
+              </button>
+              <button 
+                onClick={() => setContributionPeriod('weekly')}
+                className={contributionPeriod === 'weekly' ? 'active' : ''}
+              >
+                Mingguan
+              </button>
+              <button 
+                onClick={() => setContributionPeriod('monthly')}
+                className={contributionPeriod === 'monthly' ? 'active' : ''}
+              >
+                Bulanan
+              </button>
+            </div>
+            <SalesContributionChart 
+              data={contributionData} 
+              loading={contributionLoading} 
+              period={contributionPeriod} 
+            />
+          </div>
         </div>
       </div>
 
-      <ProductDataTable />
+      {/* Bagian Tabel Produk Terlaris BARU */}
+      <div className="top-products-table-section">
+        <div className="filter-buttons">
+          <button 
+            onClick={() => setTopProductsPeriod('daily')} 
+            className={topProductsPeriod === 'daily' ? 'active' : ''}
+          >
+            Harian
+          </button>
+          <button 
+            onClick={() => setTopProductsPeriod('weekly')}
+            className={topProductsPeriod === 'weekly' ? 'active' : ''}
+          >
+            Mingguan
+          </button>
+          <button 
+            onClick={() => setTopProductsPeriod('monthly')}
+            className={topProductsPeriod === 'monthly' ? 'active' : ''}
+          >
+            Bulanan
+          </button>
+        </div>
+        <ProductDataTable 
+          data={topProductsData}
+          loading={tableLoading}
+          period={topProductsPeriod}
+        />
+      </div>
     </>
   );
 };

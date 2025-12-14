@@ -89,3 +89,27 @@
     color: var(--color-text-secondary);
     text-align: right;
 }
+
+/* --- Gaya untuk Evaluasi yang Belum Dibaca --- */
+.evaluation-item {
+    position: relative; /* Diperlukan untuk positioning badge */
+    transition: all 0.3s ease;
+}
+
+.evaluation-item.unread {
+    background-color: var(--color-light-blue);
+    border-left-color: var(--color-primary);
+}
+
+.new-badge {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background-color: var(--color-danger);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}

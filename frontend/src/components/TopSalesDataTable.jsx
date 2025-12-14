@@ -41,12 +41,8 @@ const TopSalesDataTable = () => {
     );
   }, [data, searchTerm]);
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(value);
+  const formatNumber = (value) => {
+    return new Intl.NumberFormat('id-ID').format(value);
   };
 
   // Ambil 5 data teratas untuk grafik peringkat user
@@ -120,7 +116,7 @@ const TopSalesDataTable = () => {
                       <td data-label="Email">{user.email}</td>
                       <td data-label="Produk Terlaris">{user.top_product_name || '-'}</td>
                       <td data-label="Total Pencapaian" className="achievement-value">
-                        {formatCurrency(user.total_achievement)}
+                        {formatNumber(user.total_achievement)}
                       </td>
                     </tr>
                   ))

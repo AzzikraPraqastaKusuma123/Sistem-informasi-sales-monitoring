@@ -16,6 +16,11 @@ const Card = ({ title, value, unit = '' }) => {
     }
   };
 
+  const formatNumber = (num) => {
+    if (num === null || num === undefined) return '0';
+    return new Intl.NumberFormat('id-ID').format(num);
+  };
+
   return (
     <div className="card">
       <div className="card-icon-area" style={getCardColor(title)}>
@@ -24,7 +29,7 @@ const Card = ({ title, value, unit = '' }) => {
       <div className="card-content">
         <h3 className="card-title">{title}</h3>
         <p className="card-value">
-          {value !== null && value !== undefined ? value : '0'}
+          {formatNumber(value)}
           {unit && <span className="card-unit">{unit}</span>}
         </p>
       </div>

@@ -62,11 +62,17 @@ const SupervisorEvaluationView = () => {
 const SalesEvaluationView = () => {
     const [evaluations, setEvaluations] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { showError } = useNotification(); // Inisialisasi useNotification
+    const { showError, clearEvaluationNotifCount } = useNotification(); // Ambil fungsi clear
 
     useEffect(() => {
-        const fetchMyEvaluations = async () => {
+        const markAndFetch = async () => {
             try {
+                // 1. Beri tahu backend bahwa notifikasi sudah dilihat
+                await api.post('/evaluations/mark-as-read');
+                // 2. Hapus notifikasi dari UI (sidebar)
+                clearEvaluationNotifCount();
+                
+                // 3. Ambil daftar evaluasi untuk ditampilkan
                 const { data } = await api.get('/evaluations/my');
                 setEvaluations(data);
             } catch (error) {
@@ -75,8 +81,9 @@ const SalesEvaluationView = () => {
                 setLoading(false);
             }
         };
-        fetchMyEvaluations();
-    }, [showError]);
+        markAndFetch();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showError, clearEvaluationNotifCount]);
 
     if (loading) return <div>Memuat evaluasi...</div>;
 
@@ -85,10 +92,11 @@ const SalesEvaluationView = () => {
             <h3>Umpan Balik Diterima</h3>
             {evaluations.length > 0 ? (
                 evaluations.map(eva => (
-                    <div key={eva.id} className="evaluation-item">
+                    <div key={eva.id} className={`evaluation-item ${eva.is_read === 0 ? 'unread' : ''}`}>
+                        {eva.is_read === 0 && <span className="new-badge">Baru</span>}
                         <blockquote>{eva.comment}</blockquote>
                         <p className="meta">
-                            Dari: <strong>{eva.supervisorName}</strong> - {new Date(eva.created_at).toLocaleString('id-ID')}
+                            Dari: <strong>{eva.supervisorName}</strong> - {new Date(eva.created_at).toLocaleString('id-ID', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </p>
                     </div>
                 ))

@@ -21,7 +21,7 @@ const CustomTooltip = ({ active, payload, label }) => {
                 border: 'none' // Ensure no default border
             }}>
                 <p className="label">{`Tanggal: ${label}`}</p>
-                <p className="intro">{`Total Penjualan: ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(payload[0].value)}`}</p>
+                <p className="intro">{`Jumlah Produk: ${payload[0].value} unit`}</p>
             </div>
         );
     }
@@ -36,7 +36,7 @@ const generateMockData = () => {
         date.setDate(date.getDate() - i);
         data.push({
             date: date.toISOString().split('T')[0], // Format YYYY-MM-DD
-            total: Math.floor(Math.random() * (5000000 - 500000 + 1)) + 500000,
+            total: Math.floor(Math.random() * 50), // Generate smaller numbers for counts
         });
     }
     return data;
@@ -61,7 +61,6 @@ const PerformanceTrendChart = ({ data }) => {
                     <XAxis dataKey="date" stroke="var(--color-text-secondary)" tickLine={false} axisLine={false} />
                     <YAxis 
                         stroke="var(--color-text-secondary)"
-                        tickFormatter={(value) => new Intl.NumberFormat('id-ID', { notation: 'compact' }).format(value)}
                         tickLine={false} axisLine={false}
                     />
                     <Tooltip content={<CustomTooltip />} />
@@ -69,7 +68,7 @@ const PerformanceTrendChart = ({ data }) => {
                     <Line
                         type="monotone" // Smooth curved line
                         dataKey="total"
-                        name="Total Penjualan"
+                        name="Jumlah Produk"
                         stroke={PRIMARY_COLOR} // Main line color
                         activeDot={{ r: 6, fill: LIGHT_BLUE, stroke: PRIMARY_COLOR, strokeWidth: 2 }} // Data points
                         isAnimationActive={true}

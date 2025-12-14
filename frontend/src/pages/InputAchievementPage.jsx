@@ -111,6 +111,14 @@ const InputAchievementPage = () => {
     return date.toLocaleDateString('id-ID', { weekday: 'short' });
   };
 
+  const formatNumber = (num) => {
+    if (num === null || num === undefined) return '0';
+    return new Intl.NumberFormat('id-ID').format(num);
+  };
+
+  // Menghitung total pencapaian dari riwayat
+  const totalAchieved = achievementHistory.reduce((sum, item) => sum + (item.achieved_value || 0), 0);
+
   return (
     <div className="page-container input-achievement-page">
       <div className="page-header">
@@ -154,10 +162,16 @@ const InputAchievementPage = () => {
                       <td>{formatDay(item.achievement_date)}</td>
                       <td>{formatDate(item.achievement_date)}</td>
                       <td>{item.productName}</td>
-                      <td>{item.achievedValue}</td>
+                      <td>{formatNumber(item.achieved_value)} produk</td>
                     </tr>
                   ))}
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan="4" style={{ textAlign: 'right', fontWeight: 'bold' }}>Total Pencapaian</td>
+                    <td style={{ fontWeight: 'bold' }}>{formatNumber(totalAchieved)} produk</td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           ) : (

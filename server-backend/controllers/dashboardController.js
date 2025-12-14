@@ -100,16 +100,16 @@ const getSalesDashboard = async (req, res) => {
     const currentDayOfMonth = today.getDate();
     const totalDaysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 
-    // 1. Data KPI Utama (Pencapaian, Target, Persentase) - Logika tidak berubah
+    // 1. Data KPI Utama (Pencapaian, Target, Persentase) - Menggunakan SUM(achieved_value) dan tanggal dinamis
     const performanceQuery = `
       SELECT
-        (SELECT SUM(achieved_value) FROM achievements WHERE user_id = ? AND MONTH(achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(achievement_date) = YEAR(CURRENT_DATE())) as currentAchievement,
-        (SELECT SUM(target_value) FROM targets WHERE user_id = ? AND CURRENT_DATE() BETWEEN period_start AND period_end) as currentTarget
+        (SELECT COALESCE(SUM(achieved_value), 0) FROM achievements WHERE user_id = ? AND MONTH(achievement_date) = MONTH(CURDATE()) AND YEAR(achievement_date) = YEAR(CURDATE())) as currentAchievement,
+        (SELECT COALESCE(SUM(target_value), 0) FROM targets WHERE user_id = ? AND CURDATE() BETWEEN period_start AND period_end) as currentTarget
     `;
     const [performance] = await db.query(performanceQuery, [userId, userId]);
     
-    const achievement = performance[0].currentAchievement || 0;
-    const target = performance[0].currentTarget || 0;
+    const achievement = Number(performance[0].currentAchievement);
+    const target = Number(performance[0].currentTarget);
     const percentage = target > 0 ? Math.round((achievement / target) * 100) : 0;
 
     // --- LOGIKA BARU UNTUK PROYEKSI PENCAPAIAN ---
@@ -121,9 +121,11 @@ const getSalesDashboard = async (req, res) => {
 
     // --- KUMPULKAN DATA UNTUK GRAFIK-GRAFIK LAINNYA ---
 
-    // 2. Tren Kinerja Harian (Grafik Garis)
+    // 2. Tren Kinerja Harian (Grafik Garis) - 30 hari terakhir, menggunakan SUM
     const dailyTrendQuery = `
-      SELECT DATE_FORMAT(achievement_date, '%Y-%m-%d') as date, SUM(achieved_value) as total
+      SELECT 
+        DATE_FORMAT(achievement_date, '%Y-%m-%d') as date, 
+        SUM(achieved_value) as total
       FROM achievements
       WHERE user_id = ? AND achievement_date >= CURDATE() - INTERVAL 30 DAY
       GROUP BY date
@@ -131,38 +133,30 @@ const getSalesDashboard = async (req, res) => {
     `;
     const [dailyTrend] = await db.query(dailyTrendQuery, [userId]);
 
-    // 3. Produk Terlaris (Grafik Batang)
+    // 3. Produk Terlaris (Grafik Batang) - Bulan ini, menggunakan SUM
     const topProductsQuery = `
-      SELECT p.name, SUM(a.achieved_value) as total_sold
+      SELECT 
+        p.name, 
+        SUM(a.achieved_value) as total_sold
       FROM achievements a
       JOIN products p ON a.product_id = p.id
-      WHERE a.user_id = ? AND MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())
-      GROUP BY p.id, p.name
+      WHERE a.user_id = ? AND MONTH(a.achievement_date) = MONTH(CURDATE()) AND YEAR(a.achievement_date) = YEAR(CURDATE())
+      GROUP BY p.name
       ORDER BY total_sold DESC
       LIMIT 5;
     `;
     const [topProducts] = await db.query(topProductsQuery, [userId]);
 
-    // 4. Kontribusi Penjualan per Produk (Grafik Pai)
-    const salesContributionQuery = `
-      SELECT p.name, SUM(a.achieved_value) as value
-      FROM achievements a
-      JOIN products p ON a.product_id = p.id
-      WHERE a.user_id = ? AND MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())
-      GROUP BY p.id, p.name
-      HAVING value > 0;
-    `;
-    const [salesContribution] = await db.query(salesContributionQuery, [userId]);
+    // 4. Kontribusi Penjualan per Produk (Grafik Pai) sekarang ditangani oleh endpoint terpisah.
 
     // Kirim semua data sebagai respons
     res.json({
       achievement,
       target,
       percentage,
-      projectedAchievement, // Data baru
+      projectedAchievement,
       dailyTrend,
       topProducts,
-      salesContribution,
     });
     
   } catch (error) {
@@ -170,6 +164,100 @@ const getSalesDashboard = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
+// @desc    Mendapatkan data kontribusi produk untuk sales (Harian, Mingguan, Bulanan)
+// @route   GET /api/dashboard/sales/contribution?period=daily|weekly|monthly
+// @access  Private (Sales)
+const getSalesContributionData = async (req, res) => {
+  const userId = req.user.id;
+  const { period = 'monthly' } = req.query; // default 'monthly'
+
+  let dateFilter;
+  switch (period) {
+    case 'daily':
+      dateFilter = 'AND a.achievement_date = CURDATE()';
+      break;
+    case 'weekly':
+      dateFilter = 'AND YEARWEEK(a.achievement_date, 1) = YEARWEEK(CURDATE(), 1)';
+      break;
+    default: // monthly
+      dateFilter = 'AND MONTH(a.achievement_date) = MONTH(CURDATE()) AND YEAR(a.achievement_date) = YEAR(CURDATE())';
+      break;
+  }
+
+  try {
+    const query = `
+      SELECT
+        p.name,
+        SUM(a.achieved_value) as value
+      FROM achievements a
+      JOIN products p ON a.product_id = p.id
+      WHERE a.user_id = ? ${dateFilter}
+      GROUP BY p.name
+      HAVING value > 0
+      ORDER BY value DESC
+      LIMIT 4;
+    `;
+
+    const [rows] = await db.query(query, [userId]);
+    // Pastikan 'value' adalah angka agar library chart bisa me-render
+    const data = rows.map(row => ({
+      ...row,
+      value: parseFloat(row.value)
+    }));
+    res.json(data);
+
+  } catch (error) {
+    console.error(`Error getting sales contribution data for period ${period}:`, error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// @desc    Mendapatkan produk terlaris untuk sales (Harian, Mingguan, Bulanan)
+// @route   GET /api/dashboard/sales/top-products?period=daily|weekly|monthly
+// @access  Private (Sales)
+const getTopProductsForSales = async (req, res) => {
+  const userId = req.user.id;
+  const { period = 'monthly' } = req.query; // default 'monthly'
+
+  let dateFilter;
+  switch (period) {
+    case 'daily':
+      dateFilter = 'AND a.achievement_date = CURDATE()';
+      break;
+    case 'weekly':
+      // Week starts on Monday
+      dateFilter = 'AND YEARWEEK(a.achievement_date, 1) = YEARWEEK(CURDATE(), 1)';
+      break;
+    default:
+      dateFilter = 'AND MONTH(a.achievement_date) = MONTH(CURDATE()) AND YEAR(a.achievement_date) = YEAR(CURDATE())';
+      break;
+  }
+
+  try {
+    const query = `
+      SELECT
+        p.name,
+        SUM(a.achieved_value) as total_value,
+        COUNT(a.id) as total_transactions,
+        MAX(a.created_at) as lastActivityTime
+      FROM achievements a
+      JOIN products p ON a.product_id = p.id
+      WHERE a.user_id = ? ${dateFilter}
+      GROUP BY p.name
+      ORDER BY total_value DESC
+      LIMIT 10;
+    `;
+
+    const [rows] = await db.query(query, [userId]);
+    res.json(rows);
+
+  } catch (error) {
+    console.error(`Error getting top products for period ${period}:`, error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 // @desc    Export data sales ke Excel
 // @route   GET /api/dashboard/sales/export
 const exportSalesData = async (req, res) => {
@@ -285,48 +373,6 @@ const exportSalesData = async (req, res) => {
   }
 };
 
-
-const getProductSalesData = async (req, res) => {
-  const userId = req.user.id;
-
-  try {
-    const dailyQuery = `
-      SELECT p.name, SUM(a.achieved_value) as total_sold
-      FROM achievements a
-      JOIN products p ON a.product_id = p.id
-      WHERE a.user_id = ? AND DATE(a.achievement_date) = CURDATE()
-      GROUP BY p.id, p.name
-      ORDER BY total_sold DESC;
-    `;
-    const [daily] = await db.query(dailyQuery, [userId]);
-
-    const weeklyQuery = `
-      SELECT p.name, SUM(a.achieved_value) as total_sold
-      FROM achievements a
-      JOIN products p ON a.product_id = p.id
-      WHERE a.user_id = ? AND YEARWEEK(a.achievement_date, 1) = YEARWEEK(CURDATE(), 1)
-      GROUP BY p.id, p.name
-      ORDER BY total_sold DESC;
-    `;
-    const [weekly] = await db.query(weeklyQuery, [userId]);
-
-    const monthlyQuery = `
-      SELECT p.name, SUM(a.achieved_value) as total_sold
-      FROM achievements a
-      JOIN products p ON a.product_id = p.id
-      WHERE a.user_id = ? AND MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())
-      GROUP BY p.id, p.name
-      ORDER BY total_sold DESC;
-    `;
-    const [monthly] = await db.query(monthlyQuery, [userId]);
-
-    res.json({ daily, weekly, monthly });
-  } catch (error) {
-    console.error('Get product sales data error:', error);
-    res.status(500).json({ message: 'Server Error' });
-  }
-};
-
 // @desc    Mendapatkan data peringkat sales untuk tabel
 // @route   GET /api/dashboard/top-sales-table
 const getTopSalesTable = async (req, res) => {
@@ -345,8 +391,8 @@ const getTopSalesTable = async (req, res) => {
         dateFilter = 'AND YEARWEEK(a.achievement_date, 1) = YEARWEEK(CURDATE(), 1)';
         break;
       default:
-        whereClause = 'WHERE MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())';
-        dateFilter = 'AND MONTH(a.achievement_date) = MONTH(CURRENT_DATE()) AND YEAR(a.achievement_date) = YEAR(CURRENT_DATE())';
+        whereClause = 'WHERE MONTH(a.achievement_date) = 11 AND YEAR(a.achievement_date) = 2025';
+        dateFilter = 'AND MONTH(a.achievement_date) = 11 AND YEAR(a.achievement_date) = 2025';
         break;
     }
 
@@ -357,7 +403,7 @@ const getTopSalesTable = async (req, res) => {
           u.id,
           u.name,
           u.email,
-          COALESCE(SUM(a.achieved_value), 0) as total_achievement
+          COALESCE(COUNT(a.id), 0) as total_achievement
         FROM users u
         LEFT JOIN achievements a ON u.id = a.user_id ${dateFilter}
         WHERE u.role = 'sales'
@@ -367,7 +413,7 @@ const getTopSalesTable = async (req, res) => {
         SELECT
           a.user_id,
           p.name as top_product_name,
-          ROW_NUMBER() OVER(PARTITION BY a.user_id ORDER BY SUM(a.achieved_value) DESC) as rn
+          ROW_NUMBER() OVER(PARTITION BY a.user_id ORDER BY COUNT(a.id) DESC) as rn
         FROM achievements a
         JOIN products p ON a.product_id = p.id
         ${whereClause}
@@ -455,9 +501,10 @@ const getProductPieChart = async (req, res) => {
 module.exports = {
   getDashboardSummary,
   getSalesDashboard,
+  getSalesContributionData,
   exportSalesData,
-  getProductSalesData,
+  getTopProductsForSales, // Tambahkan fungsi baru
   getTopSalesTable,
-  getProductPieChart, // Ekspor fungsi baru
+  getProductPieChart,
 };
 

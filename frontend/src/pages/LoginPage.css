@@ -139,3 +139,26 @@
     font-size: var(--font-size-base);
   }
 }
+
+/* Styling for password visibility toggle */
+.password-input-container {
+  position: relative;
+}
+
+.password-input-container input {
+  padding-right: 40px; /* Make space for the icon */
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: color 0.3s;
+}
+
+.password-toggle-icon:hover {
+  color: var(--color-primary);
+}

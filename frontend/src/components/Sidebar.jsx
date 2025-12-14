@@ -1,7 +1,8 @@
 // src/components/Sidebar.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext'; // Import notif context
 import './Sidebar.css';
 import {
   FaTachometerAlt,
@@ -19,6 +20,15 @@ import {
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
+  const { evaluationNotifCount, fetchEvaluationNotifCount } = useNotification();
+
+  useEffect(() => {
+    // Ambil jumlah notifikasi saat komponen dimuat jika user adalah sales
+    if (user && user.role === 'sales') {
+      fetchEvaluationNotifCount();
+    }
+  }, [user, fetchEvaluationNotifCount]);
+
   if (!user) return null;
 
   const isAdmin = user.role === 'admin';
@@ -41,7 +51,11 @@ const Sidebar = () => {
           <>
             <NavLink to="/input-achievement"><FaPlusSquare className="nav-icon" /> <span>Input Achievement</span></NavLink>
             <NavLink to="/my-achievements"><FaHistory className="nav-icon" /> <span>My History</span></NavLink>
-            <NavLink to="/evaluations"><FaClipboardList className="nav-icon" /> <span>Evaluations</span></NavLink>
+            <NavLink to="/evaluations">
+              <FaClipboardList className="nav-icon" /> 
+              <span>Evaluations</span>
+              {evaluationNotifCount > 0 && <span className="notification-badge">{evaluationNotifCount}</span>}
+            </NavLink>
           </>
         )}
 

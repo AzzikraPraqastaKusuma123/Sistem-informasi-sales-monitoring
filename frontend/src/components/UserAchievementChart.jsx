@@ -11,17 +11,28 @@ const PINK_CORAL = '#F3797E';
 // Custom Tooltip Component
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
+        const data = payload[0].payload; // The full data object for the point
         return (
             <div style={{
-                backgroundColor: SOFT_BLUE,
-                color: '#333', // Dark text
-                borderRadius: '5px',
-                padding: '10px',
-                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                border: 'none'
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                color: '#333',
+                borderRadius: '8px',
+                padding: '12px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                border: '1px solid #ddd'
             }}>
-                <p className="label">{`Tanggal: ${label}`}</p>
-                <p className="intro">{`Total Pencapaian: ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(payload[0].value)}`}</p>
+                <p className="label" style={{ fontWeight: 'bold', marginBottom: '8px' }}>Tanggal: {label}</p>
+                <p className="intro" style={{ color: PRIMARY_COLOR, fontWeight: '600' }}>
+                  Total Jumlah: {new Intl.NumberFormat('id-ID').format(data.totalAchieved)}
+                </p>
+                <hr style={{ margin: '8px 0', border: 'none', borderTop: '1px solid #eee' }} />
+                <ul style={{ paddingLeft: '18px', margin: 0, fontSize: '0.9em' }}>
+                    {data.products && data.products.map((product, index) => (
+                        <li key={index} style={{ marginBottom: '4px' }}>
+                            {product.name}: {new Intl.NumberFormat('id-ID').format(product.value)}
+                        </li>
+                    ))}
+                </ul>
             </div>
         );
     }
@@ -32,13 +43,14 @@ const UserAchievementChart = ({ data }) => {
   // Ensure data is sorted by date for proper trend visualization
   const sortedData = [...data].sort((a, b) => new Date(a.achievement_date) - new Date(b.achievement_date));
 
-  // Aggregate data by date to sum up achieved_value for each day
+  // Aggregate data by date to sum up achieved_value and collect product details
   const aggregatedData = sortedData.reduce((acc, item) => {
     const date = new Date(item.achievement_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
     if (!acc[date]) {
-      acc[date] = { date, totalAchieved: 0 };
+      acc[date] = { date, totalAchieved: 0, products: [] };
     }
     acc[date].totalAchieved += item.achieved_value;
+    acc[date].products.push({ name: item.productName, value: item.achieved_value });
     return acc;
   }, {});
 
@@ -46,7 +58,7 @@ const UserAchievementChart = ({ data }) => {
 
   if (!chartData || chartData.length === 0) {
     return (
-        <div className="chart-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="chart-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '300px' }}>
             <p>Belum ada data pencapaian untuk ditampilkan dalam grafik.</p>
         </div>
     );
@@ -56,13 +68,14 @@ const UserAchievementChart = ({ data }) => {
     <div className="chart-wrapper">
       <h3>Tren Pencapaian Saya</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={chartData}>
+        <LineChart data={chartData} margin={{ top: 5, right: 20, left: 30, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} /> {/* Thin, soft gridlines */}
           <XAxis dataKey="date" stroke="var(--color-text-secondary)" tickLine={false} axisLine={false} />
           <YAxis 
             stroke="var(--color-text-secondary)" 
-            tickFormatter={(value) => new Intl.NumberFormat('id-ID', { notation: 'compact' }).format(value)}
+            tickFormatter={(value) => new Intl.NumberFormat('id-ID').format(value)}
             tickLine={false} axisLine={false}
+            tick={{ fontSize: 10 }} // Reduce font size
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend />

@@ -5,7 +5,8 @@ import UserAchievementChart from '../components/UserAchievementChart'; // Import
 import './MyAchievementsPage.css'; // Import the new CSS file
 
 const MyAchievementsPage = () => {
-  const [achievements, setAchievements] = useState([]);
+  const [achievements, setAchievements] = useState([]); // Raw data for the chart
+  const [tableData, setTableData] = useState([]); // Formatted data for the table
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -13,14 +14,20 @@ const MyAchievementsPage = () => {
     try {
       setLoading(true);
       const { data } = await api.get('/achievements/my');
-      // Format tanggal agar lebih mudah dibaca
+      
+      // Set raw data for the chart
+      setAchievements(data);
+
+      // Create and set formatted data for the table
       const formattedData = data.map(item => ({
         ...item,
-        achievement_date: new Date(item.achievement_date).toLocaleDateString('id-ID', {
-          day: '2-digit', month: 'long', year: 'numeric'
+        achievement_date: new Date(item.inputTime).toLocaleString('id-ID', {
+          day: '2-digit', month: 'short', year: 'numeric',
+          hour: '2-digit', minute: '2-digit', hour12: false
         })
       }));
-      setAchievements(data); // Keep original data for chart, formatted for table
+      setTableData(formattedData);
+
     } catch (err) {
       setError('Gagal memuat riwayat pencapaian.');
       console.error(err);
@@ -51,7 +58,7 @@ const MyAchievementsPage = () => {
         <UserAchievementChart data={achievements} />
       </div>
       <div className="data-table-wrapper">
-        <DataTable headers={headers} data={achievements} />
+        <DataTable headers={headers} data={tableData} />
       </div>
     </div>
   );
